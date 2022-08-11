@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('attachment_staff', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('staff_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('staff_id')->constrained('staffs')->onUpdate('cascade')->onDelete('cascade');
             $table->string('type');
             $table->string('description');
             $table->binary('attachment');
