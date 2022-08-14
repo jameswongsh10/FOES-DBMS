@@ -17,9 +17,11 @@
         "@emotion/react": "^11.10.0",
         "@emotion/styled": "^11.10.0",
         "@mui/icons-material": "^5.8.4",
+        "@mui/material": "^5.10.0",
         "@mui/x-data-grid": "^5.15.1",
         "@reduxjs/toolkit": "^1.8.3",
         "@vitejs/plugin-react": "^2.0.0",
+        "ajax": "^0.0.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.3.0"

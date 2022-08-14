@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth-slice';
+import axios from "axios";
 
 function Copyright(props) {
   return (
