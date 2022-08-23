@@ -13,11 +13,15 @@ class Admin extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'miri_id',
-        'perth_id',
-        'email',
-        'password'];
+//    protected $fillable = [
+//        'first_name',
+//        'last_name',
+//        'miri_id',
+//        'perth_id',
+//        'email',
+//        'password'];
+
+
+    //Should we set id to guarded?
+    protected $guarded = ['id'];
 }

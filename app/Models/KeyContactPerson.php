@@ -13,9 +13,11 @@ class KeyContactPerson extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'mou_moa_id',
-        'institution',
-        'name',
-        'email'];
+//    protected $fillable = [
+//        'mou_moa_id',
+//        'institution',
+//        'name',
+//        'email'];
+
+    protected $guarded = ['id'];
 }

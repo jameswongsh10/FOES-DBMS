@@ -13,19 +13,21 @@ class Asset extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'physical_check',
-        'asset_tag_number',
-        'item',
-        'description',
-        'serial_no',
-        'year_purchased',
-        'warranty',
-        'quantity',
-        'original_cost',
-        'condition_of_asset',
-        'grant',
-        'brand',
-        'model_no',
-        'remark'];
+//    protected $fillable = [
+//        'physical_check',
+//        'asset_tag_number',
+//        'item',
+//        'description',
+//        'serial_no',
+//        'year_purchased',
+//        'warranty',
+//        'quantity',
+//        'original_cost',
+//        'condition_of_asset',
+//        'grant',
+//        'brand',
+//        'model_no',
+//        'remark'];
+
+    protected $guarded = ['id'];
 }

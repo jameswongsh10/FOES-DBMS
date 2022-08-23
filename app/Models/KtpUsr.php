@@ -13,19 +13,21 @@ class KtpUsr extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'category',
-        'date',
-        'program_name',
-        'community_industry_name',
-        'location',
-        'lead_by',
-        'faculty',
-        'cm_driven',
-        'partner_name',
-        'no_of_staff',
-        'no_of_student',
-        'internal_funding',
-        'external_funding'
-    ];
+//    protected $fillable = [
+//        'category',
+//        'date',
+//        'program_name',
+//        'community_industry_name',
+//        'location',
+//        'lead_by',
+//        'faculty',
+//        'cm_driven',
+//        'partner_name',
+//        'no_of_staff',
+//        'no_of_student',
+//        'internal_funding',
+//        'external_funding'
+//    ];
+
+    protected $guarded = ['id'];
 }

@@ -13,17 +13,19 @@ class Mobility extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'staff_or_student',
-        'in_or_out_bound',
-        'name',
-        'attendee_id',
-        'program',
-        'name_of_university',
-        'country',
-        'duration',
-        'from_date',
-        'to_date',
-        'remark'
-    ];
+//    protected $fillable = [
+//        'staff_or_student',
+//        'in_or_out_bound',
+//        'name',
+//        'attendee_id',
+//        'program',
+//        'name_of_university',
+//        'country',
+//        'duration',
+//        'from_date',
+//        'to_date',
+//        'remark'
+//    ];
+
+    protected $guarded = ['id'];
 }

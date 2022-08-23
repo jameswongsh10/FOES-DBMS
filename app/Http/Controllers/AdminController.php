@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use function MongoDB\BSON\toJSON;
 
 class AdminController extends Controller
 {
@@ -11,22 +14,34 @@ class AdminController extends Controller
         $data = json_decode(file_get_contents('php://input'), true);
 
         $newAdmin = new Admin();
-        //Fetch axios data
-        $newAdmin->email = $data['Email'];
 
-        //Dummy data
-        $newAdmin->first_name = "Admin First Name";
-        $newAdmin->last_name = "Admin Last Name";
-        $newAdmin->miri_id = "123123";
-        $newAdmin->perth_id = "321321";
-        $newAdmin->password = "test password";
+        foreach ($data as $key=>$value) {
+            $newAdmin->$key = $value;
+        }
 
         //Save into database
         $save = $newAdmin->save();
 
         if ($save) {
-            return redirect('/')->with('success', 'New admin has been created.');
+//            return redirect('/')->with('success', 'New admin has been created.');
         }
+    }
+
+    public function addAdminColumn(){
+        $columnName = json_decode(file_get_contents('php://input'), true);
+
+        Schema::table('admins', function (Blueprint $table) use ($columnName) {
+            $table->string($columnName)->default('');
+        });
+    }
+
+    public function fetchAdminTable()
+    {
+        $admin = Admin::all();
+        echo $admin;
+//        $compressedJSON = gzdeflate($admin, 9);
+//        setcookie('adminTable', $compressedJSON);
+//        return $admin;
     }
 
     public function readAdmin(){

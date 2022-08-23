@@ -14,7 +14,7 @@ const AddNew = () => {
 
   const navigate = useNavigate();
   const viewCollection = useSelector(state => state.table.view);
-  console.log(">>>>>>>>>" + viewCollection);
+  // console.log(">>>>>>>>>" + viewCollection);
   // const columnsArr = useSelector(state => state.table.columns);
   const columnsArr = useSelector(state => state.table.customColumns);
 
@@ -58,10 +58,11 @@ const AddNew = () => {
           url = '/';
           break;
       }
+
       //Pass Data to AdminController to create admin
       axios.post(url, JSON.stringify(newObj))
           .then(response => {
-              alert(JSON.stringify(response.data));
+              console.log(JSON.stringify(response.data));
           })
           .catch(error => {
               console.log("ERROR:: ", error.response.data);
