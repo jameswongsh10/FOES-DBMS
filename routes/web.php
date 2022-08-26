@@ -26,6 +26,8 @@ Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
 Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
 Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
 
+Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
+
 //Staff CRUD
 Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
 

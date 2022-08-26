@@ -36,6 +36,12 @@ class AdminController extends Controller
         Schema::table('admins', function (Blueprint $table) use ($columnName) {
             $table->string($columnName)->default('');
         });
+
+        return response()->json([
+            'status' => true,
+            'message' => "Column added successfully!",
+            'column' => $columnName
+        ], 201);
     }
 
     public function readAllAdmin()

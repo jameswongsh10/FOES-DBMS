@@ -24,3 +24,4 @@ Route::get('getAdmin/{id}', 'App\Http\Controllers\AdminController@readAdmin');
 Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
 Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
 Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
+
