@@ -15,19 +15,22 @@ class AdminController extends Controller
 
         $newAdmin = new Admin();
 
-        foreach ($data as $key=>$value) {
+        foreach ($data as $key => $value) {
             $newAdmin->$key = $value;
         }
 
         //Save into database
         $save = $newAdmin->save();
 
-        if ($save) {
-//            return redirect('/')->with('success', 'New admin has been created.');
-        }
+        return response()->json([
+            'status' => true,
+            'message' => "Admin created successfully!",
+            'admin' => $newAdmin
+        ], 201);
     }
 
-    public function addAdminColumn(){
+    public function addAdminColumn()
+    {
         $columnName = json_decode(file_get_contents('php://input'), true);
 
         Schema::table('admins', function (Blueprint $table) use ($columnName) {
@@ -35,24 +38,72 @@ class AdminController extends Controller
         });
     }
 
-    public function fetchAdminTable()
+    public function readAllAdmin()
     {
         $admin = Admin::all();
-        echo $admin;
-//        $compressedJSON = gzdeflate($admin, 9);
-//        setcookie('adminTable', $compressedJSON);
-//        return $admin;
+
+        return response()->json([
+            'status' => true,
+            'admins' => $admin
+        ]);
     }
 
-    public function readAdmin(){
+    public function readAdmin($id)
+    {
+        $admin = Admin::find($id);
 
+        if (is_null($admin)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Admin not found",
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'admin' => $admin
+        ], 200);
     }
 
-    public function updateAdmin(){
+    public function updateAdmin($id)
+    {
+        $admin = Admin::find($id);
 
+        if (is_null($admin)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Admin not found",
+            ], 404);
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $admin->update($data);
+
+        return response()->json([
+            'status' => true,
+            'message' => "Admin updated successfully!",
+            'admin' => $admin
+        ], 200);
     }
 
-    public function deleteAdmin(){
+    public function deleteAdmin($id)
+    {
+        $admin = Admin::find($id);
 
+        if (is_null($admin)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Admin not found",
+            ], 404);
+        }
+
+        $admin->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => "Admin deleted successfully!",
+            'admin' => $admin
+        ], 200);
     }
 }
