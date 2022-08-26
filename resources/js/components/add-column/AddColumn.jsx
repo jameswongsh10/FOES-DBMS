@@ -4,13 +4,14 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { tableActions } from '../../store/table-slice';
 import './addColumn.scss';
+import axios from "axios";
 
 const AddColumn = () => {
   const dispatch = useDispatch();
 
   const [open, isOpen] = useState(false);
   const inputColumnName = useRef('');
-  
+
   const onOpenHandler = () => {
     isOpen(true);
   };
@@ -18,6 +19,15 @@ const AddColumn = () => {
   const onConfirmHandler = () => {
     isOpen(false);
     dispatch(tableActions.addCustomColumn(inputColumnName.current.value));
+      let url = '/addAdminColumn';
+
+      axios.post(url, JSON.stringify(inputColumnName.current.value))
+          .then(response => {
+              console.log(JSON.stringify(response.data));
+          })
+          .catch(error => {
+              console.log("ERROR:: ", error.response.data);
+          })
   }
 
   const initialComponent = (

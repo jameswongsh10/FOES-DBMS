@@ -8,11 +8,13 @@ import './addNew.scss';
 import { useNavigate } from 'react-router-dom';
 import AddColumn from '../../components/add-column/AddColumn';
 import { Button } from '@mui/material';
+import axios from 'axios';
 
 const AddNew = () => {
 
   const navigate = useNavigate();
   const viewCollection = useSelector(state => state.table.view);
+  // console.log(">>>>>>>>>" + viewCollection);
   // const columnsArr = useSelector(state => state.table.columns);
   const columnsArr = useSelector(state => state.table.customColumns);
 
@@ -28,12 +30,46 @@ const AddNew = () => {
         newObj[`${el.name}`] = el.value;
       }
     })
-    fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
-      method: 'POST',
-      body: JSON.stringify(newObj)
-    })
+
+      let url = '/';
+      switch(viewCollection) {
+          case "Admin":
+              url = '/createAdmin';
+              break;
+          case "Asset":
+              url = '/createAsset';
+              break;
+          case "Staff":
+              url = '/createStaff';
+              break;
+          case "KTP-USR":
+              // code block
+              break;
+          case "MOU-MOA":
+              // code block
+              break;
+          case "Mobility":
+              // code block
+              break;
+          case "Research-Award":
+              // code block
+              break;
+          default:
+          url = '/';
+          break;
+      }
+
+      //Pass Data to AdminController to create admin
+      axios.post(url, JSON.stringify(newObj))
+          .then(response => {
+              console.log(JSON.stringify(response.data));
+          })
+          .catch(error => {
+              console.log("ERROR:: ", error.response.data);
+          })
     navigate('/');
   };
+
 
   return (
     <div className="new">

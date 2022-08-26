@@ -16,7 +16,7 @@ const SingleEntry = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app./database/${viewCollection}/${singleID}.json`)
+    fetch(`https://test-foes-default-rtdb.asia-southeast1.firebasedatabase.app./database/${viewCollection}/${singleID}.json`)
       .then(response => response.json())
       .then(data => setEntry(data));
     // check if the singleID is changed when useEffect is triggered, which brings fetch request of /database/${viewCollection}/NULL.json resulting error when the page is reloaded.
@@ -50,11 +50,11 @@ const SingleEntry = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app./database/${viewCollection}/${singleID}.json`, {
+    const response = fetch(`https://test-foes-default-rtdb.asia-southeast1.firebasedatabase.app./database/${viewCollection}/${singleID}.json`, {
       method: 'PUT',
       body: JSON.stringify(entry)
     });
-    
+
     response && navigate('/');
   }
 
