@@ -20,7 +20,9 @@ Route::get('/', function () {
 });
 
 //Staff CRUD
-Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
+Route::resource('staff', 'App\Http\Controllers\StaffController');
+
+//Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
 
 //Admin CRUD
 Route::post('createAdmin', [AdminController::class, 'createAdmin'])->name('createAdmin');

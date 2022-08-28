@@ -40,7 +40,7 @@ const AddNew = () => {
               url = '/createAsset';
               break;
           case "Staff":
-              url = '/createStaff';
+              url = '/api/staff';
               break;
           case "KTP-USR":
               // code block
