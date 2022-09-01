@@ -19,12 +19,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Admin CRUD
+Route::post('createAdmin', 'App\Http\Controllers\AdminController@createAdmin');
+Route::get('getAdmin/{id}', 'App\Http\Controllers\AdminController@readAdmin');
+Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
+Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
+Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
+
+Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
+
+Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');
 //Staff CRUD
 Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
-
-//Admin CRUD
-Route::post('createAdmin', [AdminController::class, 'createAdmin'])->name('createAdmin');
-Route::post('editAdmin', [AdminController::class, 'editAdmin'])->name('editAdmin');
 
 //Asset CRUD
 Route::post('createAsset', [\App\Http\Controllers\AssetController::class, 'createAsset'])->name('createAsset');

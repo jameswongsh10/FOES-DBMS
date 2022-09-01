@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('research_awards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('staff_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('staff_id')->constrained('staffs')->onUpdate('cascade')->onDelete('cascade');
             $table->string('type_of_grant');
             $table->string('project_title');
             $table->string('co_investigators');

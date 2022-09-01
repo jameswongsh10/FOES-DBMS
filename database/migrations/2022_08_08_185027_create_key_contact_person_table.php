@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('key_contact_person', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mou_moa_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('mou_moa_id')->constrained('mou_moa')->onUpdate('cascade')->onDelete('cascade');
             $table->string('institution');
             $table->string('name');
             $table->string('email');
