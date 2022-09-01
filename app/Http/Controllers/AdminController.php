@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use function MongoDB\BSON\toJSON;
 
 class AdminController extends Controller
 {
@@ -22,11 +21,18 @@ class AdminController extends Controller
         //Save into database
         $save = $newAdmin->save();
 
-        return response()->json([
-            'status' => true,
-            'message' => "Admin created successfully!",
-            'admin' => $newAdmin
-        ], 201);
+        if ($save) {
+            return response()->json([
+                'status' => $save,
+                'message' => "Admin created successfully!",
+                'admin' => $newAdmin
+            ], 201);
+        } else {
+            return response()->json([
+                'status' => $save,
+                'message' => "Error in creating admin.",
+            ], 400);
+        }
     }
 
     public function addAdminColumn()
@@ -34,7 +40,7 @@ class AdminController extends Controller
         $columnName = json_decode(file_get_contents('php://input'), true);
 
         Schema::table('admins', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->after('password')->default();
+            $table->string($columnName)->after('password')->default('');
         });
 
         return response()->json([
@@ -49,7 +55,7 @@ class AdminController extends Controller
         $admin = Admin::all();
 
         return response()->json([
-            // 'status' => true,
+            'status' => true,
             'Admin' => $admin
         ]);
     }
@@ -66,7 +72,7 @@ class AdminController extends Controller
         }
 
         return response()->json([
-         //   'status' => true,
+            //   'status' => true,
             'admin' => $admin
         ], 200);
     }
@@ -84,13 +90,20 @@ class AdminController extends Controller
 
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $admin->update($data);
+        $save = $admin->update($data);
 
-        return response()->json([
-            'status' => true,
-            'message' => "Admin updated successfully!",
-            'admin' => $admin
-        ], 200);
+        if ($save) {
+            return response()->json([
+                'status' => $save,
+                'message' => "Admin updated successfully!",
+                'admin' => $admin
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => $save,
+                'message' => "Error in updating admin.",
+            ], 400);
+        }
     }
 
     public function deleteAdmin($id)
