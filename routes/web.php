@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MobilityController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StaffController;
 
@@ -19,18 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Admin CRUD
-Route::post('createAdmin', 'App\Http\Controllers\AdminController@createAdmin');
-Route::get('getAdmin/{id}', 'App\Http\Controllers\AdminController@readAdmin');
-Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
-Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
-Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
-
-Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
-
-Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');
-//Staff CRUD
-Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
-
-//Asset CRUD
-Route::post('createAsset', [\App\Http\Controllers\AssetController::class, 'createAsset'])->name('createAsset');
+//Mobility CRUD
+Route::post('createMobility', 'App\Http\Controllers\MobilityController@createMobility');
+Route::get('getMobility/{id}', 'App\Http\Controllers\MobilityController@readMobility');
+Route::get('readAllMobility', 'App\Http\Controllers\MobilityController@readAllMobility');
+Route::put('updateMobility/{id}', 'App\Http\Controllers\MobilityController@updateMobility');
+Route::delete('deleteMobility/{id}', 'App\Http\Controllers\MobilityController@deleteMobility');
+Route::post('addMobilityColumn', 'App\Http\Controllers\MobilityController@addMobilityColumn');
