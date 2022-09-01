@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ResearchAwards;
+use App\Models\Staff;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -65,7 +66,26 @@ class ResearchAwardsController extends Controller
         }
 
         return response()->json([
-            //   'status' => true,
+            'status' => true,
+            'awards' => $awards
+        ], 200);
+    }
+
+    public function getAwardsbyStaffID($staff_id)
+    {
+        $column = 'staff_id'; // This is the name of the column you wish to search
+
+        $awards = ResearchAwards::where($column , '=', $staff_id)->with('staff')->get();
+
+        if (is_null($awards)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Awards not found",
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
             'awards' => $awards
         ], 200);
     }

@@ -12,6 +12,11 @@ class ResearchAwards extends Model
     protected $table = 'research_awards';
 
     protected $primaryKey = 'id';
-
+    protected $with = ['staff'];
     protected $guarded = ['id','created_at', 'updated_at'];
+
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class);
+    }
 }

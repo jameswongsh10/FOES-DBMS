@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //ResearchAwards CRUD
 Route::post('createAwards', 'App\Http\Controllers\ResearchAwardsController@createAwards');
 Route::get('getAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@readAwards');
+Route::get('getAwards/staff/{id}', 'App\Http\Controllers\ResearchAwardsController@getAwardsbyStaffID');
 Route::get('readAllAwards', 'App\Http\Controllers\ResearchAwardsController@readAllAwards');
 Route::put('updateAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@updateAwards');
 Route::delete('deleteAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@deleteAwards');
