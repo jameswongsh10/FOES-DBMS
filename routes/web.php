@@ -20,16 +20,9 @@ Route::get('/', function () {
 });
 
 //Staff CRUD
-Route::resource('staff', 'App\Http\Controllers\StaffController');
-
-//Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
-
-//Admin CRUD
-Route::post('createAdmin', [AdminController::class, 'createAdmin'])->name('createAdmin');
-Route::post('editAdmin', [AdminController::class, 'editAdmin'])->name('editAdmin');
-Route::post('addAdminColumn', [AdminController::class, 'addAdminColumn'])->name('addAdminColumn');
-Route::post('fetchAdminTable', [AdminController::class, 'fetchAdminTable'])->name('fetchAdminTable');
-
-
-//Asset CRUD
-Route::post('createAsset', [\App\Http\Controllers\AssetController::class, 'createAsset'])->name('createAsset');
+Route::post('createStaff', 'App\Http\Controllers\StaffController@createStaff');
+Route::get('getStaff/{id}', 'App\Http\Controllers\StaffController@readStaff');
+Route::get('readAllStaff', 'App\Http\Controllers\StaffController@readAllStaff');
+Route::put('updateStaff/{id}', 'App\Http\Controllers\StaffController@updateStaff');
+Route::delete('deleteStaff/{id}', 'App\Http\Controllers\StaffController@deleteStaff');
+Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');
