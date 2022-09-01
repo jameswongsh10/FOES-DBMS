@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AssetController extends Controller
 {
@@ -12,26 +14,101 @@ class AssetController extends Controller
 
         $newAsset = new Asset();
 
-        //Dummy data
-        $newAsset->physical_check = "physical_check";
-        $newAsset->asset_tag_number = "asset_tag_number";
-        $newAsset->item = $data['Item'];
-        $newAsset->serial_no = "111";
-        $newAsset->year_purchased = "2000";
-        $newAsset->warranty = "warranty";
-        $newAsset->quantity = $data['Quantity'];
-        $newAsset->original_cost = "200";
-        $newAsset->condition_of_asset = "condition_of_asset";
-        $newAsset->grant = "200";
-        $newAsset->brand = "brand";
-        $newAsset->model_no = "2000";
-        $newAsset->remark = "none";
+        foreach ($data as $key => $value) {
+            $newAsset->$key = $value;
+        }
 
         //Save into database
         $save = $newAsset->save();
 
-        if ($save) {
-            return redirect('/')->with('success', 'New Asset has been created.');
+        return response()->json([
+            'status' => true,
+            'message' => "Asset created successfully!",
+            'asset' => $save
+        ], 201);
+    }
+
+    public function addAssetColumn()
+    {
+        $columnName = json_decode(file_get_contents('php://input'), true);
+
+        Schema::table('assets', function (Blueprint $table) use ($columnName) {
+            $table->string($columnName)->after('remark');
+        });
+
+        return response()->json([
+            'status' => true,
+            'message' => "Column added successfully!",
+            'column' => $columnName
+        ], 201);
+    }
+
+    public function readAllAsset()
+    {
+        $asset = Asset::all();
+
+        return response()->json([
+            'status' => true,
+            'Asset' => $asset
+        ]);
+    }
+
+    public function readAsset($id)
+    {
+        $asset = Asset::find($id);
+
+        if (is_null($asset)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Asset not found",
+            ], 404);
         }
+
+        return response()->json([
+            //   'status' => true,
+            'asset' => $asset
+        ], 200);
+    }
+
+    public function updateAsset($id)
+    {
+        $asset = Asset::find($id);
+
+        if (is_null($asset)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Asset not found",
+            ], 404);
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $asset->update($data);
+
+        return response()->json([
+            'status' => true,
+            'message' => "Asset updated successfully!",
+            'asset' => $asset
+        ], 200);
+    }
+
+    public function deleteAsset($id)
+    {
+        $asset = Asset::find($id);
+
+        if (is_null($asset)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Asset not found",
+            ], 404);
+        }
+
+        $asset->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => "Asset deleted successfully!",
+            'asset' => $asset
+        ], 200);
     }
 }

@@ -34,7 +34,7 @@ class AdminController extends Controller
         $columnName = json_decode(file_get_contents('php://input'), true);
 
         Schema::table('admins', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->default('');
+            $table->string($columnName)->after('password')->default('');
         });
 
         return response()->json([
@@ -50,7 +50,7 @@ class AdminController extends Controller
 
         return response()->json([
             'status' => true,
-            'admins' => $admin
+            'Admin' => $admin
         ]);
     }
 
@@ -66,7 +66,7 @@ class AdminController extends Controller
         }
 
         return response()->json([
-            'status' => true,
+            //   'status' => true,
             'admin' => $admin
         ], 200);
     }
