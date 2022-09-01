@@ -21,19 +21,29 @@ class AssetController extends Controller
         //Save into database
         $save = $newAsset->save();
 
-        return response()->json([
-            'status' => true,
-            'message' => "Asset created successfully!",
-            'asset' => $save
-        ], 201);
+        if ($save) {
+            return response()->json([
+                'status' => $save,
+                'message' => "Asset created successfully!",
+                'asset' => $save
+            ], 201);
+        } else {
+            return response()->json([
+                'status' => $save,
+                'message' => "Error in creating asset",
+                'asset' => $save
+            ], 400);
+        }
     }
 
-    public function addAssetColumn()
+
+    public
+    function addAssetColumn()
     {
         $columnName = json_decode(file_get_contents('php://input'), true);
 
         Schema::table('assets', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->after('remark');
+            $table->string($columnName)->after('remark')->default('');
         });
 
         return response()->json([
@@ -43,7 +53,8 @@ class AssetController extends Controller
         ], 201);
     }
 
-    public function readAllAsset()
+    public
+    function readAllAsset()
     {
         $asset = Asset::all();
 
@@ -53,7 +64,8 @@ class AssetController extends Controller
         ]);
     }
 
-    public function readAsset($id)
+    public
+    function readAsset($id)
     {
         $asset = Asset::find($id);
 
@@ -65,12 +77,13 @@ class AssetController extends Controller
         }
 
         return response()->json([
-            //   'status' => true,
+            'status' => true,
             'asset' => $asset
         ], 200);
     }
 
-    public function updateAsset($id)
+    public
+    function updateAsset($id)
     {
         $asset = Asset::find($id);
 
@@ -83,16 +96,25 @@ class AssetController extends Controller
 
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $asset->update($data);
+        $save = $asset->update($data);
 
-        return response()->json([
-            'status' => true,
-            'message' => "Asset updated successfully!",
-            'asset' => $asset
-        ], 200);
+        if ($save) {
+            return response()->json([
+                'status' => true,
+                'message' => "Asset updated successfully!",
+                'asset' => $asset
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => $save,
+                'message' => "Error in updating asset",
+                'asset' => $save
+            ], 400);
+        }
     }
 
-    public function deleteAsset($id)
+    public
+    function deleteAsset($id)
     {
         $asset = Asset::find($id);
 
