@@ -19,11 +19,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//KTPUSR CRUD
-Route::post('createKTPUSR', 'App\Http\Controllers\KTPUSR_Controller@createKTPUSR');
-Route::get('getKTPUSR/{id}', 'App\Http\Controllers\KTPUSR_Controller@readKTPUSR');
-Route::get('readAllKTPUSR', 'App\Http\Controllers\KTPUSR_Controller@readAllKTPUSR');
-Route::put('updateKTPUSR/{id}', 'App\Http\Controllers\KTPUSR_Controller@updateKTPUSR');
-Route::delete('deleteKTPUSR/{id}', 'App\Http\Controllers\KTPUSR_Controller@deleteKTPUSR');
-Route::post('addKTPUSRColumn', 'App\Http\Controllers\KTPUSR_Controller@addKTPUSRColumn');
+//MOUMOA CRUD
+Route::post('createMOUMOA', 'App\Http\Controllers\MOUMOA_Controller@createMOUMOA');
+Route::get('getMOUMOA/{id}', 'App\Http\Controllers\MOUMOA_Controller@readMOUMOA');
+Route::get('readAllMOUMOA', 'App\Http\Controllers\MOUMOA_Controller@readAllMOUMOA');
+Route::put('updateMOUMOA/{id}', 'App\Http\Controllers\MOUMOA_Controller@updateMOUMOA');
+Route::delete('deleteMOUMOA/{id}', 'App\Http\Controllers\MOUMOA_Controller@deleteMOUMOA');
+Route::post('addMOUMOAColumn', 'App\Http\Controllers\MOUMOA_Controller@addMOUMOAColumn');
 
