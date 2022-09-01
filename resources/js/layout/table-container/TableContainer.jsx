@@ -29,7 +29,7 @@ const TableContainer = (props) => {
   };
 
   const viewCollection = useSelector(state => state.table.view);
-  const columns = generateColumnArr(useSelector(state => state.table.columns));
+  const columns = generateColumnArr(useSelector(state => state.table.columns).filter(columns => columns != 'id' && columns != 'created_at' && columns != 'updated_at'));
   const rows = useSelector(state => state.table.entries);
 
 //   const columns =[

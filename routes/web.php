@@ -28,6 +28,7 @@ Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAd
 
 Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
 
+Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');
 //Staff CRUD
 Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
 

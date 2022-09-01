@@ -84,7 +84,7 @@ const Sidebar = () => {
   //   links.push(component)
   // }
 
-  const links = sidebarCollections.map(el => {
+  const links = sidebarCollections.filter(item => item !== 'status').map(el => {
     return (
       <Link to={`/${el}`} key={el} className='link'>
         <li key={el} onClick={() => linkClickHandler(el)}>

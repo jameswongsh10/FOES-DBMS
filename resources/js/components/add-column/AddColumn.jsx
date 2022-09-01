@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { tableActions } from '../../store/table-slice';
 import './addColumn.scss';
 import axios from "axios";
@@ -11,6 +11,7 @@ const AddColumn = () => {
 
   const [open, isOpen] = useState(false);
   const inputColumnName = useRef('');
+    const viewCollection = useSelector(state => state.table.view);
 
   const onOpenHandler = () => {
     isOpen(true);
@@ -19,7 +20,34 @@ const AddColumn = () => {
   const onConfirmHandler = () => {
     isOpen(false);
     dispatch(tableActions.addCustomColumn(inputColumnName.current.value));
-      let url = '/addAdminColumn';
+
+      let url = '/';
+      switch(viewCollection) {
+          case "Admin":
+              url = '/addAdminColumn';
+              break;
+          case "Asset":
+              url = '/addAssetColumn';
+              break;
+          case "Staff":
+              url = '/addStaffColumn';
+              break;
+          case "KTP-USR":
+              // code block
+              break;
+          case "MOU-MOA":
+              // code block
+              break;
+          case "Mobility":
+              // code block
+              break;
+          case "Research-Award":
+              // code block
+              break;
+          default:
+              url = '/';
+              break;
+      }
 
       axios.post(url, JSON.stringify(inputColumnName.current.value))
           .then(response => {
