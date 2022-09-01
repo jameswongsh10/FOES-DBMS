@@ -31,3 +31,11 @@ Route::post('fetchAdminTable', [AdminController::class, 'fetchAdminTable'])->nam
 
 //Asset CRUD
 Route::post('createAsset', [\App\Http\Controllers\AssetController::class, 'createAsset'])->name('createAsset');
+
+//ResearchAwards CRUD
+Route::post('createAwards', 'App\Http\Controllers\ResearchAwardsController@createAwards');
+Route::get('getAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@readAwards');
+Route::get('readAllAwards', 'App\Http\Controllers\ResearchAwardsController@readAllAwards');
+Route::put('updateAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@updateAwards');
+Route::delete('deleteAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@deleteAwards');
+Route::post('addAwardsColumn', 'App\Http\Controllers\ResearchAwardsController@addAwardsColumn');
