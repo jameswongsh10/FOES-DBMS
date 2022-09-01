@@ -3,112 +3,137 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Http\Request;
 
 class StaffController extends Controller
 {
-    public function createStaff()
-    {
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $newStaff = new Staff();
-
-        foreach ($data as $key => $value) {
-            $newStaff->$key = $value;
-        }
-
-        //Save into database
-        $save = $newStaff->save();
-
-        return response()->json([
-            'status' => $save,
-            'message' => "Staff created successfully!",
-            'staff' => $newStaff
-        ], 201);
-    }
-
-    public function addStaffColumn()
-    {
-        $columnName = json_decode(file_get_contents('php://input'), true);
-
-        Schema::table('staffs', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->after('remark')->default('');
-        });
-
-        return response()->json([
-            'status' => true,
-            'message' => "Column added successfully!",
-            'column' => $columnName
-        ], 201);
-    }
-
-    public function readAllStaff()
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
         $staff = Staff::all();
 
         return response()->json([
-            'status' => true,
-            'Staff' => $staff
-        ]);
-    }
-
-    public function readStaff($id)
-    {
-        $staff = Staff::find($id);
-
-        if (is_null($staff)) {
-            return response()->json([
-                'status' => false,
-                'message' => "Staff not found",
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => true,
-            'staff' => $staff
+            "success" => true,
+            "message" => "Staff List",
+            "data" => $staff
         ], 200);
     }
 
-    public function updateStaff($id)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $input = $request->all();
+
+        $staff = Staff::create($input);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Staff created successfully.",
+            "data" => $staff
+        ], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
         $staff = Staff::find($id);
 
         if (is_null($staff)) {
-            return response()->json([
-                'status' => false,
-                'message' => "Staff not found",
+            return
+                response()->json([
+                    "success" => false,
+                    "message" => "Staff not found."
+                ], 404);
+        }
+
+        return response()->json([
+            "success" => true,
+            "message" => "Staff retrieved successfully.",
+            "data" => $staff
+        ], 200);
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $input = $request->all();
+
+        $staff = Staff::find($id);
+
+        if (is_null($staff)) {
+           return response()->json([
+                "success" => false,
+                "message" => "Staff not found."
             ], 404);
         }
 
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $staff->update($data);
+        $staff->update($input);
 
         return response()->json([
-            'status' => true,
-            'message' => "Staff updated successfully!",
-            'staff' => $staff
+            "success" => true,
+            "message" => "Staff updated successfully.",
+            "data" => $staff
         ], 200);
     }
 
-    public function deleteStaff($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
         $staff = Staff::find($id);
-
-        if (is_null($staff)) {
-            return response()->json([
-                'status' => false,
-                'message' => "Staff not found",
-            ], 404);
-        }
 
         $staff->delete();
 
         return response()->json([
-            'status' => true,
-            'message' => "Staff deleted successfully!",
-            'staff' => $staff
-        ], 200);
+            "success" => true,
+            "message" => "Staff deleted successfully.",
+            "data" => $staff
+        ]);
     }
 }
