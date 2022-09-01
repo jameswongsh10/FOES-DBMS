@@ -18,4 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('staff', 'App\Http\Controllers\StaffController');
+//Staff CRUD
+Route::post('createStaff', 'App\Http\Controllers\StaffController@createStaff');
+Route::get('getStaff/{id}', 'App\Http\Controllers\StaffController@readStaff');
+Route::get('readAllStaff', 'App\Http\Controllers\StaffController@readAllStaff');
+Route::put('updateStaff/{id}', 'App\Http\Controllers\StaffController@updateStaff');
+Route::delete('deleteStaff/{id}', 'App\Http\Controllers\StaffController@deleteStaff');
+Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');
