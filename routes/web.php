@@ -19,10 +19,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Mobility CRUD
-Route::post('createMobility', 'App\Http\Controllers\MobilityController@createMobility');
-Route::get('getMobility/{id}', 'App\Http\Controllers\MobilityController@readMobility');
-Route::get('readAllMobility', 'App\Http\Controllers\MobilityController@readAllMobility');
-Route::put('updateMobility/{id}', 'App\Http\Controllers\MobilityController@updateMobility');
-Route::delete('deleteMobility/{id}', 'App\Http\Controllers\MobilityController@deleteMobility');
-Route::post('addMobilityColumn', 'App\Http\Controllers\MobilityController@addMobilityColumn');
+//KTPUSR CRUD
+Route::post('createKTPUSR', 'App\Http\Controllers\KTPUSR_Controller@createKTPUSR');
+Route::get('getKTPUSR/{id}', 'App\Http\Controllers\KTPUSR_Controller@readKTPUSR');
+Route::get('readAllKTPUSR', 'App\Http\Controllers\KTPUSR_Controller@readAllKTPUSR');
+Route::put('updateKTPUSR/{id}', 'App\Http\Controllers\KTPUSR_Controller@updateKTPUSR');
+Route::delete('deleteKTPUSR/{id}', 'App\Http\Controllers\KTPUSR_Controller@deleteKTPUSR');
+Route::post('addKTPUSRColumn', 'App\Http\Controllers\KTPUSR_Controller@addKTPUSRColumn');
+
