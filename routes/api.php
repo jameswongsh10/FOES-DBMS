@@ -18,10 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Staff CRUD
-Route::post('createStaff', 'App\Http\Controllers\StaffController@createStaff');
-Route::get('getStaff/{id}', 'App\Http\Controllers\StaffController@readStaff');
-Route::get('readAllStaff', 'App\Http\Controllers\StaffController@readAllStaff');
-Route::put('updateStaff/{id}', 'App\Http\Controllers\StaffController@updateStaff');
-Route::delete('deleteStaff/{id}', 'App\Http\Controllers\StaffController@deleteStaff');
-Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');
+//InactiveMOUMOA CRUD
+Route::post('createInactiveMOUMOA', 'App\Http\Controllers\Inactive_MOUMOA_Controller@createInactiveMOUMOA');
+Route::get('getInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@readInactiveMOUMOA');
+Route::get('readAllInactiveMOUMOA', 'App\Http\Controllers\Inactive_MOUMOA_Controller@readAllInactiveMOUMOA');
+Route::put('updateInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@updateInactiveMOUMOA');
+Route::delete('deleteInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@deleteInactiveMOUMOA');
+Route::post('addInactiveMOUMOAColumn', 'App\Http\Controllers\Inactive_MOUMOA_Controller@addInactiveMOUMOAColumn');
