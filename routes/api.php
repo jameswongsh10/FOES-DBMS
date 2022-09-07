@@ -33,3 +33,11 @@ Route::get('readAllAsset', 'App\Http\Controllers\AssetController@readAllAsset');
 Route::put('updateAsset/{id}', 'App\Http\Controllers\AssetController@updateAsset');
 Route::delete('deleteAsset/{id}', 'App\Http\Controllers\AssetController@deleteAsset');
 Route::post('addAssetColumn', 'App\Http\Controllers\AssetController@addAssetColumn');
+
+//InactiveMOUMOA CRUD
+Route::post('createInactiveMOUMOA', 'App\Http\Controllers\Inactive_MOUMOA_Controller@createInactiveMOUMOA');
+Route::get('getInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@readInactiveMOUMOA');
+Route::get('readAllInactiveMOUMOA', 'App\Http\Controllers\Inactive_MOUMOA_Controller@readAllInactiveMOUMOA');
+Route::put('updateInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@updateInactiveMOUMOA');
+Route::delete('deleteInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@deleteInactiveMOUMOA');
+Route::post('addInactiveMOUMOAColumn', 'App\Http\Controllers\Inactive_MOUMOA_Controller@addInactiveMOUMOAColumn');
