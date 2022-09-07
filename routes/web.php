@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\MobilityController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StaffController;
 
@@ -43,3 +43,10 @@ Route::put('updateInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Co
 Route::delete('deleteInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@deleteInactiveMOUMOA');
 Route::post('addInactiveMOUMOAColumn', 'App\Http\Controllers\Inactive_MOUMOA_Controller@addInactiveMOUMOAColumn');
 
+//Staff CRUD
+Route::post('createStaff', 'App\Http\Controllers\StaffController@createStaff');
+Route::get('getStaff/{id}', 'App\Http\Controllers\StaffController@readStaff');
+Route::get('readAllStaff', 'App\Http\Controllers\StaffController@readAllStaff');
+Route::put('updateStaff/{id}', 'App\Http\Controllers\StaffController@updateStaff');
+Route::delete('deleteStaff/{id}', 'App\Http\Controllers\StaffController@deleteStaff');
+Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');

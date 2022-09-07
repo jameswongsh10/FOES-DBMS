@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\Staff;
-use http\Env\Request;
-use http\Message\Body;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -16,30 +13,19 @@ class StaffController extends Controller
         $data = json_decode(file_get_contents('php://input'), true);
 
         $newStaff = new Staff();
-        $newStaff->email = $data['Email'];
-        $newStaff->first_name = "Test First Name";
-        $newStaff->last_name = "Test Last Name";
-        $newStaff->title = "Test Title";
-        $newStaff->miri_id = "987654321";
-        $newStaff->perth_id = "123456789";
-        $newStaff->report_duty_date = "2022-12-31";
-        $newStaff->department = "Department";
-        $newStaff->position = "position";
-        $newStaff->room_no = "SK3 104";
-        $newStaff->ext_no = "101";
-        $newStaff->status = "sos";
-        $newStaff->appointment_level = "urgent";
-        $newStaff->photocopy_id = "121212121";
-        $newStaff->pigeonbox_no = "Pigeonbox number";
-        $newStaff->resigned_date = "2023-12-31";
-        $newStaff->remark = "test remark";
-        $save = $newStaff->save();
 
-
-        if ($save) {
-            return redirect('/')->with('success', 'New staff has been added.');
+        foreach ($data as $key => $value) {
+            $newStaff->$key = $value;
         }
 
+        //Save into database
+        $save = $newStaff->save();
+
+        return response()->json([
+            'status' => $save,
+            'message' => "Staff created successfully!",
+            'staff' => $newStaff
+        ], 201);
     }
 
     public function addStaffColumn()
@@ -47,7 +33,7 @@ class StaffController extends Controller
         $columnName = json_decode(file_get_contents('php://input'), true);
 
         Schema::table('staffs', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->default('');
+            $table->string($columnName)->after('remark')->default('');
         });
 
         return response()->json([
@@ -57,4 +43,72 @@ class StaffController extends Controller
         ], 201);
     }
 
+    public function readAllStaff()
+    {
+        $staff = Staff::all();
+
+        return response()->json([
+            'status' => true,
+            'Staff' => $staff
+        ]);
+    }
+
+    public function readStaff($id)
+    {
+        $staff = Staff::find($id);
+
+        if (is_null($staff)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Staff not found",
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'staff' => $staff
+        ], 200);
+    }
+
+    public function updateStaff($id)
+    {
+        $staff = Staff::find($id);
+
+        if (is_null($staff)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Staff not found",
+            ], 404);
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $staff->update($data);
+
+        return response()->json([
+            'status' => true,
+            'message' => "Staff updated successfully!",
+            'staff' => $staff
+        ], 200);
+    }
+
+    public function deleteStaff($id)
+    {
+        $staff = Staff::find($id);
+
+        if (is_null($staff)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Staff not found",
+            ], 404);
+        }
+
+        $staff->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => "Staff deleted successfully!",
+            'staff' => $staff
+        ], 200);
+    }
 }
