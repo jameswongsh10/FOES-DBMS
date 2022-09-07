@@ -18,6 +18,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//CSV Import
+Route::post('csvImport', 'App\Http\Controllers\DataController@csvImport');
+
 //Admin CRUD
 Route::post('createAdmin', 'App\Http\Controllers\AdminController@createAdmin');
 Route::get('getAdmin/{id}', 'App\Http\Controllers\AdminController@readAdmin');
@@ -25,6 +28,7 @@ Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
 Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
 Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
 Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
+
 //ResearchAwards CRUD
 Route::post('createAwards', 'App\Http\Controllers\ResearchAwardsController@createAwards');
 Route::get('getAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@readAwards');
@@ -41,6 +45,7 @@ Route::get('readAllInactiveMOUMOA', 'App\Http\Controllers\Inactive_MOUMOA_Contro
 Route::put('updateInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@updateInactiveMOUMOA');
 Route::delete('deleteInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@deleteInactiveMOUMOA');
 Route::post('addInactiveMOUMOAColumn', 'App\Http\Controllers\Inactive_MOUMOA_Controller@addInactiveMOUMOAColumn');
+
 //Asset CRUD
 Route::post('createAsset', 'App\Http\Controllers\AssetController@createAsset');
 Route::get('getAsset/{id}', 'App\Http\Controllers\AssetController@readAsset');
@@ -48,3 +53,20 @@ Route::get('readAllAsset', 'App\Http\Controllers\AssetController@readAllAsset');
 Route::put('updateAsset/{id}', 'App\Http\Controllers\AssetController@updateAsset');
 Route::delete('deleteAsset/{id}', 'App\Http\Controllers\AssetController@deleteAsset');
 Route::post('addAssetColumn', 'App\Http\Controllers\AssetController@addAssetColumn');
+
+//Staff CRUD
+Route::post('createStaff', 'App\Http\Controllers\StaffController@createStaff');
+Route::get('getStaff/{id}', 'App\Http\Controllers\StaffController@readStaff');
+Route::get('readAllStaff', 'App\Http\Controllers\StaffController@readAllStaff');
+Route::put('updateStaff/{id}', 'App\Http\Controllers\StaffController@updateStaff');
+Route::delete('deleteStaff/{id}', 'App\Http\Controllers\StaffController@deleteStaff');
+Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');
+
+
+//MOUMOA CRUD
+Route::post('createMOUMOA', 'App\Http\Controllers\MOUMOA_Controller@createMOUMOA');
+Route::get('getMOUMOA/{id}', 'App\Http\Controllers\MOUMOA_Controller@readMOUMOA');
+Route::get('readAllMOUMOA', 'App\Http\Controllers\MOUMOA_Controller@readAllMOUMOA');
+Route::put('updateMOUMOA/{id}', 'App\Http\Controllers\MOUMOA_Controller@updateMOUMOA');
+Route::delete('deleteMOUMOA/{id}', 'App\Http\Controllers\MOUMOA_Controller@deleteMOUMOA');
+Route::post('addMOUMOAColumn', 'App\Http\Controllers\MOUMOA_Controller@addMOUMOAColumn');

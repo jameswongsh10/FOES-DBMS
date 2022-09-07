@@ -6,8 +6,9 @@ export const fetchDatabase = () => {
     return async (dispatch) => {
         const fetchData = async () => {
             const response = await fetch(
-                // 'https://test-foes-default-rtdb.asia-southeast1.firebasedatabase.app/database.json'
-                'http://foesdbms.test/readAllAdmin'
+                 //'https://test-foes-default-rtdb.asia-southeast1.firebasedatabase.app/database.json'
+                'http://127.0.0.1:8000/readAllAdmin'
+                // 'http://127.0.0.1:8000/readAllInactiveMOUMOA'
             );
 
             if (!response.ok) {
@@ -65,7 +66,7 @@ export const deleteEntry = (collection, id) => {
         /*    const deleteResponse = await fetch(
 
               `https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${collection}/${id}.json`,
-                'http://foesdbms.test/api/${url}/${id}',
+                'http://127.0.0.1:8000/api/${url}/${id}',
               {
                 method: 'DELETE'
               }
@@ -87,7 +88,7 @@ export const deleteEntry = (collection, id) => {
         const fetchData = async () => {
             const response = await fetch(
                 //  'https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database.json'
-                'http://foesdbms.test/readAllAdmin'
+                'http://127.0.0.1:8000/readAllAdmin'
             );
 
             if (!response.ok) {
