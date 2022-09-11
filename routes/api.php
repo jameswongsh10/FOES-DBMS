@@ -70,3 +70,11 @@ Route::get('readAllMOUMOA', 'App\Http\Controllers\MOUMOA_Controller@readAllMOUMO
 Route::put('updateMOUMOA/{id}', 'App\Http\Controllers\MOUMOA_Controller@updateMOUMOA');
 Route::delete('deleteMOUMOA/{id}', 'App\Http\Controllers\MOUMOA_Controller@deleteMOUMOA');
 Route::post('addMOUMOAColumn', 'App\Http\Controllers\MOUMOA_Controller@addMOUMOAColumn');
+
+//Mobility CRUD
+Route::post('createMobility', 'App\Http\Controllers\MobilityController@createMobility');
+Route::get('getMobility/{id}', 'App\Http\Controllers\MobilityController@readMobility');
+Route::get('readAllMobility', 'App\Http\Controllers\MobilityController@readAllMobility');
+Route::put('updateMobility/{id}', 'App\Http\Controllers\MobilityController@updateMobility');
+Route::delete('deleteMobility/{id}', 'App\Http\Controllers\MobilityController@deleteMobility');
+Route::post('addMobilityColumn', 'App\Http\Controllers\MobilityController@addMobilityColumn');
