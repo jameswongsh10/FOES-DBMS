@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Staff CRUD
+Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
+
+//Admin CRUD
+Route::post('createAdmin', [AdminController::class, 'createAdmin'])->name('createAdmin');
+Route::post('editAdmin', [AdminController::class, 'editAdmin'])->name('editAdmin');
+
+//Asset CRUD
+Route::post('createAsset', [\App\Http\Controllers\AssetController::class, 'createAsset'])->name('createAsset');
