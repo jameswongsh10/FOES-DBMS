@@ -13,11 +13,5 @@ class InactiveMouMoa extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'collaborators',
-        'signed_date',
-        'effective_period',
-        'due_date',
-        'agreement',
-        'mutual_extension'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 }

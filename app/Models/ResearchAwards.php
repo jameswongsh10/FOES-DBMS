@@ -13,13 +13,5 @@ class ResearchAwards extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'staff_id',
-        'type_of_grant',
-        'project_title',
-        'co_investigators',
-        'research_grant_scheme',
-        'award_amount',
-        'evidence_link'
-    ];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 }
