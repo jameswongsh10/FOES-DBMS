@@ -1,0 +1,27 @@
+.addColumn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+
+  .columnForm {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+
+    .columnFormInput {
+      width: 80%;
+      text-align: center;
+      border: none;
+      border-bottom: 1px solid gray;
+    }
+
+    #confirmBtn {
+      width: 15%;
+      color: blue;
+      background-color: transparent;
+      border: none;
+    }
+  }
+}
