@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('grant');
             $table->string('brand');
             $table->string('model_no');
-            $table->string('remark')->nullable(true);
+            $table->string('remark');
             $table->timestamps();
         });
     }

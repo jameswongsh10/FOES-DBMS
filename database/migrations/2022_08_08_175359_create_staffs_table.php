@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -30,8 +31,8 @@ return new class extends Migration
             $table->string('appointment_level');
             $table->string('photocopy_id');
             $table->string('pigeonbox_no');
-            $table->date('resigned_date')->nullable(true);
-            $table->string('remark')->nullable(true);
+            $table->date('resigned_date');
+            $table->string('remark');
             $table->timestamps();
         });
     }

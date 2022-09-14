@@ -10,10 +10,9 @@ class ResearchAwards extends Model
     use HasFactory;
 
     protected $table = 'research_awards';
-
     protected $primaryKey = 'id';
-
     protected $guarded = ['id', 'created_at', 'updated_at'];
+
     protected $with = ['staff'];
     public function staff()
     {
