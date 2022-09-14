@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('duration');
             $table->date('from_date');
             $table->date('to_date');
-            $table->string('remark')->nullable(true);
+            $table->string('remark');
             $table->timestamps();
         });
     }
