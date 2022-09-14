@@ -9,19 +9,15 @@ class ResearchAwards extends Model
 {
     use HasFactory;
 
-    protected $table = 'assets';
+    protected $table = 'research_awards';
 
     protected $primaryKey = 'id';
 
-//    protected $fillable = [
-//        'staff_id',
-//        'type_of_grant',
-//        'project_title',
-//        'co_investigators',
-//        'research_grant_scheme',
-//        'award_amount',
-//        'evidence_link'
-//    ];
+    protected $with = ['staff'];
+    protected $guarded = ['id','created_at', 'updated_at'];
 
-    protected $guarded = ['id'];
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class);
+    }
 }
