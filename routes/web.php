@@ -25,7 +25,6 @@ Route::get('getAdmin/{id}', 'App\Http\Controllers\AdminController@readAdmin');
 Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
 Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
 Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
-
 Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
 
 Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColumn');
@@ -33,4 +32,9 @@ Route::post('addStaffColumn', 'App\Http\Controllers\StaffController@addStaffColu
 Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
 
 //Asset CRUD
-Route::post('createAsset', [\App\Http\Controllers\AssetController::class, 'createAsset'])->name('createAsset');
+Route::post('createAsset', 'App\Http\Controllers\AssetController@createAsset');
+Route::get('getAsset/{id}', 'App\Http\Controllers\AssetController@readAsset');
+Route::get('readAllAsset', 'App\Http\Controllers\AssetController@readAllAsset');
+Route::put('updateAsset/{id}', 'App\Http\Controllers\AssetController@updateAsset');
+Route::delete('deleteAsset/{id}', 'App\Http\Controllers\AssetController@deleteAsset');
+Route::post('addAssetColumn', 'App\Http\Controllers\AssetController@addAssetColumn');
