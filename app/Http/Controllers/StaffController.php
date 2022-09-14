@@ -6,6 +6,8 @@ use App\Models\Admin;
 use App\Models\Staff;
 use http\Env\Request;
 use http\Message\Body;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class StaffController extends Controller
 {
@@ -39,4 +41,20 @@ class StaffController extends Controller
         }
 
     }
+
+    public function addStaffColumn()
+    {
+        $columnName = json_decode(file_get_contents('php://input'), true);
+
+        Schema::table('staffs', function (Blueprint $table) use ($columnName) {
+            $table->string($columnName)->default('');
+        });
+
+        return response()->json([
+            'status' => true,
+            'message' => "Column added successfully!",
+            'column' => $columnName
+        ], 201);
+    }
+
 }
