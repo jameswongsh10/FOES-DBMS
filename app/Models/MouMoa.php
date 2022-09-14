@@ -13,20 +13,5 @@ class MouMoa extends Model
 
     protected $primaryKey = 'id';
 
-//    protected $fillable = [
-//        'country',
-//        'institution',
-//        'signed_date',
-//        'due_date',
-//        'area_of_collab',
-//        'progress',
-//        'type_of_agreement',
-//        'research',
-//        'teaching',
-//        'exchange',
-//        'collab_and_partnerships',
-//        'mutual_extension'
-//    ];
-
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 }
