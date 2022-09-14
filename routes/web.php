@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KeyContactPersonController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,3 +83,10 @@ Route::get('readAllInactiveMOUMOA', 'App\Http\Controllers\Inactive_MOUMOA_Contro
 Route::put('updateInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@updateInactiveMOUMOA');
 Route::delete('deleteInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@deleteInactiveMOUMOA');
 Route::post('addInactiveMOUMOAColumn', 'App\Http\Controllers\Inactive_MOUMOA_Controller@addInactiveMOUMOAColumn');
+
+//Key Contact Person CRUD
+Route::post('createKeyContactPerson', [KeyContactPersonController::class, 'createKeyContactPerson']);
+Route::get('getKeyContactPerson/{id}', [KeyContactPersonController::class, 'readKeyContactPerson']);
+Route::get('readAllKeyContactPerson', [KeyContactPersonController::class, 'readAllKeyContactPerson']);
+Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'updateKeyContactPerson']);
+Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
