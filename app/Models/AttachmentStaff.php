@@ -13,11 +13,5 @@ class AttachmentStaff extends Model
 
     protected $primaryKey = 'id';
 
-//    protected $fillable = [
-//        'staff_id ',
-//        'type',
-//        'description',
-//        'attachment'];
-
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 }

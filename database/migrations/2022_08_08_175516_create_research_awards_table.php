@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('staff_id')->constrained('staffs')->onUpdate('cascade')->onDelete('cascade');
             $table->string('type_of_grant');
             $table->string('project_title');
-            $table->string('co_investigators');
+            $table->string('co_investigators')->nullable(true);
             $table->string('research_grant_scheme');
             $table->string('award_amount');
             $table->string('evidence_link');
