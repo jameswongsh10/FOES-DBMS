@@ -38,7 +38,7 @@ const DataTable = (props) => {
       // Make the HTTP request to save in the backend
       const { id: elementID, ...newObj } = newRow;
       await fetch(
-        `https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}/${elementID}.json`,
+        `https://test-foes-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}/${elementID}.json`,
         {
           method: 'put',
           body: JSON.stringify(newObj)
