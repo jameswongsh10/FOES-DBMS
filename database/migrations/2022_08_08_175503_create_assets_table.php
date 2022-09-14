@@ -23,12 +23,13 @@ return new class extends Migration
             $table->string('year_purchased');
             $table->string('warranty');
             $table->integer('quantity');
+            $table->string('location');
             $table->string('original_cost');
             $table->string('condition_of_asset');
             $table->string('grant');
             $table->string('brand');
             $table->string('model_no');
-            $table->string('remark');
+            $table->string('remark')->nullable(true);
             $table->timestamps();
         });
     }

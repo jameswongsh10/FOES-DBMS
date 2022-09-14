@@ -83,7 +83,7 @@ const AddNew = () => {
         {/* </div> */}
         <div className="bottom">
           <form onSubmit={submitHandler}>
-            {inputArr.map((label, i) => {
+            {inputArr.filter(label => label != 'id' && label != 'created_at' && label != 'updated_at').map((label, i) => {
               return (
                 <div key={label} className="formInput" >
                   <label>{label}</label>
