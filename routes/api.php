@@ -28,6 +28,8 @@ Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
 Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
 Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
 Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
+Route::post('importAdminCSV', 'App\Http\Controllers\AdminController@importAdminCSV');
+
 
 //ResearchAwards CRUD
 Route::post('createAwards', 'App\Http\Controllers\ResearchAwardsController@createAwards');

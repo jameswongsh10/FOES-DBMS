@@ -5,57 +5,15 @@ import './setting.scss';
 import {Button, FormControl, FormLabel, Radio, RadioGroup} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from 'axios';
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContentText from "@mui/material/DialogContentText";
 
 const Setting = () => {
-    // const csvImport = (name) => {
-    //     //Pass Data to AdminController to create admin
-    //     axios.post('/csvImport', JSON.stringify(newObj))
-    //         .then(response => {
-    //             console.log(JSON.stringify(response.data));
-    //         })
-    //         .catch(error => {
-    //             console.log("ERROR:: ", error.response.data);
-    //         })
-    //     navigate('/');
-    //
-    //   };
-    //
-    // return (
-    //   <div className="setting">
-    //     <Sidebar />
-    //     <div className="homeContainer">
-    //       <Navbar />
-    //     {/*<button>CSVImport{csvImport}</button>*/}
-    //     <FormControl>
-    //         <FormLabel id="demo-radio-buttons-group-label">Choose Table to Import</FormLabel>
-    //         <RadioGroup
-    //             aria-labelledby="demo-radio-buttons-group-label"
-    //             defaultValue="female"
-    //             name="radio-buttons-group"
-    //         >
-    //             <FormControlLabel value="Admins_Information" control={<Radio />} label="Admins Information" />
-    //             <FormControlLabel value="Assets_Information" control={<Radio />} label="Assets Informatio" />
-    //             <FormControlLabel value="Staff_Information" control={<Radio />} label="Staff Information" />
-    //             <FormControlLabel value="MOU_MOA_Program_Information" control={<Radio />} label="MOU & MOA Program Information" />
-    //             <FormControlLabel value="KTP_USR_Information" control={<Radio />} label="KTP USR Information" />
-    //             <FormControlLabel value="Mobility_Information" control={<Radio />} label="Mobility Information" />
-    //             <FormControlLabel value="Research_Awards_Information" control={<Radio />} label="Research Awards Information" />
-    //         </RadioGroup>
-    //     </FormControl>
-    //         <Button
-    //             variant="contained"
-    //             component="label"
-    //         >
-    //             Upload File
-    //             <input
-    //                 type="file"
-    //                 hidden
-    //             />
-    //         </Button>
-    //     </div>
-    //   </div>
-    // )
-
+    const [error, setError] = useState(false);
+    const [open, setOpen] = useState(false);
     const [file, setFile] = useState();
     const [array, setArray] = useState([]);
 
@@ -79,13 +37,17 @@ const Setting = () => {
         });
 
         const table = document.querySelector('input[name="target_table"]:checked').value;
-        const csvArray = [csvHeader, array,table];
+        const csvArray = [csvHeader, array, table];
 
         axios.post('/csvImport', JSON.stringify(csvArray)).then(response => {
             console.log(JSON.stringify(response.data));
+            setError(false);
+            setOpen(false);
         })
             .catch(error => {
                 console.log("ERROR:: ", error.response.data);
+                setError(true);
+                setOpen(true);
             });
 
         setArray(array);
@@ -103,6 +65,10 @@ const Setting = () => {
         }
     };
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const headerKeys = Object.keys(Object.assign({}, ...array));
 
     return (
@@ -110,26 +76,49 @@ const Setting = () => {
             <Sidebar/>
             <div className="homeContainer">
                 <Navbar/>
-                <FormControl>
-                    <FormLabel id="demo-radio-buttons-group-label">Choose Table to Import</FormLabel>
-                    <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="admins"
-                        name="target_table"
-                    >
-                        <FormControlLabel value="Admin" control={<Radio/>} label="Admins Information"/>
-                        <FormControlLabel value="Asset" control={<Radio/>} label="Assets Information"/>
-                        <FormControlLabel value="Staff" control={<Radio/>} label="Staff Information"/>
-                        <FormControlLabel value="MouMoa" control={<Radio/>}
-                                          label="MOU & MOA Program Information"/>
-                        <FormControlLabel value="KtpUsr" control={<Radio/>} label="KTP USR Information"/>
-                        <FormControlLabel value="Mobility" control={<Radio/>} label="Mobility Information"/>
-                        <FormControlLabel value="ResearchAwards" control={<Radio/>}
-                                          label="Research Awards Information"/>
-                    </RadioGroup>
-                </FormControl>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Incorrect CSV File Format"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            The format of the CSV File is incorrect. Please check it again.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        {/*<Button onClick={handleClose}>Disagree</Button>*/}
+                        <Button onClick={handleClose} autoFocus>
+                           Continue
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
                 <div style={{textAlign: "center"}}>
-                    <h1>REACTJS CSV IMPORT EXAMPLE </h1>
+                    <h1>CSV File Import</h1>
+                    {/*{error && <div className="error">Error!</div>}*/}
+                    <FormControl>
+                        <FormLabel id="demo-radio-buttons-group-label">Choose Table to Import</FormLabel>
+                        <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="Admin"
+                            name="target_table"
+                        >
+                            <FormControlLabel value="Admin" control={<Radio/>} label="Admins Information"/>
+                            <FormControlLabel value="Asset" control={<Radio/>} label="Assets Information"/>
+                            <FormControlLabel value="Staff" control={<Radio/>} label="Staff Information"/>
+                            <FormControlLabel value="MOU-MOA" control={<Radio/>}
+                                              label="MOU & MOA Program Information"/>
+                            <FormControlLabel value="KTP-USR" control={<Radio/>} label="KTP USR Information"/>
+                            <FormControlLabel value="Mobility" control={<Radio/>} label="Mobility Information"/>
+                            <FormControlLabel value="Research-Award" control={<Radio/>}
+                                              label="Research Awards Information"/>
+                        </RadioGroup>
+                    </FormControl>
                     <form>
                         <input
                             type={"file"}
@@ -138,13 +127,14 @@ const Setting = () => {
                             onChange={handleOnChange}
                         />
 
-                        <button
+                        <Button variant = "contained"
                             onClick={(e) => {
                                 handleOnSubmit(e);
                             }}
                         >
                             IMPORT CSV
-                        </button>
+                        </Button>
+
                     </form>
                 </div>
 
