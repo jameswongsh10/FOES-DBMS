@@ -14,4 +14,10 @@ class KeyContactPerson extends Model
     protected $primaryKey = 'id';
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    protected $with = ['moumoa'];
+    public function moumoa()
+    {
+        return $this->belongsTo(MOUMOA::class);
+    }
 }
