@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mobility;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -10,119 +11,173 @@ class MobilityController extends Controller
 {
     public function createMobility()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        try {
 
-        $newMobility = new Mobility();
 
-        foreach ($data as $key => $value) {
-            $newMobility->$key = $value;
-        }
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        //Save into database
-        $save = $newMobility->save();
+            $newMobility = new Mobility();
 
-        if ($save) {
+            foreach ($data as $key => $value) {
+                $newMobility->$key = $value;
+            }
+
+            //Save into database
+            $newMobility->save();
+
             return response()->json([
-                'status' => $save,
+                'status' => true,
                 'message' => "Mobility created successfully!",
                 'mobility' => $newMobility
             ], 201);
-        } else {
+
+        } catch (QueryException $e) {
             return response()->json([
-                'status' => $save,
-                'message' => "Error in creating mobility.",
+                'status' => false,
+                'message' => $e->errorInfo[2]
             ], 400);
         }
     }
 
     public function addMobilityColumn()
     {
-        $columnName = json_decode(file_get_contents('php://input'), true);
+        try {
+            $columnName = json_decode(file_get_contents('php://input'), true);
 
-        Schema::table('mobility', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->after('remark')->default('');
-        });
+            Schema::table('mobility', function (Blueprint $table) use ($columnName) {
+                $table->string($columnName)->after('remark')->default('');
+            });
 
-        return response()->json([
-            'status' => true,
-            'message' => "Column added successfully!",
-            'column' => $columnName
-        ], 201);
+            return response()->json([
+                'status' => true,
+                'message' => "Column added successfully!",
+                'column' => $columnName
+            ], 201);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 
     public function readAllMobility()
     {
-        $mobility = Mobility::all();
+        try {
+            $mobility = Mobility::all();
 
-        return response()->json([
-            'status' => true,
-            'Mobility' => $mobility
-        ]);
+            return response()->json([
+                'status' => true,
+                'Mobility' => $mobility
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 
     public function readMobility($id)
     {
-        $mobility = Mobility::find($id);
+        try {
+            $mobility = Mobility::find($id);
 
-        if (is_null($mobility)) {
+            if (is_null($mobility)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Mobility not found",
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'mobility' => $mobility
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Mobility not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
-        return response()->json([
-            'status' => true,
-            'mobility' => $mobility
-        ], 200);
     }
 
     public function updateMobility($id)
     {
-        $mobility = Mobility::find($id);
+        try {
+            $mobility = Mobility::find($id);
 
-        if (is_null($mobility)) {
+            if (is_null($mobility)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Mobility not found",
+                ], 404);
+            }
+
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $mobility->update($data);
+
             return response()->json([
-                'status' => false,
-                'message' => "Mobility not found",
-            ], 404);
-        }
-
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $save = $mobility->update($data);
-
-        if ($save) {
-            return response()->json([
-                'status' => $save,
+                'status' => true,
                 'message' => "Mobility updated successfully!",
                 'mobility' => $mobility
             ], 200);
-        } else {
+
+        } catch (QueryException $e) {
             return response()->json([
-                'status' => $save,
-                'message' => "Error in updating mobility.",
+                'status' => false,
+                'message' => $e->errorInfo[2]
             ], 400);
         }
     }
 
     public function deleteMobility($id)
     {
-        $mobility = Mobility::find($id);
+        try {
+            $mobility = Mobility::find($id);
 
-        if (is_null($mobility)) {
+            if (is_null($mobility)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Mobility not found",
+                ], 404);
+            }
+
+            $mobility->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Mobility deleted successfully!",
+                'mobility' => $mobility
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Mobility not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
+    }
 
-        $mobility->delete();
+    public function getMobilityColumns()
+    {
+        try {
+            $columns = Schema::getColumnListing('mobility');
 
-        return response()->json([
-            'status' => true,
-            'message' => "Mobility deleted successfully!",
-            'mobility' => $mobility
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'column' => $columns
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 }

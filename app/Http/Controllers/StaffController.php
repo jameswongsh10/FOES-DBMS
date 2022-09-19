@@ -69,6 +69,7 @@ class StaffController extends Controller
                 'status' => true,
                 'Staff' => $staff
             ]);
+
         } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
@@ -181,6 +182,24 @@ class StaffController extends Controller
                 'status' => true,
                 'message' => "Staff deleted successfully!",
                 'staff' => $staff
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function getStaffColumns()
+    {
+        try {
+            $columns = Schema::getColumnListing('staffs');
+
+            return response()->json([
+                'status' => true,
+                'column' => $columns
             ], 200);
 
         } catch (QueryException $e) {
