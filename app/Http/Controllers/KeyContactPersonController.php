@@ -80,6 +80,33 @@ class KeyContactPersonController extends Controller
         }
     }
 
+    public function getContactPersonbyMOUMOA_ID($moumoa_id)
+    {
+        try {
+            $column = 'mou_moa_id'; // This is the name of the column you wish to search
+
+            $contact = KeyContactPerson::where($column, '=', $moumoa_id)->with('moumoa')->get();
+
+            if (is_null($contact)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Contact not found",
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'awards' => $contact
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
     public function updateKeyContactPerson($id)
     {
         try {

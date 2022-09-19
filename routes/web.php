@@ -103,6 +103,7 @@ Route::get('getInactiveMOUMOAColumns', [Inactive_MOUMOA_Controller::class, 'getI
 //Key Contact Person CRUD
 Route::post('createKeyContactPerson', [KeyContactPersonController::class, 'createKeyContactPerson']);
 Route::get('getKeyContactPerson/{id}', [KeyContactPersonController::class, 'readKeyContactPerson']);
+Route::get('getKeyContactPerson/moumoa/{id}', [KeyContactPersonController::class, 'getContactPersonbyMOUMOA_ID']);
 Route::get('readAllKeyContactPerson', [KeyContactPersonController::class, 'readAllKeyContactPerson']);
 Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'updateKeyContactPerson']);
 Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
