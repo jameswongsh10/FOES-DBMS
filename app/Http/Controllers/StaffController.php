@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\Staff;
-use http\Env\Request;
-use http\Message\Body;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -13,48 +11,202 @@ class StaffController extends Controller
 {
     public function createStaff()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        $newStaff = new Staff();
-        $newStaff->email = $data['Email'];
-        $newStaff->first_name = "Test First Name";
-        $newStaff->last_name = "Test Last Name";
-        $newStaff->title = "Test Title";
-        $newStaff->miri_id = "987654321";
-        $newStaff->perth_id = "123456789";
-        $newStaff->report_duty_date = "2022-12-31";
-        $newStaff->department = "Department";
-        $newStaff->position = "position";
-        $newStaff->room_no = "SK3 104";
-        $newStaff->ext_no = "101";
-        $newStaff->status = "sos";
-        $newStaff->appointment_level = "urgent";
-        $newStaff->photocopy_id = "121212121";
-        $newStaff->pigeonbox_no = "Pigeonbox number";
-        $newStaff->resigned_date = "2023-12-31";
-        $newStaff->remark = "test remark";
-        $save = $newStaff->save();
+            $newStaff = new Staff();
 
+            foreach ($data as $key => $value) {
+                $newStaff->$key = $value;
+            }
 
-        if ($save) {
-            return redirect('/')->with('success', 'New staff has been added.');
+            //Save into database
+            $save = $newStaff->save();
+
+            return response()->json([
+                'status' => $save,
+                'message' => "Staff created successfully!",
+                'staff' => $newStaff
+            ], 201);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
     }
 
     public function addStaffColumn()
     {
-        $columnName = json_decode(file_get_contents('php://input'), true);
+        try {
+            $columnName = json_decode(file_get_contents('php://input'), true);
 
-        Schema::table('staffs', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->default('');
-        });
+            Schema::table('staffs', function (Blueprint $table) use ($columnName) {
+                $table->string($columnName)->after('remark')->default('');
+            });
 
-        return response()->json([
-            'status' => true,
-            'message' => "Column added successfully!",
-            'column' => $columnName
-        ], 201);
+            return response()->json([
+                'status' => true,
+                'message' => "Column added successfully!",
+                'column' => $columnName
+            ], 201);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 
+    public function readAllStaff()
+    {
+        try {
+            $staff = Staff::all();
+
+            return response()->json([
+                'status' => true,
+                'Staff' => $staff
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function readStaff($id)
+    {
+        try {
+            $staff = Staff::find($id);
+
+            if (is_null($staff)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Staff not found",
+                ], 404);
+            }
+            return response()->json([
+                'status' => true,
+                'staff' => $staff
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function getAllStaffName()
+    {
+        try {
+            $staff = Staff::all();
+
+            $data = json_decode($staff);
+
+            $length = count($data);
+
+            $data2 = [];
+            for ($i = 0; $i < $length; $i++) {
+                $name = $data[$i]->title . " " . $data[$i]->first_name . " " . $data[$i]->last_name;
+
+                $data2[] = [
+                    'staff_id' => $data[$i]->id,
+                    'staff_name' => $name
+                ];
+            }
+
+            return response()->json([
+                'status' => true,
+                'staffs' => $data2
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function updateStaff($id)
+    {
+        try {
+            $staff = Staff::find($id);
+
+            if (is_null($staff)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Staff not found",
+                ], 404);
+            }
+
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $staff->update($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => "Staff updated successfully!",
+                'staff' => $staff
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function deleteStaff($id)
+    {
+        try {
+            $staff = Staff::find($id);
+
+            if (is_null($staff)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Staff not found",
+                ], 404);
+            }
+
+            $staff->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Staff deleted successfully!",
+                'staff' => $staff
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function getStaffColumns()
+    {
+        try {
+            $columns = Schema::getColumnListing('staffs');
+
+            return response()->json([
+                'status' => true,
+                'column' => $columns
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
 }

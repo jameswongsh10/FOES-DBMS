@@ -13,24 +13,5 @@ class Staff extends Model
 
     protected $primaryKey = 'id';
 
-//    protected $fillable = [
-//        'first_name',
-//        'last_name',
-//        'title',
-//        'miri_id',
-//        'perth_id',
-//        'report_duty_date',
-//        'department',
-//        'position',
-//        'room_no',
-//        'ext_no',
-//        'status',
-//        'email',
-//        'appointment_level',
-//        'photocopy_id',
-//        'pigeonbox_no',
-//        'resigned_date',
-//        'remark'];
-
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 }

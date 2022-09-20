@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -10,119 +11,170 @@ class AdminController extends Controller
 {
     public function createAdmin()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        $newAdmin = new Admin();
+            $newAdmin = new Admin();
 
-        foreach ($data as $key => $value) {
-            $newAdmin->$key = $value;
-        }
+            foreach ($data as $key => $value) {
+                $newAdmin->$key = $value;
+            }
 
-        //Save into database
-        $save = $newAdmin->save();
+            //Save into database
+            $newAdmin->save();
 
-        if ($save) {
             return response()->json([
-                'status' => $save,
+                'status' => true,
                 'message' => "Admin created successfully!",
                 'admin' => $newAdmin
             ], 201);
-        } else {
+
+        } catch (QueryException $e) {
             return response()->json([
-                'status' => $save,
-                'message' => "Error in creating admin.",
+                'status' => false,
+                'message' => $e->errorInfo[2]
             ], 400);
         }
     }
 
     public function addAdminColumn()
     {
-        $columnName = json_decode(file_get_contents('php://input'), true);
+        try {
+            $columnName = json_decode(file_get_contents('php://input'), true);
 
-        Schema::table('admins', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->after('password')->default('');
-        });
+            Schema::table('admins', function (Blueprint $table) use ($columnName) {
+                $table->string($columnName)->after('password')->default('');
+            });
 
-        return response()->json([
-            'status' => true,
-            'message' => "Column added successfully!",
-            'column' => $columnName
-        ], 201);
+            return response()->json([
+                'status' => true,
+                'message' => "Column added successfully!",
+                'column' => $columnName
+            ], 201);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 
     public function readAllAdmin()
     {
-        $admin = Admin::all();
+        try {
+            $admin = Admin::all();
 
-        return response()->json([
-            'status' => true,
-            'Admin' => $admin
-        ]);
+            return response()->json([
+                'status' => true,
+                'Admin' => $admin
+            ]);
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 
     public function readAdmin($id)
     {
-        $admin = Admin::find($id);
+        try {
+            $admin = Admin::find($id);
 
-        if (is_null($admin)) {
+            if (is_null($admin)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Admin not found",
+                ], 404);
+            }
+
+            return response()->json([
+                //   'status' => true,
+                'admin' => $admin
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Admin not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
-        return response()->json([
-            //   'status' => true,
-            'admin' => $admin
-        ], 200);
     }
 
     public function updateAdmin($id)
     {
-        $admin = Admin::find($id);
+        try {
+            $admin = Admin::find($id);
 
-        if (is_null($admin)) {
+            if (is_null($admin)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Admin not found",
+                ], 404);
+            }
+
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $admin->update($data);
+
             return response()->json([
-                'status' => false,
-                'message' => "Admin not found",
-            ], 404);
-        }
-
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $save = $admin->update($data);
-
-        if ($save) {
-            return response()->json([
-                'status' => $save,
+                'status' => true,
                 'message' => "Admin updated successfully!",
                 'admin' => $admin
             ], 200);
-        } else {
+
+        } catch (QueryException $e) {
             return response()->json([
-                'status' => $save,
-                'message' => "Error in updating admin.",
+                'status' => false,
+                'message' => $e->errorInfo[2]
             ], 400);
         }
     }
 
     public function deleteAdmin($id)
     {
-        $admin = Admin::find($id);
+        try {
+            $admin = Admin::find($id);
 
-        if (is_null($admin)) {
+            if (is_null($admin)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Admin not found",
+                ], 404);
+            }
+
+            $admin->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Admin deleted successfully!",
+                'admin' => $admin
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Admin not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
+    }
 
-        $admin->delete();
+    public function getAdminColumns()
+    {
+        try {
+            $columns = Schema::getColumnListing('admins');
 
-        return response()->json([
-            'status' => true,
-            'message' => "Admin deleted successfully!",
-            'admin' => $admin
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'column' => $columns
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 }
