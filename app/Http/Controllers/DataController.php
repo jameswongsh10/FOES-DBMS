@@ -12,6 +12,7 @@ use App\Models\Staff;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Console\Command;
+use Spatie\DbDumper\Databases\MySql;
 
 class DataController extends Controller
 {
@@ -128,9 +129,18 @@ class DataController extends Controller
         }
     }
 
-    public function database_backup(): string
+    public function database_backup()
     {
-        Artisan::call('backup:run');
-        return 'Database backup success.';
+        $this->call('backup:run');
+//        dd(Artisan::output());
+//        Artisan::call('backup:run', ['--only-db' => true]);
+//        Artisan::queue('backup:run')->onQueue('default')->delay(0);
+//        Artisan::call('backup:run');
+//        return 'Database backup success.';
+//        MySql::create()
+//            ->setDbName('foesdbms')
+//            ->setUserName('root')
+//            ->setPassword('')
+//            ->dumpToFile('dump.sql');
     }
 }
