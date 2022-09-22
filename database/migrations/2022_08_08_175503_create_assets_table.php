@@ -26,7 +26,8 @@ return new class extends Migration
             $table->string('location');
             $table->string('original_cost');
             $table->string('condition_of_asset');
-            $table->string('grant');
+            $table->string('end_user');
+            $table->string('grant')->nullable(true);
             $table->string('brand');
             $table->string('model_no')->nullable(true);
             $table->string('remark')->nullable(true);
