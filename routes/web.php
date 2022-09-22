@@ -20,6 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Data Controller
+Route::post('csvImport', 'App\Http\Controllers\DataController@csvImport');
+
 //Admin CRUD
 Route::post('createAdmin', 'App\Http\Controllers\AdminController@createAdmin');
 Route::get('getAdmin/{id}', 'App\Http\Controllers\AdminController@readAdmin');
@@ -27,6 +30,7 @@ Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
 Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
 Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
 Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
+Route::post('importAdminCSV', 'App\Http\Controllers\AdminController@importAdminCSV');
 
 //Staff CRUD
 Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
@@ -56,3 +60,11 @@ Route::get('readAllAwards', 'App\Http\Controllers\ResearchAwardsController@readA
 Route::put('updateAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@updateAwards');
 Route::delete('deleteAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@deleteAwards');
 Route::post('addAwardsColumn', 'App\Http\Controllers\ResearchAwardsController@addAwardsColumn');
+
+//Mobility CRUD
+Route::post('createMobility', 'App\Http\Controllers\MobilityController@createMobility');
+Route::get('getMobility/{id}', 'App\Http\Controllers\MobilityController@readMobility');
+Route::get('readAllMobility', 'App\Http\Controllers\MobilityController@readAllMobility');
+Route::put('updateMobility/{id}', 'App\Http\Controllers\MobilityController@updateMobility');
+Route::delete('deleteMobility/{id}', 'App\Http\Controllers\MobilityController@deleteMobility');
+Route::post('addMobilityColumn', 'App\Http\Controllers\MobilityController@addMobilityColumn');
