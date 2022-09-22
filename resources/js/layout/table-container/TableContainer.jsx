@@ -16,15 +16,34 @@ const TableContainer = (props) => {
 
   const generateColumnArr = (arr) => {
     let columnArr = [];
+    console.log(arr);
+
     arr.forEach((colName) => {
+        console.log(colName);
+
       columnArr.push({ field: colName, headerName: colName, editable: true, width: '150' });
     });
+
+    console.log(columnArr);
     return columnArr;
   };
 
   const viewCollection = useSelector(state => state.table.view);
-  const columns = generateColumnArr(useSelector(state => state.table.columns));
+  const columns = generateColumnArr(useSelector(state => state.table.columns).filter(columns => columns != 'id' && columns != 'created_at' && columns != 'updated_at'));
   const rows = useSelector(state => state.table.entries);
+
+//   const columns =[
+//       {field: 'first_name', headerName: 'first name'},
+//       {field: 'last_name', headerName: 'last name'},
+//       {field: 'id', headerName: 'perth id'},
+//   ];
+//   const rows = [
+//       {first_name: 'adam', last_name: 'snow', id: '1'},
+//       {first_name: 'bob', last_name: 'snow', id: '2'},
+//       {first_name: 'cindy', last_name: 'snow', id: '3'},
+//       {first_name: 'dave', last_name: 'snow', id: '4'},
+//       {first_name: 'evelen', last_name: 'snow', id: '5'},
+//   ]
 
   const onDeleteEntryHandler = (collection, id) => {
     dispatch(deleteEntry(collection, id));

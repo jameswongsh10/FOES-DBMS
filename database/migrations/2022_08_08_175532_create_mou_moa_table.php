@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('research')->nullable(true);
             $table->string('teaching')->nullable(true);
             $table->string('exchange')->nullable(true);
-            $table->string('collab_and_partnerships');
+            $table->string('collab_and_partnerships')->nullable(true);
             $table->string('mutual_extension');
             $table->timestamps();
         });

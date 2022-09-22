@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('inactive_mou_moa', function (Blueprint $table) {
             $table->id();
-            $table->string('collaborators')->nullable(true);
+            $table->string('collaborators');
             $table->date('signed_date');
             $table->string('effective_period');
             $table->date('due_date');
