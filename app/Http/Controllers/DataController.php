@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+namespace App\Console\Commands;
+
 use App\Models\Admin;
 use App\Models\Asset;
 use App\Models\KtpUsr;
@@ -10,6 +12,7 @@ use App\Models\MouMoa;
 use App\Models\ResearchAwards;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Console\Command;
 
 class DataController extends Controller
 {
@@ -124,5 +127,10 @@ class DataController extends Controller
                 'message' => "Error in CSV file import.",
             ], 400);
         }
+    }
+
+    public function database_backup()
+    {
+
     }
 }
