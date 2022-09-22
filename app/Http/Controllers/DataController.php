@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-namespace App\Console\Commands;
-
 use App\Models\Admin;
 use App\Models\Asset;
 use App\Models\KtpUsr;
@@ -11,6 +9,7 @@ use App\Models\Mobility;
 use App\Models\MouMoa;
 use App\Models\ResearchAwards;
 use App\Models\Staff;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Console\Command;
 
@@ -129,8 +128,9 @@ class DataController extends Controller
         }
     }
 
-    public function database_backup()
+    public function database_backup(): string
     {
-
+        Artisan::call('backup:run');
+        return 'Database backup success.';
     }
 }

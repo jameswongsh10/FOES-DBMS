@@ -20,6 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //CSV Import
 Route::post('csvImport', 'App\Http\Controllers\DataController@csvImport');
+//Route::get('database_backup', function () {
+//    Artisan::call('backup:run');
+//
+//    return 'Database backup success.';
+//});
+Route::get('database_backup', 'App\Http\Controllers\DataController@database_backup');
 
 //Admin CRUD
 Route::post('createAdmin', 'App\Http\Controllers\AdminController@createAdmin');

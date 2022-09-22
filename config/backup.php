@@ -169,7 +169,7 @@ return [
             'to' => 'your@example.com',
 
             'from' => [
-                'address' => env('MAIL_FROM_ADDRESS', '700036395@student.curtin.edu.my'),
+                'address' => env('MAIL_FROM_ADDRESS', 'lchianhui@gmail.com'),
                 'name' => env('MAIL_FROM_NAME', 'Example'),
             ],
         ],
@@ -294,10 +294,10 @@ return [
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
-            'to' => '700036395@student.curtin.edu.my',
+            'to' => 'lchianhui@gmail.com',
 
             'from' => [
-                'address' => env('MAIL_FROM_ADDRESS', '700036395@student.curtin.edu.my'),
+                'address' => env('MAIL_FROM_ADDRESS', 'lchianhui@gmail.com'),
                 'name' => env('MAIL_FROM_NAME', 'Example'),
             ],
         ],

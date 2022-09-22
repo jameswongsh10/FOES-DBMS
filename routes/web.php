@@ -24,11 +24,14 @@ Route::get('/', function () {
 //Data Controller
 Route::post('csvImport', 'App\Http\Controllers\DataController@csvImport');
 //Route::post('database_backup', 'App\Http\Controllers\DataController@database_backup');
-Route::get('database_backup', function () {
-    Artisan::call('backup:run');
+//Route::get('database_backup', function () {
+//    Artisan::call('backup:run');
+//
+//    return 'Database backup success.';
+//});
+Route::get('database_backup', 'App\Http\Controllers\DataController@database_backup');
 
-    return 'Database backup success.';
-});
+
 //Admin CRUD
 Route::post('createAdmin', 'App\Http\Controllers\AdminController@createAdmin');
 Route::get('getAdmin/{id}', 'App\Http\Controllers\AdminController@readAdmin');
