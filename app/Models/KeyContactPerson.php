@@ -13,11 +13,11 @@ class KeyContactPerson extends Model
 
     protected $primaryKey = 'id';
 
-//    protected $fillable = [
-//        'mou_moa_id',
-//        'institution',
-//        'name',
-//        'email'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    protected $guarded = ['id'];
+    protected $with = ['moumoa'];
+    public function moumoa()
+    {
+        return $this->belongsTo(MOUMOA::class);
+    }
 }
