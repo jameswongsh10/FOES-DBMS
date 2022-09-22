@@ -14,7 +14,7 @@ const AddNew = () => {
 
   const navigate = useNavigate();
   const viewCollection = useSelector(state => state.table.view);
-  console.log(">>>>>>>>>" + viewCollection);
+  // console.log(">>>>>>>>>" + viewCollection);
   // const columnsArr = useSelector(state => state.table.columns);
   const columnsArr = useSelector(state => state.table.customColumns);
 
@@ -40,7 +40,7 @@ const AddNew = () => {
               url = '/createAsset';
               break;
           case "Staff":
-              url = '/createStaff';
+              url = '/api/staff';
               break;
           case "KTP-USR":
               // code block
@@ -58,10 +58,11 @@ const AddNew = () => {
           url = '/';
           break;
       }
+
       //Pass Data to AdminController to create admin
       axios.post(url, JSON.stringify(newObj))
           .then(response => {
-              alert(JSON.stringify(response.data));
+              console.log(JSON.stringify(response.data));
           })
           .catch(error => {
               console.log("ERROR:: ", error.response.data);
@@ -82,7 +83,7 @@ const AddNew = () => {
         {/* </div> */}
         <div className="bottom">
           <form onSubmit={submitHandler}>
-            {inputArr.map((label, i) => {
+            {inputArr.filter(label => label != 'id' && label != 'created_at' && label != 'updated_at').map((label, i) => {
               return (
                 <div key={label} className="formInput" >
                   <label>{label}</label>

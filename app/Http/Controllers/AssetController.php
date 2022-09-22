@@ -3,35 +3,179 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AssetController extends Controller
 {
     public function createAsset()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        $newAsset = new Asset();
+            $newAsset = new Asset();
 
-        //Dummy data
-        $newAsset->physical_check = "physical_check";
-        $newAsset->asset_tag_number = "asset_tag_number";
-        $newAsset->item = $data['Item'];
-        $newAsset->serial_no = "111";
-        $newAsset->year_purchased = "2000";
-        $newAsset->warranty = "warranty";
-        $newAsset->quantity = $data['Quantity'];
-        $newAsset->original_cost = "200";
-        $newAsset->condition_of_asset = "condition_of_asset";
-        $newAsset->grant = "200";
-        $newAsset->brand = "brand";
-        $newAsset->model_no = "2000";
-        $newAsset->remark = "none";
+            foreach ($data as $key => $value) {
+                $newAsset->$key = $value;
+            }
 
-        //Save into database
-        $save = $newAsset->save();
+            //Save into database
+            $newAsset->save();
 
-        if ($save) {
-            return redirect('/')->with('success', 'New Asset has been created.');
+            return response()->json([
+                'status' => true,
+                'message' => "Asset created successfully!",
+                'asset' => $newAsset
+            ], 201);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function addAssetColumn()
+    {
+        try {
+            $columnName = json_decode(file_get_contents('php://input'), true);
+
+            Schema::table('assets', function (Blueprint $table) use ($columnName) {
+                $table->string($columnName)->after('remark')->default('');
+            });
+
+            return response()->json([
+                'status' => true,
+                'message' => "Column added successfully!",
+                'column' => $columnName
+            ], 201);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function readAllAsset()
+    {
+        try {
+            $asset = Asset::all();
+
+            return response()->json([
+                'status' => true,
+                'Asset' => $asset
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function readAsset($id)
+    {
+        try {
+            $asset = Asset::find($id);
+
+            if (is_null($asset)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Asset not found",
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'asset' => $asset
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function updateAsset($id)
+    {
+        try {
+            $asset = Asset::find($id);
+
+            if (is_null($asset)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Asset not found",
+                ], 404);
+            }
+
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $asset->update($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => "Asset updated successfully!",
+                'asset' => $asset
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function deleteAsset($id)
+    {
+        try {
+            $asset = Asset::find($id);
+
+            if (is_null($asset)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Asset not found",
+                ], 404);
+            }
+
+            $asset->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Asset deleted successfully!",
+                'asset' => $asset
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public function getAssetColumns()
+    {
+        try {
+            $columns = Schema::getColumnListing('assets');
+
+            return response()->json([
+                'status' => true,
+                'column' => $columns
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
     }
 }
