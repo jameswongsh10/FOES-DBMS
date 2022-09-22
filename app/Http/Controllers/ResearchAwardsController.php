@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ResearchAwards;
-use App\Models\Staff;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -11,124 +11,197 @@ class ResearchAwardsController extends Controller
 {
     public function createAwards()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        $newAwards = new ResearchAwards();
+            $newAwards = new ResearchAwards();
 
-        foreach ($data as $key => $value) {
-            $newAwards->$key = $value;
+            foreach ($data as $key => $value) {
+                $newAwards->$key = $value;
+            }
+
+            //Save into database
+            $newAwards->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Awards created successfully!",
+                'awards' => $newAwards
+            ], 201);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
-        //Save into database
-        $save = $newAwards->save();
-
-        return response()->json([
-            'status' => $save,
-            'message' => "Awards created successfully!",
-            'awards' => $newAwards
-        ], 201);
     }
 
     public function addAwardsColumn()
     {
-        $columnName = json_decode(file_get_contents('php://input'), true);
+        try {
+            $columnName = json_decode(file_get_contents('php://input'), true);
 
-        Schema::table('research_awards', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->after('evidence_link')->default('');
-        });
+            Schema::table('research_awards', function (Blueprint $table) use ($columnName) {
+                $table->string($columnName)->after('evidence_link')->default('');
+            });
 
-        return response()->json([
-            'status' => true,
-            'message' => "Column added successfully!",
-            'column' => $columnName
-        ], 201);
+            return response()->json([
+                'status' => true,
+                'message' => "Column added successfully!",
+                'column' => $columnName
+            ], 201);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 
     public function readAllAwards()
     {
-        $awards = ResearchAwards::all();
+        try {
+            $awards = ResearchAwards::all();
 
-        return response()->json([
-            'status' => true,
-            'Awards' => $awards
-        ]);
+            return response()->json([
+                'status' => true,
+                'Awards' => $awards
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 
     public function readAwards($id)
     {
-        $awards = ResearchAwards::find($id);
+        try {
+            $awards = ResearchAwards::find($id);
 
-        if (is_null($awards)) {
+            if (is_null($awards)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Awards not found",
+                ], 404);
+            }
+            return response()->json([
+                'status' => true,
+                'awards' => $awards
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Awards not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
-        return response()->json([
-            'status' => true,
-            'awards' => $awards
-        ], 200);
     }
 
     public function getAwardsbyStaffID($staff_id)
     {
-        $column = 'staff_id'; // This is the name of the column you wish to search
+        try {
+            $column = 'staff_id'; // This is the name of the column you wish to search
 
-        $awards = ResearchAwards::where($column , '=', $staff_id)->with('staff')->get();
+            $awards = ResearchAwards::where($column, '=', $staff_id)->with('staff')->get();
 
-        if (is_null($awards)) {
+            if (is_null($awards)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Awards not found",
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'awards' => $awards
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Awards not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
-        return response()->json([
-            'status' => true,
-            'awards' => $awards
-        ], 200);
     }
 
     public function updateAwards($id)
     {
-        $awards = ResearchAwards::find($id);
+        try {
+            $awards = ResearchAwards::find($id);
 
-        if (is_null($awards)) {
+            if (is_null($awards)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Awards not found",
+                ], 404);
+            }
+
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $awards->update($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => "Awards updated successfully!",
+                'awards' => $awards
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Awards not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $awards->update($data);
-
-        return response()->json([
-            'status' => true,
-            'message' => "Awards updated successfully!",
-            'awards' => $awards
-        ], 200);
     }
 
     public function deleteAwards($id)
     {
-        $awards = ResearchAwards::find($id);
+        try {
+            $awards = ResearchAwards::find($id);
 
-        if (is_null($awards)) {
+            if (is_null($awards)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Awards not found",
+                ], 404);
+            }
+
+            $awards->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Awards deleted successfully!",
+                'awards' => $awards
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Awards not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
+    }
 
-        $awards->delete();
+    public function getAwardsColumns()
+    {
+        try {
+            $columns = Schema::getColumnListing('research_awards');
 
-        return response()->json([
-            'status' => true,
-            'message' => "Awards deleted successfully!",
-            'awards' => $awards
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'column' => $columns
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 }
