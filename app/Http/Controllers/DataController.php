@@ -131,16 +131,6 @@ class DataController extends Controller
 
     public function database_backup()
     {
-        $this->call('backup:run');
-//        dd(Artisan::output());
-//        Artisan::call('backup:run', ['--only-db' => true]);
-//        Artisan::queue('backup:run')->onQueue('default')->delay(0);
-//        Artisan::call('backup:run');
-//        return 'Database backup success.';
-//        MySql::create()
-//            ->setDbName('foesdbms')
-//            ->setUserName('root')
-//            ->setPassword('')
-//            ->dumpToFile('dump.sql');
+        echo shell_exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:run');
     }
 }
