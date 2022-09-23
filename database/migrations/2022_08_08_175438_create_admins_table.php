@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('perth_id');
             $table->string('email');
             $table->string('password');
-            $table->integer('isSuperAdmin');
+            $table->integer('isSuperAdmin')->default('0'); //0 for normal user, 1 for super admin
             $table->timestamps();
         });
     }
