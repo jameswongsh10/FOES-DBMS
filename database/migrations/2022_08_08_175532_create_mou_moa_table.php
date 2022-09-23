@@ -22,10 +22,10 @@ return new class extends Migration
             $table->string('area_of_collab');
             $table->string('progress');
             $table->string('type_of_agreement');
-            $table->string('research');
-            $table->string('teaching');
-            $table->string('exchange');
-            $table->string('collab_and_partnerships');
+            $table->string('research')->nullable(true);
+            $table->string('teaching')->nullable(true);
+            $table->string('exchange')->nullable(true);
+            $table->string('collab_and_partnerships')->nullable(true);
             $table->string('mutual_extension');
             $table->timestamps();
         });
