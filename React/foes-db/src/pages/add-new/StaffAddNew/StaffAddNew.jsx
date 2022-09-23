@@ -42,6 +42,30 @@ const StaffAddNew = () => {
     console.log(statusInput.current.value);
     console.log(photocopyIdInput.current.value);
 
+    const jsonObject = {
+      "first_name": firstNameInput.current.value,
+      "last_name": lastNameInput.current.value,
+      "miri_id": miriIdInput.current.value,
+      "perth_id": perthIdInput.current.value,
+      "email": emailAddressInput.current.value,
+      "report_duty_date": reportDutyInput.current.value,
+      "department": departmentInput.current.value,
+      "title": titleInput.current.value,
+      "position": positionInput.current.value,
+      "room_no": roomNoInput.current.value,
+      "ext_no": extNoInput.current.value,
+      "status": statusInput.current.value,
+      "photocopy_id": photocopyIdInput.current.value,
+    };
+
+    fetch('http://127.0.0.1:8000/api/createStaff', {
+      method: 'POST',
+      body: JSON.stringify(jsonObject)
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { alert(JSON.stringify(data)); })
+      // .then(navigate('/'));
+
     // listRef.current.forEach(el => {
     //   if (el.value) {
     //     newObj[`${el.name}`] = el.value;

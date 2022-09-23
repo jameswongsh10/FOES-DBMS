@@ -21,23 +21,45 @@ const AdminAddNew = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log(firstNameInput.current.value);
-    console.log(lastNameInput.current.value);
-    console.log(miriIdInput.current.value);
-    console.log(perthIdInput.current.value);
-    console.log(emailAddressInput.current.value);
-    console.log(passwordInput.current.value);
-    console.log(remarkInput.current.value);
-    // listRef.current.forEach(el => {
-    //   if (el.value) {
-    //     newObj[`${el.name}`] = el.value;
-    //   }
-    // });
+    // console.log(firstNameInput.current.value);
+    // console.log(lastNameInput.current.value);
+    // console.log(miriIdInput.current.value);
+    // console.log(perthIdInput.current.value);
+    // console.log(emailAddressInput.current.value);
+    // console.log(passwordInput.current.value);
+    // console.log(remarkInput.current.value);
+
+    // const jsonObject = {
+    //   first_name: firstNameInput.current.value,
+    //   last_name: lastNameInput.current.value,
+    //   miri_id: miriIdInput.current.value,
+    //   perth_id: perthIdInput.current.value,
+    //   email: emailAddressInput.current.value,
+    //   password: passwordInput.current.value,
+    //   remark: remarkInput.current.value
+    // }
+
+    const jsonObject = {
+      "first_name": firstNameInput.current.value,
+      "last_name": lastNameInput.current.value,
+      "miri_id": miriIdInput.current.value,
+      "perth_id": perthIdInput.current.value,
+      "email": emailAddressInput.current.value,
+      "password": passwordInput.current.value,
+      "remark": remarkInput.current.value
+    }
+
+    fetch('http://127.0.0.1:8000/api/createAdmin', {
+      method: 'POST',
+      body: JSON.stringify(jsonObject)
+    })
+      .then(navigate('/'));
+
     // fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
     //   method: 'POST',
     //   body: JSON.stringify(newObj)
     // })
-    navigate('/');
+    // navigate('/');
   };
 
   return (

@@ -147,10 +147,10 @@ const Sidebar = () => {
 
           {/* {links} */}
           <p className='title'>FEATURES</p>
-          <li onClick={openDialogHandler}>
+          {/* <li onClick={openDialogHandler}>
             <AddBox className='icon' />
             <span>Create Database</span>
-          </li>
+          </li> */}
           <CreateDialog open={open} handleClose={handleClose} onCreateHandler={onCreateHandler} />
           <Link to='/import' className='link'>
             <li>
@@ -177,12 +177,12 @@ const Sidebar = () => {
               <span>Settings</span>
             </li>
           </Link>
-          <Link to='/profile' className='link'>
+          {/* <Link to='/profile' className='link'>
             <li>
               <AccountCircle className='icon' />
               <span>Profile</span>
             </li>
-          </Link>
+          </Link> */}
           <li onClick={logoutHandler}>
             <ExitToAppOutlined className='icon' />
             <span>Logout</span>

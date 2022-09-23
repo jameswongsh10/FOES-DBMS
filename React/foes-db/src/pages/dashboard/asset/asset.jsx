@@ -24,7 +24,7 @@ const Asset = () => {
 
       const data = await response.json();
 
-      const { ["Admin"]: collectionObj } = data;
+      const { ["Asset"]: collectionObj } = data;
       let columnArr = [];
       let entries = [];
       for (let entry in collectionObj) {
