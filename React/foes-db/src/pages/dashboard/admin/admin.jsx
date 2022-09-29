@@ -13,18 +13,20 @@ const Admin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
+      const readAllResponse = await fetch(
         'http://127.0.0.1:8000/readAllAdmin'
       );
 
-      if (!response.ok) {
+      if (!readAllResponse.ok) {
         console.log('Error fetching the data from backend');
         throw new Error('Could not fetch data!');
       }
 
-      const data = await response.json();
+      const data = await readAllResponse.json();
 
       const { ["Admin"]: collectionObj } = data;
+      console.log(collectionObj);
+
       let columnArr = [];
       let entries = [];
       for (let entry in collectionObj) {

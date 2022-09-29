@@ -17,27 +17,9 @@ const AdminAddNew = () => {
   const perthIdInput = useRef(null);
   const emailAddressInput = useRef(null);
   const passwordInput = useRef(null);
-  const remarkInput = useRef(null);
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // console.log(firstNameInput.current.value);
-    // console.log(lastNameInput.current.value);
-    // console.log(miriIdInput.current.value);
-    // console.log(perthIdInput.current.value);
-    // console.log(emailAddressInput.current.value);
-    // console.log(passwordInput.current.value);
-    // console.log(remarkInput.current.value);
-
-    // const jsonObject = {
-    //   first_name: firstNameInput.current.value,
-    //   last_name: lastNameInput.current.value,
-    //   miri_id: miriIdInput.current.value,
-    //   perth_id: perthIdInput.current.value,
-    //   email: emailAddressInput.current.value,
-    //   password: passwordInput.current.value,
-    //   remark: remarkInput.current.value
-    // }
 
     const jsonObject = {
       "first_name": firstNameInput.current.value,
@@ -46,7 +28,8 @@ const AdminAddNew = () => {
       "perth_id": perthIdInput.current.value,
       "email": emailAddressInput.current.value,
       "password": passwordInput.current.value,
-      "remark": remarkInput.current.value
+      // default isSuperAdmin is set to false
+      "isSuperAdmin": false,
     }
 
     fetch('http://127.0.0.1:8000/api/createAdmin', {
@@ -102,12 +85,6 @@ const AdminAddNew = () => {
               <label>Password</label>
               <input type="text" name="password" ref={passwordInput} />
             </div>
-
-            <div key='remark' className="formInput" >
-              <label>Remark</label>
-              <input type="text" name="remark" ref={remarkInput} />
-            </div>
-
             <Button type='submit'>Send</Button>
           </form>
         </div>
