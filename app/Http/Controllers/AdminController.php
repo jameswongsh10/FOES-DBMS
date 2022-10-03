@@ -177,4 +177,17 @@ class AdminController extends Controller
             ], 400);
         }
     }
+
+    public function importAdminCSV(){
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $newAdmin = new Admin();
+
+        foreach ($data as $key => $value) {
+            $newAdmin->$key = $value;
+        }
+
+        //Save into database
+        $newAdmin->save();
+    }
 }

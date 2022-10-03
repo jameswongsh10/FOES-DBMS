@@ -9,6 +9,7 @@ use App\Http\Controllers\KTPUSR_Controller;
 use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
+use App\Http\Controllers\DataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -109,3 +110,6 @@ Route::get('readAllKeyContactPerson', [KeyContactPersonController::class, 'readA
 Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'updateKeyContactPerson']);
 Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
 Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'getKeyContactPersonColumns']);
+
+//CSV Import
+Route::post('csvImport', [DataController::class, 'csvImport']);
