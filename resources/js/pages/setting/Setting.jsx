@@ -27,13 +27,16 @@ const Setting = () => {
         const csvHeader = string.slice(0, string.indexOf("\n")).split(",");
         const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
 
-        const array = csvRows.map(i => {
+        const array = csvRows.filter(i => i.length !== 0).map(i => {
             const values = i.split(",");
+
             const obj = csvHeader.reduce((object, header, index) => {
-                object[header] = values[index];
+                object[header] = values[index].trim();
                 return object;
             }, {});
+
             return obj;
+
         });
 
         const table = document.querySelector('input[name="target_table"]:checked').value;
@@ -93,7 +96,7 @@ const Setting = () => {
                     <DialogActions>
                         {/*<Button onClick={handleClose}>Disagree</Button>*/}
                         <Button onClick={handleClose} autoFocus>
-                           Continue
+                            Continue
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -127,10 +130,10 @@ const Setting = () => {
                             onChange={handleOnChange}
                         />
 
-                        <Button variant = "contained"
-                            onClick={(e) => {
-                                handleOnSubmit(e);
-                            }}
+                        <Button variant="contained"
+                                onClick={(e) => {
+                                    handleOnSubmit(e);
+                                }}
                         >
                             IMPORT CSV
                         </Button>

@@ -52,7 +52,7 @@ class DataController extends Controller
         }
 
         //Remove unused columns, sort the arrays and compare between the column array from database and the column array reads from csv file.
-        $unusedElement = ['id', 'created_at', 'updated_at'];
+        $unusedElement = ['id', 'created_at', 'updated_at', 'isSuperAdmin'];
 
         foreach ($unusedElement as $col) {
             $key = array_search($col, $columnArray, true);
