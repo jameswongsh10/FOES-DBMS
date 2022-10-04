@@ -66,6 +66,7 @@ const Setting = () => {
             };
             fileReader.readAsText(file);
         }
+
     };
 
     const handleClose = () => {
@@ -108,10 +109,9 @@ const Setting = () => {
                         <FormLabel id="demo-radio-buttons-group-label">Choose Table to Import</FormLabel>
                         <RadioGroup
                             aria-labelledby="demo-radio-buttons-group-label"
-                            defaultValue="Admin"
+                            defaultValue="Asset"
                             name="target_table"
                         >
-                            <FormControlLabel value="Admin" control={<Radio/>} label="Admins Information"/>
                             <FormControlLabel value="Asset" control={<Radio/>} label="Assets Information"/>
                             <FormControlLabel value="Staff" control={<Radio/>} label="Staff Information"/>
                             <FormControlLabel value="MOU-MOA" control={<Radio/>}
@@ -133,6 +133,7 @@ const Setting = () => {
                         <Button variant="contained"
                                 onClick={(e) => {
                                     handleOnSubmit(e);
+
                                 }}
                         >
                             IMPORT CSV
@@ -143,7 +144,7 @@ const Setting = () => {
 
                 <br/>
 
-                <table>
+                {/*   <table>
                     <thead>
                     <tr key={"header"}>
                         {headerKeys.map((key) => (
@@ -161,7 +162,7 @@ const Setting = () => {
                         </tr>
                     ))}
                     </tbody>
-                </table>
+                </table>*/}
             </div>
         </div>
     );

@@ -7,7 +7,8 @@ export const fetchDatabase = () => {
         const fetchData = async () => {
             const response = await fetch(
                  //'https://test-foes-default-rtdb.asia-southeast1.firebasedatabase.app/database.json'
-                'http://127.0.0.1:8000/readAllMobility'
+                //'http://127.0.0.1:8000/readAllMobility'
+                'http://foesdbms.test/readAllAdmin'
                 // 'http://127.0.0.1:8000/readAllInactiveMOUMOA'
             );
 

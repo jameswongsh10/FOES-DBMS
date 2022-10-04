@@ -24,11 +24,8 @@ class DataController extends Controller
         $table = $data[2];
         $columnArray = [];
 
-        //Get all columns of admin table from MySQL database
+        //Get all columns of the specific table from MySQL database
         switch ($table) {
-            case "Admin":
-                $columnArray = Schema::getColumnListing('admins');
-                break;
             case "Asset":
                 $columnArray = Schema::getColumnListing('assets');
                 break;
@@ -52,7 +49,7 @@ class DataController extends Controller
         }
 
         //Remove unused columns, sort the arrays and compare between the column array from database and the column array reads from csv file.
-        $unusedElement = ['id', 'created_at', 'updated_at', 'isSuperAdmin'];
+        $unusedElement = ['id', 'created_at', 'updated_at'];
 
         foreach ($unusedElement as $col) {
             $key = array_search($col, $columnArray, true);
@@ -64,20 +61,21 @@ class DataController extends Controller
         //Trim the last element of the array cuz it always comes with \r
         $arrayCount = count($columnName);
         $afterTrim = $columnName[$arrayCount - 1];
-        $afterTrim = rtrim($afterTrim, "\r");
+        $afterTrim = rtrim($afterTrim);
         $columnName[$arrayCount - 1] = $afterTrim;
 
         //Sort the two array and make comparison
         sort($columnArray);
         sort($columnName);
 
+        for ($i = 0; $i < count($columnName); $i++) {
+            $columnName[$i] = trim($columnName[$i]);
+        }
+
         //Proceed only if every column matched
         if ($columnArray == $columnName) {
             foreach ($columnInfo as $colInfo) {
                 switch ($table) {
-                    case "Admin":
-                        $newData = new Admin();
-                        break;
                     case "Asset":
                         $newData = new Asset();
                         break;
@@ -97,13 +95,12 @@ class DataController extends Controller
                         $newData = new ResearchAwards();
                         break;
                     default:
-//                        $newData = new Admin();
                         break;
                 }
 
                 try {
                     foreach ($colInfo as $key => $value) {
-                        $key = rtrim($key, "\r");
+                        $key = rtrim($key);
                         $newData->$key = $value;
                     }
                     $save = $newData->save();
