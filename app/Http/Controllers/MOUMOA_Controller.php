@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MouMoa;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -10,119 +11,173 @@ class MOUMOA_Controller extends Controller
 {
     public function createMOUMOA()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        $newMOUMOA = new MouMoa();
+            $newMOUMOA = new MouMoa();
 
-        foreach ($data as $key => $value) {
-            $newMOUMOA->$key = $value;
-        }
+            foreach ($data as $key => $value) {
+                $newMOUMOA->$key = $value;
+            }
 
-        //Save into database
-        $save = $newMOUMOA->save();
+            //Save into database
+            $newMOUMOA->save();
 
-        if ($save) {
             return response()->json([
-                'status' => $save,
+                'status' => true,
                 'message' => "MOUMOA created successfully!",
                 'MOUMOA' => $newMOUMOA
             ], 201);
-        } else {
+
+        } catch (QueryException $e) {
             return response()->json([
-                'status' => $save,
-                'message' => "Error in creating MOUMOA.",
+                'status' => false,
+                'message' => $e->errorInfo[2]
             ], 400);
         }
     }
 
     public function addMOUMOAColumn()
     {
-        $columnName = json_decode(file_get_contents('php://input'), true);
+        try {
+            $columnName = json_decode(file_get_contents('php://input'), true);
 
-        Schema::table('mou_moa', function (Blueprint $table) use ($columnName) {
-            $table->string($columnName)->after('mutual_extension')->default('');
-        });
+            Schema::table('mou_moa', function (Blueprint $table) use ($columnName) {
+                $table->string($columnName)->after('mutual_extension')->default('');
+            });
 
-        return response()->json([
-            'status' => true,
-            'message' => "Column added successfully!",
-            'column' => $columnName
-        ], 201);
-    }
+            return response()->json([
+                'status' => true,
+                'message' => "Column added successfully!",
+                'column' => $columnName
+            ], 201);
 
-    public function readAllMOUMOA()
-    {
-        $MOUMOA = MOUMOA::all();
-
-        return response()->json([
-            'status' => true,
-            'MOUMOA' => $MOUMOA
-        ]);
-    }
-
-    public function readMOUMOA($id)
-    {
-        $MOUMOA = MOUMOA::find($id);
-
-        if (is_null($MOUMOA)) {
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "MOUMOA not found",
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => true,
-            'MOUMOA' => $MOUMOA
-        ], 200);
-    }
-
-    public function updateMOUMOA($id)
-    {
-        $MOUMOA = MOUMOA::find($id);
-
-        if (is_null($MOUMOA)) {
-            return response()->json([
-                'status' => false,
-                'message' => "MOUMOA not found",
-            ], 404);
-        }
-
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $save = $MOUMOA->update($data);
-
-        if ($save) {
-            return response()->json([
-                'status' => $save,
-                'message' => "MOUMOA updated successfully!",
-                'MOUMOA' => $MOUMOA
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => $save,
-                'message' => "Error in updating MOUMOA.",
+                'message' => $e->errorInfo[2]
             ], 400);
         }
     }
 
-    public function deleteMOUMOA($id)
+    public function readAllMOUMOA()
     {
-        $MOUMOA = MOUMOA::find($id);
+        try {
+            $MOUMOA = MOUMOA::all();
 
-        if (is_null($MOUMOA)) {
+            return response()->json([
+                'status' => true,
+                'MOUMOA' => $MOUMOA
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json(['status' => false,
+                'message' => $e->errorInfo[2]], 400);
+        }
+    }
+
+    public
+    function readMOUMOA($id)
+    {
+        try {
+            $MOUMOA = MOUMOA::find($id);
+
+            if (is_null($MOUMOA)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "MOUMOA not found",
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'MOUMOA' => $MOUMOA
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "MOUMOA not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
+    }
 
-        $MOUMOA->delete();
+    public
+    function updateMOUMOA($id)
+    {
+        try {
+            $MOUMOA = MOUMOA::find($id);
 
-        return response()->json([
-            'status' => true,
-            'message' => "MOUMOA deleted successfully!",
-            'MOUMOA' => $MOUMOA
-        ], 200);
+            if (is_null($MOUMOA)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "MOUMOA not found",
+                ], 404);
+            }
+
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $MOUMOA->update($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => "MOUMOA updated successfully!",
+                'MOUMOA' => $MOUMOA
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public
+    function deleteMOUMOA($id)
+    {
+        try {
+            $MOUMOA = MOUMOA::find($id);
+
+            if (is_null($MOUMOA)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "MOUMOA not found",
+                ], 404);
+            }
+
+            $MOUMOA->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => "MOUMOA deleted successfully!",
+                'MOUMOA' => $MOUMOA
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
+    }
+
+    public
+    function getMOUMOAColumns()
+    {
+        try {
+            $columns = Schema::getColumnListing('mou_moa');
+
+            return response()->json([
+                'status' => true,
+                'column' => $columns
+            ], 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
     }
 }

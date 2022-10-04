@@ -23,11 +23,12 @@ return new class extends Migration
             $table->string('lead_by');
             $table->string('faculty');
             $table->string('cm_driven');
-            $table->string('partner_name');
-            $table->string('no_of_staff');
-            $table->string('no_of_student');
+            $table->string('partner_name')->nullable(true);
+            $table->string('no_of_staff')->nullable(true);
+            $table->string('no_of_student')->nullable(true);
             $table->string('internal_funding');
             $table->string('external_funding');
+            $table->string('remark')->nullable(true);
             $table->timestamps();
         });
     }
