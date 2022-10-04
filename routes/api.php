@@ -10,6 +10,7 @@ use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -113,3 +114,6 @@ Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'ge
 
 //CSV Import
 Route::post('csvImport', [DataController::class, 'csvImport']);
+
+//Login
+Route::post('login', [AuthController::class, 'login']);
