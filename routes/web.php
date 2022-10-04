@@ -5,6 +5,9 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\ResearchAwardsController;
 use App\Http\Controllers\MobilityController;
+<<<<<<<<< Temporary merge branch 1
+use Illuminate\Support\Facades\Artisan;
+=========
 use App\Http\Controllers\KTPUSR_Controller;
 use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
@@ -13,6 +16,7 @@ use App\Http\Controllers\DataController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +32,30 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<<<< Temporary merge branch 1
+//Data Controller
+Route::post('csvImport', 'App\Http\Controllers\DataController@csvImport');
+//Route::post('database_backup', 'App\Http\Controllers\DataController@database_backup');
+//Route::get('database_backup', function () {
+//    Artisan::call('backup:run');
+//
+//    return 'Database backup success.';
+//});
+Route::get('database_backup', 'App\Http\Controllers\DataController@database_backup');
+
+
+//Admin CRUD
+Route::post('createAdmin', 'App\Http\Controllers\AdminController@createAdmin');
+Route::get('getAdmin/{id}', 'App\Http\Controllers\AdminController@readAdmin');
+Route::get('readAllAdmin', 'App\Http\Controllers\AdminController@readAllAdmin');
+Route::put('updateAdmin/{id}', 'App\Http\Controllers\AdminController@updateAdmin');
+Route::delete('deleteAdmin/{id}', 'App\Http\Controllers\AdminController@deleteAdmin');
+Route::post('addAdminColumn', 'App\Http\Controllers\AdminController@addAdminColumn');
+Route::post('importAdminCSV', 'App\Http\Controllers\AdminController@importAdminCSV');
+
+//Staff CRUD
+Route::post('createStaff', [StaffController::class, 'createStaff'])->name('createStaff');
+=========
 //Admin CRUD
 Route::post('createAdmin', [AdminController::class, 'createAdmin']);
 Route::get('getAdmin/{id}', [AdminController::class, 'readAdmin']);
@@ -36,8 +64,43 @@ Route::put('updateAdmin/{id}', [AdminController::class, 'updateAdmin']);
 Route::delete('deleteAdmin/{id}', [AdminController::class, 'deleteAdmin']);
 Route::post('addAdminColumn', [AdminController::class, 'addAdminColumn']);
 Route::get('getAdminColumns', [AdminController::class, 'getAdminColumns']);
+>>>>>>>>> Temporary merge branch 2
+
+//InactiveMOUMOA CRUD
+Route::post('createInactiveMOUMOA', 'App\Http\Controllers\Inactive_MOUMOA_Controller@createInactiveMOUMOA');
+Route::get('getInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@readInactiveMOUMOA');
+Route::get('readAllInactiveMOUMOA', 'App\Http\Controllers\Inactive_MOUMOA_Controller@readAllInactiveMOUMOA');
+Route::put('updateInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@updateInactiveMOUMOA');
+Route::delete('deleteInactiveMOUMOA/{id}', 'App\Http\Controllers\Inactive_MOUMOA_Controller@deleteInactiveMOUMOA');
+Route::post('addInactiveMOUMOAColumn', 'App\Http\Controllers\Inactive_MOUMOA_Controller@addInactiveMOUMOAColumn');
+
 
 //Asset CRUD
+<<<<<<<<< Temporary merge branch 1
+Route::post('createAsset', 'App\Http\Controllers\AssetController@createAsset');
+Route::get('getAsset/{id}', 'App\Http\Controllers\AssetController@readAsset');
+Route::get('readAllAsset', 'App\Http\Controllers\AssetController@readAllAsset');
+Route::put('updateAsset/{id}', 'App\Http\Controllers\AssetController@updateAsset');
+Route::delete('deleteAsset/{id}', 'App\Http\Controllers\AssetController@deleteAsset');
+Route::post('addAssetColumn', 'App\Http\Controllers\AssetController@addAssetColumn');
+
+//ResearchAwards CRUD
+Route::post('createAwards', 'App\Http\Controllers\ResearchAwardsController@createAwards');
+Route::get('getAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@readAwards');
+Route::get('getAwards/staff/{id}', 'App\Http\Controllers\ResearchAwardsController@getAwardsbyStaffID');
+Route::get('readAllAwards', 'App\Http\Controllers\ResearchAwardsController@readAllAwards');
+Route::put('updateAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@updateAwards');
+Route::delete('deleteAwards/{id}', 'App\Http\Controllers\ResearchAwardsController@deleteAwards');
+Route::post('addAwardsColumn', 'App\Http\Controllers\ResearchAwardsController@addAwardsColumn');
+
+//Mobility CRUD
+Route::post('createMobility', 'App\Http\Controllers\MobilityController@createMobility');
+Route::get('getMobility/{id}', 'App\Http\Controllers\MobilityController@readMobility');
+Route::get('readAllMobility', 'App\Http\Controllers\MobilityController@readAllMobility');
+Route::put('updateMobility/{id}', 'App\Http\Controllers\MobilityController@updateMobility');
+Route::delete('deleteMobility/{id}', 'App\Http\Controllers\MobilityController@deleteMobility');
+Route::post('addMobilityColumn', 'App\Http\Controllers\MobilityController@addMobilityColumn');
+=========
 Route::post('createAsset', [AssetController::class, 'createAsset']);
 Route::get('getAsset/{id}', [AssetController::class, 'readAsset']);
 Route::get('readAllAsset', [AssetController::class, 'readAllAsset']);
