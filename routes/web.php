@@ -120,7 +120,4 @@ Route::post('csvImport',  [DataController::class, 'csvImport']);
 //    return 'Database backup success.';
 //});
 Route::get('database_backup',  [DataController::class, 'database_backup']);
-//Route::get('database_backup', function() {
-//    $exitcode = shell_exec('backup:run');
-//    dd($exitcode);
-//});
+Route::get('database_restore',  [DataController::class, 'database_restore']);

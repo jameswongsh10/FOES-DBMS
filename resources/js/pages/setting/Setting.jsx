@@ -91,7 +91,6 @@ const Setting = () => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        {/*<Button onClick={handleClose}>Disagree</Button>*/}
                         <Button onClick={handleClose} autoFocus>
                            Continue
                         </Button>
@@ -100,7 +99,6 @@ const Setting = () => {
 
                 <div style={{textAlign: "center"}}>
                     <h1>CSV File Import</h1>
-                    {/*{error && <div className="error">Error!</div>}*/}
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label">Choose Table to Import</FormLabel>
                         <RadioGroup
@@ -134,7 +132,6 @@ const Setting = () => {
                         >
                             IMPORT CSV
                         </Button>
-
                     </form>
                 </div>
 

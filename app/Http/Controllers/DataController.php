@@ -131,6 +131,11 @@ class DataController extends Controller
 
     public function database_backup()
     {
-        echo shell_exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:run');
+        //This path will need to change to the client's artisan path.
+        echo shell_exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:run --only-db');
+    }
+
+    public function database_restore(){
+        echo shell_exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:restore-last');
     }
 }

@@ -13,6 +13,11 @@ const Backup = () => {
     const [databaseName, setDatabaseName] = useState('');
 
     const date1 = new Date("2022", "01", "01");
+    const [file, setFile] = useState();
+
+    const handleOnChange = (e) => {
+        setFile(e.target.files[0]);
+    };
 
     const backup = (e) => {
         axios.get('/database_backup').then(response => {
@@ -21,6 +26,16 @@ const Backup = () => {
             .catch(error => {
                 console.log("ERROR:: ", error.response.data);
             });
+    };
+
+    const restore = (e) => {
+        axios.get('database_restore')
+            .then(response => {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(error => {
+                console.log("ERROR:: ", error.response.data);
+            })
     };
 
     return (
@@ -45,23 +60,23 @@ const Backup = () => {
                             Database Restore
                         </div>
                         <div className="contentItem">
-                            <FormControl sx={{m: 1, minWidth: 120}}>
-                                <InputLabel id="demo-simple-select-helper-label">Database</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-helper-label"
-                                    id="demo-simple-select-helper"
-                                    // value={databaseName}
-                                    label="Age"
-                                    // onChange={handleChange}
-                                >
-                                    <MenuItem value="2022-01-01">2022-01-01</MenuItem>
-                                    <MenuItem value="2022-02-01">2022-02-01</MenuItem>
-                                    <MenuItem value="2022-03-01">2022-03-01</MenuItem>
-                                </Select>
-                                <FormHelperText>Select database backup to restore</FormHelperText>
-                            </FormControl>
+                            {/*<FormControl sx={{m: 1, minWidth: 120}}>*/}
+                            {/*    <InputLabel id="demo-simple-select-helper-label">Database</InputLabel>*/}
+                            {/*    <Select*/}
+                            {/*        labelId="demo-simple-select-helper-label"*/}
+                            {/*        id="demo-simple-select-helper"*/}
+                            {/*        // value={databaseName}*/}
+                            {/*        label="Age"*/}
+                            {/*        // onChange={handleChange}*/}
+                            {/*    >*/}
+                            {/*        <MenuItem value="2022-01-01">2022-01-01</MenuItem>*/}
+                            {/*        <MenuItem value="2022-02-01">2022-02-01</MenuItem>*/}
+                            {/*        <MenuItem value="2022-03-01">2022-03-01</MenuItem>*/}
+                            {/*    </Select>*/}
+                            {/*    <FormHelperText>Select database backup to restore</FormHelperText>*/}
+                            {/*</FormControl>*/}
                             <Button variant="contained" color="success" endIcon={<Restore/>}
-                                    size="large">Restore</Button>
+                                    size="large" onClick={restore}>Restore</Button>
                         </div>
                     </Paper>
                 </div>

@@ -114,13 +114,10 @@ Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'ge
 
 //CSV Import
 Route::post('csvImport', [DataController::class, 'csvImport']);
-//Route::get('database_backup', function () {
-//    Artisan::call('backup:run');
-//
-//    return 'Database backup success.';
+Route::get('database_backup',  [DataController::class, 'database_backup']);
+Route::get('database_restore',  [DataController::class, 'database_restore']);
+
+//Route::get('database_backup', function() {
+//    $exitCode = Artisan::call('backup:run --only-db');
+//    dd($exitCode);
 //});
-//Route::get('database_backup',  [DataController::class, 'database_backup']);
-Route::get('database_backup', function() {
-    $exitCode = Artisan::call('backup:run --only-db');
-    dd($exitCode);
-});
