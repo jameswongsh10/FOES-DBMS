@@ -5,45 +5,55 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
+    /*    public function __construct()
+        {
+            $this->middleware('auth');
+        }*/
 
     public function createAdmin()
     {
-        try {
-            $data = json_decode(file_get_contents('php://input'), true);
+        if (Auth::check()) {
+            try {
+                $data = json_decode(file_get_contents('php://input'), true);
 
-            $newAdmin = new Admin();
+                $newAdmin = new Admin();
 
-            foreach ($data as $key => $value) {
-                $newAdmin->$key = $value;
+                foreach ($data as $key => $value) {
+                    $newAdmin->$key = $value;
+                }
+
+                $unEncryptedPassword = $newAdmin['password'];
+
+                $newAdmin["password"] = Hash::make($unEncryptedPassword);
+
+                //Save into database
+                $newAdmin->save();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "Admin created successfully!",
+                    'admin' => $newAdmin
+                ], 201);
+
+            } catch (QueryException $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $e->errorInfo[2]
+                ], 400);
             }
-            $unEncryptedPassword = $newAdmin['password'];
-
-            $newAdmin["password"] = Hash::make($unEncryptedPassword);
-
-            //Save into database
-            $newAdmin->save();
-
-            return response()->json([
-                'status' => true,
-                'message' => "Admin created successfully!",
-                'admin' => $newAdmin
-            ], 201);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
         }
+
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function addAdminColumn()
@@ -187,7 +197,8 @@ class AdminController extends Controller
         }
     }
 
-    public function importAdminCSV(){
+    public function importAdminCSV()
+    {
         $data = json_decode(file_get_contents('php://input'), true);
 
         $newAdmin = new Admin();
