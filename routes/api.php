@@ -10,6 +10,7 @@ use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\AttachmentStaffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,7 +55,7 @@ Route::get('getAllStaffNames', [StaffController::class, 'getAllStaffName']);
 Route::put('updateStaff/{id}', [StaffController::class, 'updateStaff']);
 Route::delete('deleteStaff/{id}', [StaffController::class, 'deleteStaff']);
 Route::post('addStaffColumn', [StaffController::class, 'addStaffColumn']);
-Route::get('getStaffColumns', [StaffController::class,'getStaffColumns']);
+Route::get('getStaffColumns', [StaffController::class, 'getStaffColumns']);
 
 //ResearchAwards CRUD
 Route::post('createAwards', [ResearchAwardsController::class, 'createAwards']);
@@ -110,6 +111,13 @@ Route::get('readAllKeyContactPerson', [KeyContactPersonController::class, 'readA
 Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'updateKeyContactPerson']);
 Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
 Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'getKeyContactPersonColumns']);
+
+//Attachment Staff CRUD
+Route::post('createAttachment', [AttachmentStaffController::class, 'createAttachmentStaff']);
+Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachment']);
+Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
+Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAttachment']);
+Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
 
 //CSV Import
 Route::post('csvImport', [DataController::class, 'csvImport']);
