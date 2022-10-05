@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function createAdmin()
     {
         try {
@@ -19,6 +25,9 @@ class AdminController extends Controller
             foreach ($data as $key => $value) {
                 $newAdmin->$key = $value;
             }
+            $unEncryptedPassword = $newAdmin['password'];
+
+            $newAdmin["password"] = Hash::make($unEncryptedPassword);
 
             //Save into database
             $newAdmin->save();
@@ -176,5 +185,18 @@ class AdminController extends Controller
                 'message' => $e->errorInfo[2]
             ], 400);
         }
+    }
+
+    public function importAdminCSV(){
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $newAdmin = new Admin();
+
+        foreach ($data as $key => $value) {
+            $newAdmin->$key = $value;
+        }
+
+        //Save into database
+        $newAdmin->save();
     }
 }
