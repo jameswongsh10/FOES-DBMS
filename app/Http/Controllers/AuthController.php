@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login']]);
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth:api', ['except' => ['login']]);
+//    }
 
     public function login()
     {
@@ -32,7 +26,7 @@ class AuthController extends Controller
         if (!$token) {
             return response()->json([
                 'status' => false,
-                'message' => 'Unauthorized',
+                'message' => 'Invalid email or password',
             ], 401);
         }
 
@@ -41,37 +35,39 @@ class AuthController extends Controller
             'status' => true,
             'isSuperAdmin' => $user['isSuperAdmin'],
             'token' => $token,
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
             'type' => 'bearer',
         ]);
     }
 
     public function logout()
     {
-        try {
+        if (Auth::check()) {
             Auth::logout();
             return response()->json([
                 'status' => true,
-                'message' => 'Successfully logged out'
-            ]);
-        } catch(AccessDeniedHttpException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e
+                'message' => 'Successfully logged out',
             ]);
         }
-
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function refresh()
     {
-        return response()->json([
-            'status' => 'success',
-            'user' => Auth::user(),
-            'authorisation' => [
+        if (Auth::check()) {
+            return response()->json([
+                'status' => true,
+                'user' => Auth::user(),
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
-            ]
-        ]);
+
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 }
