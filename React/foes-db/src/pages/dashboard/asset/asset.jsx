@@ -25,20 +25,18 @@ const Asset = () => {
       const data = await response.json();
 
       const { ["Asset"]: collectionObj } = data;
-      let columnArr = [];
-      let entries = [];
-      for (let entry in collectionObj) {
-        var { [entry]: entryObj } = collectionObj;
-        entries.push({...entryObj, id: entry});
-        for (let key in entryObj) {
-          if (!columnArr.includes(key)) {
-            columnArr.push(key);
-          }
-        }
-      }
 
-      setColumns(columnArr);
-      setRows(entries);
+      const getColumnResponse = await fetch(
+        'http://127.0.0.1:8000/getAssetColumns'
+      );
+
+      const columnData = await getColumnResponse.json();
+      const {["column"]: columnArr} = columnData;
+
+      const filters = ["id", "created_at", "updated_at"];
+
+      setColumns(columnArr.filter((column) => !filters.includes(column)));
+      setRows(collectionObj);
     };
 
     fetchData();
@@ -49,7 +47,7 @@ const Asset = () => {
       <Sidebar />
       <div className="homeContainer">
         <Navbar />
-        {columns && <TableContainer title={'Asset'} viewCollection='asset' columns={columns} rows={rows}/>}
+        {columns && <TableContainer title={'Asset'} viewCollection='Asset' columns={columns} rows={rows} setRows={setRows} deleteUrl="deleteAsset"/>}
       </div>
     </div>
   );

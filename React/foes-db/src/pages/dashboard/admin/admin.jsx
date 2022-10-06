@@ -25,22 +25,30 @@ const Admin = () => {
       const data = await readAllResponse.json();
 
       const { ["Admin"]: collectionObj } = data;
-      console.log(collectionObj);
 
-      let columnArr = [];
-      let entries = [];
-      for (let entry in collectionObj) {
-        var { [entry]: entryObj } = collectionObj;
-        entries.push({...entryObj, id: entry});
-        for (let key in entryObj) {
-          if (!columnArr.includes(key)) {
-            columnArr.push(key);
-          }
-        }
-      }
+      const getColumnResponse = await fetch(
+        'http://127.0.0.1:8000/getAdminColumns'
+      );
 
-      setColumns(columnArr);
-      setRows(entries);
+      const columnData = await getColumnResponse.json();
+      const {["column"]: columnArr} = columnData;
+
+      // let columnArr = [];
+      // let entries = [];
+      // for (let entry in collectionObj) {
+      //   var { [entry]: entryObj } = collectionObj;
+      //   entries.push({...entryObj, id: entry});
+      //   for (let key in entryObj) {
+      //     if (!columnArr.includes(key)) {
+      //       columnArr.push(key);
+      //     }
+      //   }
+      // }
+
+      const filters = ["id", "created_at", "updated_at"];
+
+      setColumns(columnArr.filter((column) => !filters.includes(column)));
+      setRows(collectionObj);
     };
 
     fetchData();
@@ -51,7 +59,7 @@ const Admin = () => {
       <Sidebar />
       <div className="homeContainer">
         <Navbar />
-        {columns && <TableContainer title={'Admin'} viewCollection='admin' columns={columns} rows={rows}/>}
+        {columns && <TableContainer title={'Admin'} viewCollection='Admin' columns={columns} rows={rows} setRows={setRows} deleteUrl="deleteAdmin"/>}
       </div>
     </div>
   );

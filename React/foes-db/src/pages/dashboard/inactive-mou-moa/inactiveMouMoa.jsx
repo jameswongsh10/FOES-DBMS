@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import TableContainer from '../../../layout/table-container/TableContainer';
-import './mobility.scss';
+import './mouMoa.scss';
 
-const Mobility = () => {
+const InactiveMouMoa = () => {
 
   const [columns, setColumns] = useState();
   const [rows, setRows] = useState();
@@ -13,7 +14,7 @@ const Mobility = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/readAllMobility'
+        'http://127.0.0.1:8000/readAllInactiveMOUMOA'
       );
 
       if (!response.ok) {
@@ -23,10 +24,10 @@ const Mobility = () => {
 
       const data = await response.json();
 
-      const { ["Mobility"]: collectionObj } = data;
-
+      const { ["InactiveMOUMOA"]: collectionObj } = data;
+      
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getMobilityColumns'
+        'http://127.0.0.1:8000/getInactiveMOUMOAColumns'
       );
 
       const columnData = await getColumnResponse.json();
@@ -36,7 +37,6 @@ const Mobility = () => {
 
       setColumns(columnArr.filter((column) => !filters.includes(column)));
       setRows(collectionObj);
-
     };
 
     fetchData();
@@ -47,10 +47,10 @@ const Mobility = () => {
       <Sidebar />
       <div className="homeContainer">
         <Navbar />
-        {columns && <TableContainer title={'Mobility'} viewCollection='Mobility' columns={columns} rows={rows} setRows={setRows} deleteUrl="deleteMobility"/>}
+        {columns && <TableContainer title={'Inactive MOU-MOA'} viewCollection='InactiveMOUMOA' columns={columns} rows={rows} setRows={setRows} deleteUrl="deleteInactiveMOUMOA"/>}
       </div>
     </div>
   );
 };
 
-export default Mobility;
+export default InactiveMouMoa;

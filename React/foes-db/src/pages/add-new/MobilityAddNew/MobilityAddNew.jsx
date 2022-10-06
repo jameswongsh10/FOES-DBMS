@@ -25,16 +25,25 @@ const MobilityAddNew = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // listRef.current.forEach(el => {
-    //   if (el.value) {
-    //     newObj[`${el.name}`] = el.value;
-    //   }
-    // });
-    // fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(newObj)
-    // })
-    navigate('/mobility');
+    const jsonObject = {
+      "staff_or_student": staffStudentInput.current.value,
+      "in_or_out_bound": inboundOutboundInput.current.value,
+      "name": nameInput.current.value,
+      "attendee_id": studentIdStaffIdInput.current.value,
+      "program": programInput.current.value,
+      "name_of_university": nameOfUniversityInput.current.value,
+      "country": countryInput.current.value,
+      "duration": durationsInput.current.value,
+      "from_date": fromInput.current.value,
+      "to_date": toInput.current.value,
+      "remark": remarkInput.current.value,
+    };
+
+    fetch('http://127.0.0.1:8000/api/createMobility', {
+      method: 'POST',
+      body: JSON.stringify(jsonObject)
+    })
+      .then(navigate('/mobility'));
   };
 
   return (

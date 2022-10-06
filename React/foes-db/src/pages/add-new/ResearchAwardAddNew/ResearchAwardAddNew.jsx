@@ -10,7 +10,7 @@ import AddColumn from '../../../components/add-column/AddColumn';
 
 const ResearchAwardAddNew = () => {
   const navigate = useNavigate();
-  const staffNameInput = useRef(null);
+  const staffIdInput = useRef(null);
   const typeOfGrantInput = useRef(null);
   const projectTitleInput = useRef(null);
   const coInvestigatorInput = useRef(null);
@@ -20,16 +20,21 @@ const ResearchAwardAddNew = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // listRef.current.forEach(el => {
-    //   if (el.value) {
-    //     newObj[`${el.name}`] = el.value;
-    //   }
-    // });
-    // fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(newObj)
-    // })
-    navigate('/research-award');
+    const jsonObject = {
+      "staff_id" : staffIdInput.current.value,
+      "type_of_grant": typeOfGrantInput.current.value,
+      "project_title": projectTitleInput.current.value,
+      "co_investigators": coInvestigatorInput.current.value,
+      "research_grant_scheme": researchGrantSchemeInput.current.value,
+      "award_amount": awardAmountInput.current.value,
+      "evidence_link": evidenceLinkInput.current.value,
+    };
+
+    fetch('http://127.0.0.1:8000/api/createAwards', {
+      method: 'POST',
+      body: JSON.stringify(jsonObject)
+    })
+    .then(navigate('/research-award'));
   };
 
   return (
@@ -43,9 +48,9 @@ const ResearchAwardAddNew = () => {
         <div className="bottom">
           <form onSubmit={submitHandler}>
 
-            <div key='staffName' className="formInput" >
-              <label>Staff Name</label>
-              <input type="text" name="staffName" ref={staffNameInput} />
+            <div key='staffId' className="formInput" >
+              <label>Staff ID</label>
+              <input type="number" min='0' name="staffId" ref={staffIdInput} />
             </div>
             <div key='typeOfGrant' className="formInput" >
               <label>Type of Grant</label>

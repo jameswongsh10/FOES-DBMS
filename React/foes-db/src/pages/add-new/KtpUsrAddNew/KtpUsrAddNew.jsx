@@ -28,16 +28,28 @@ const KtpUsrAddNew = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // listRef.current.forEach(el => {
-    //   if (el.value) {
-    //     newObj[`${el.name}`] = el.value;
-    //   }
-    // });
-    // fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(newObj)
-    // })
-    navigate('/ktp-usr');
+    const jsonObject = {
+      "category": programCategoryInput.current.value,
+      "date": eventDateInput.current.value,
+      "program_name": nameOfUsrKtpProgramInput.current.value,
+      "community_industry_name": communityIndustryInput.current.value,
+      "location": locationInput.current.value,
+      "lead_by": leadByInput.current.value,
+      "faculty": facultyDepartmentInput.current.value,
+      "cm_driven": CMsDrivenInput.current.value,
+      "partner_name": nameOfPartnerInput.current.value,
+      "no_of_staff": noOfStaffInput.current.value,
+      "no_of_student": noOfStudentInput.current.value,
+      "internal_funding": internalFundingInput.current.value,
+      "external_funding": externalFundingInput.current.value
+      // remark: missing
+    };
+
+    fetch('http://127.0.0.1:8000/api/createKTPUSR', {
+      method: 'POST',
+      body: JSON.stringify(jsonObject)
+    })
+    .then(navigate('/ktp-usr'));
   };
 
   return (

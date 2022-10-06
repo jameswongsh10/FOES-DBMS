@@ -7,7 +7,9 @@ import { Button } from '@mui/material';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
-import ProfessionalQualification from '../../../components/section/ProfessionalQualification';
+import InputEmail from '../../../components/input-email/InputEmail';
+import { useEffect } from 'react';
+import FileInputSection from '../../../components/section/FileInputSection';
 
 const StaffAddNew = () => {
   const navigate = useNavigate();
@@ -25,29 +27,32 @@ const StaffAddNew = () => {
   const extNoInput = useRef(null);
   const statusInput = useRef(null);
   const photocopyIdInput = useRef(null);
+  const appointmentLevelInput = useRef(null);
+  const pigeaonboxNoInput = useRef(null);
+  const resignedDateInput = useRef(null);
+  const remarkInput = useRef(null);
+
+  const [email, setEmail] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    if (isEmailValid) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [isEmailValid]);
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log(firstNameInput.current.value); // Use this refs to store the JSON and POST request
-    console.log(lastNameInput.current.value);
-    console.log(miriIdInput.current.value);
-    console.log(perthIdInput.current.value);
-    console.log(emailAddressInput.current.value);
-    console.log(reportDutyInput.current.value);
-    console.log(departmentInput.current.value);
-    console.log(titleInput.current.value);
-    console.log(positionInput.current.value);
-    console.log(roomNoInput.current.value);
-    console.log(extNoInput.current.value);
-    console.log(statusInput.current.value);
-    console.log(photocopyIdInput.current.value);
-
     const jsonObject = {
       "first_name": firstNameInput.current.value,
       "last_name": lastNameInput.current.value,
       "miri_id": miriIdInput.current.value,
       "perth_id": perthIdInput.current.value,
-      "email": emailAddressInput.current.value,
+      "email": email,
       "report_duty_date": reportDutyInput.current.value,
       "department": departmentInput.current.value,
       "title": titleInput.current.value,
@@ -56,15 +61,17 @@ const StaffAddNew = () => {
       "ext_no": extNoInput.current.value,
       "status": statusInput.current.value,
       "photocopy_id": photocopyIdInput.current.value,
+      "appointment_level": appointmentLevelInput.current.value,
+      "pigeonbox_no": pigeaonboxNoInput.current.value,
+      "resigned_date": resignedDateInput.current.value,
+      "remark": remarkInput.current.value,
     };
 
     fetch('http://127.0.0.1:8000/api/createStaff', {
       method: 'POST',
       body: JSON.stringify(jsonObject)
     })
-      .then(function (res) { return res.json(); })
-      .then(function (data) { alert(JSON.stringify(data)); })
-      // .then(navigate('/'));
+    .then(navigate('/staff'));
 
     // listRef.current.forEach(el => {
     //   if (el.value) {
@@ -75,7 +82,6 @@ const StaffAddNew = () => {
     //   method: 'POST',
     //   body: JSON.stringify(newObj)
     // })
-    navigate('/staff');
   };
 
   return (
@@ -109,19 +115,25 @@ const StaffAddNew = () => {
               <input type="text" name="perthId" ref={perthIdInput} />
             </div>
 
-            <div key='emailAddress' className="formInput" >
-              <label>Email Address</label>
-              <input type="text" name="emailAddress" ref={emailAddressInput} />
-            </div>
+            <InputEmail value={email} setHandler={setEmail} label="Email Address" isValid={isEmailValid} setIsValid={setIsEmailValid} />
 
             <div key='reportDuty' className="formInput">
               <label>Report Duty</label>
               <input type="date" name="reportDuty" ref={reportDutyInput}></input>
             </div>
 
-            <div key='department' className="formInput" >
+            <div className="formInput">
               <label>Department</label>
-              <input type="text" name="department" ref={departmentInput} />
+              <select name="department" id="department" ref={departmentInput}>
+                <option value="Faculty Office">Faculty Office</option>
+                <option value="Lab">Lab</option>
+                <option value="Applied Sciences">Applied Sciences</option>
+                <option value="Chemical & Energy">Chemical & Energy</option>
+                <option value="Civil & Construction">Civil & Construction</option>
+                <option value="Electrical & Computer">Electrical & Computer</option>
+                <option value="Mechanical">Mechanical</option>
+                <option value="Foundation">Foundation</option>
+              </select>
             </div>
 
             <div className="formInput">
@@ -132,12 +144,35 @@ const StaffAddNew = () => {
                 <option value="Dr. Ir.">Dr. Ir.</option>
                 <option value="Ir. Dr.">Ir. Dr.</option>
                 <option value="Engr.">Engr.</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Ms.">Ms.</option>
               </select>
             </div>
 
-            <div key='position' className="formInput" >
+            <div className="formInput">
               <label>Position</label>
-              <input type="text" name="position" ref={positionInput} />
+              <select name="position" id="position" ref={positionInput}>
+                <option value="Dean">Dean</option>
+                <option value="Associate Dean R&D">Associate Dean R&D</option>
+                <option value="Associate Dean T&L">Associate Dean T&L</option>
+                <option value="HOD">HOD</option>
+                <option value="Programme Coordinator">Programme Coordinator</option>
+                <option value="Committee Chair">Committee Chair</option>
+                <option value="Research Cluster Head">Research Cluster Head</option>
+                <option value="Group Head">Group Head</option>
+                <option value="Faculty Manager">Faculty Manager</option>
+                <option value="Senior Admin Officer">Senior Admin Officer</option>
+                <option value="Admin Officer">Admin Officer</option>
+                <option value="Senior Admin Assistant">Senior Admin Assistant</option>
+                <option value="Admin Assistant">Admin Assistant</option>
+                <option value="Lab Manager">Lab Manager</option>
+                <option value="Senior Technical Officer">Senior Technical Officer</option>
+                <option value="IT Engineering Officer">IT Engineering Officer</option>
+                <option value="Technical Officer">Technical Officer</option>
+                <option value="Senior Lab Technician">Senior Lab Technician</option>
+                <option value="Lab Technician">Lab Technician</option>
+              </select>
             </div>
 
             <div key='roomNo' className="formInput" >
@@ -150,9 +185,18 @@ const StaffAddNew = () => {
               <input type="text" name="extNo" ref={extNoInput} />
             </div>
 
-            <div key='status' className="formInput" >
+            {/* <div key='status' className="formInput" >
               <label>Status</label>
               <input type="text" name="status" ref={statusInput} />
+            </div> */}
+
+            <div className="formInput">
+              <label>Status</label>
+              <select name="status" id="status" ref={statusInput}>
+                <option value="Contract">Contract</option>
+                <option value="Permanent">Permanent</option>
+                <option value="Intern">Intern</option>
+              </select>
             </div>
 
             <div key='photocopyId' className="formInput" >
@@ -160,11 +204,33 @@ const StaffAddNew = () => {
               <input type="text" name="photocopyId" ref={photocopyIdInput} />
             </div>
 
-            <Button type='submit'>Send</Button>
+            <div key='appointmentLevel' className="formInput" >
+              <label>Appointment Level</label>
+              <input type="text" name="appointmentLevel" ref={appointmentLevelInput} />
+            </div>
+
+            <div key='pigeonboxNo' className="formInput" >
+              <label>Pigeon Box No.</label>
+              <input type="text" name="pigeonboxNo" ref={pigeaonboxNoInput} />
+            </div>
+
+            <div key='resignedDate' className="formInput">
+              <label>Resigned Date</label>
+              <input type="date" name="resignedDate" ref={resignedDateInput}></input>
+            </div>
+
+            <div key='remark' className="formInput" >
+              <label>Remark</label>
+              <input type="text" name="remark" ref={remarkInput} />
+            </div>
+
+            <Button disabled={!isFormValid} type='submit'>Send</Button>
+
           </form>
         </div>
 
-        <ProfessionalQualification />
+        {/* <FileInputSection sectionTitle="Professional Qualification"/> */}
+        {/* <FileInputSection sectionTitle="Professional Membership"/> */}
 
         <div className="addColumnBox">
           <p className='title'>Add Column</p>

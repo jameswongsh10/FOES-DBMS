@@ -4,7 +4,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation} from 'react-router-dom';
 import { tableActions } from '../../store/table-slice';
 import './dataTable.scss';
 
@@ -26,19 +26,21 @@ const useFakeMutation = () => {
 
 const DataTable = (props) => {
 
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const mutateRow = useFakeMutation();
   const [snackbar, setSnackbar] = React.useState(null);
   const handleCloseSnackbar = () => setSnackbar(null);
-  const viewCollection = useSelector(state => state.table.view);
+  const viewCollection = props.viewCollection;
 
   const processRowUpdate = React.useCallback(
     async (newRow) => {
       // Make the HTTP request to save in the backend
       const { id: elementID, ...newObj } = newRow;
       await fetch(
-        `https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}/${elementID}.json`,
+        `http://127.0.0.1:8000/api/update${viewCollection}/${elementID}`,
         {
           method: 'put',
           body: JSON.stringify(newObj)
@@ -59,6 +61,14 @@ const DataTable = (props) => {
     dispatch(tableActions.selectSingle(id));
   };
 
+  const onDeleteEntryHandler = (deleteUrl, id) => {
+    // TODO: implement http DEL fetch function using collection and ID
+    fetch(`http://127.0.0.1:8000/api/${deleteUrl}/${id}`, {
+      method: 'DELETE'
+    })
+    .then(props.setRows(props.rows.filter(item => item.id !== id)))
+  };
+
   const actionColumn = [
     {
       field: "action",
@@ -72,7 +82,7 @@ const DataTable = (props) => {
             </Link>
             <div
               className="deleteButton"
-              onClick={() => props.onDeleteEntryHandler(viewCollection, params.row.id)}
+              onClick={() => onDeleteEntryHandler(props.deleteUrl, params.row.id)}
             >
               Delete
             </div>
@@ -87,8 +97,7 @@ const DataTable = (props) => {
       <DataGrid
         rows={props.rows}
         columns={props.columns.concat(actionColumn)}
-        pageSize={9}
-        rowsPerPageOptions={[9]}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={handleProcessRowUpdateError}
         experimentalFeatures={{ newEditingApi: true }}

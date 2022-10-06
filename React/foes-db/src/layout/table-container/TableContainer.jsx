@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import DataTable from '../../components/dataTable/DataTable';
 import { fetchDatabase, deleteEntry } from '../../store/table-action';
 import './tableContainer.scss';
@@ -24,9 +24,6 @@ const TableContainer = (props) => {
   const columns = generateColumnArr(props.columns);
   const rows = props.rows;
 
-  const onDeleteEntryHandler = (collection, id) => {
-    // TODO: implement http DEL fetch function using collection and ID
-  };
 
   return (
     <div className="tableContainer">
@@ -40,7 +37,7 @@ const TableContainer = (props) => {
           </Link>
         </Button>
       </div>
-      <DataTable rows={rows} columns={columns} onDeleteEntryHandler={onDeleteEntryHandler} viewCollection={viewCollection}/>
+      <DataTable rows={rows} columns={columns} setRows={props.setRows} viewCollection={viewCollection} deleteUrl={props.deleteUrl}/>
     </div>
   );
 };

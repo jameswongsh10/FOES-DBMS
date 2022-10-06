@@ -8,7 +8,6 @@ import './staff.scss';
 
 const Staff = () => {
 
-
   const [columns, setColumns] = useState();
   const [rows, setRows] = useState();
 
@@ -26,20 +25,18 @@ const Staff = () => {
       const data = await response.json();
 
       const { ["Staff"]: collectionObj } = data;
-      let columnArr = [];
-      let entries = [];
-      for (let entry in collectionObj) {
-        var { [entry]: entryObj } = collectionObj;
-        entries.push({...entryObj, id: entry});
-        for (let key in entryObj) {
-          if (!columnArr.includes(key)) {
-            columnArr.push(key);
-          }
-        }
-      }
 
-      setColumns(columnArr);
-      setRows(entries);
+      const getColumnResponse = await fetch(
+        'http://127.0.0.1:8000/getStaffColumns'
+      );
+
+      const columnData = await getColumnResponse.json();
+      const {["column"]: columnArr} = columnData;
+
+      const filters = ["id", "created_at", "updated_at"];
+
+      setColumns(columnArr.filter((column) => !filters.includes(column)));
+      setRows(collectionObj);
     };
 
     fetchData();
@@ -50,7 +47,7 @@ const Staff = () => {
       <Sidebar />
       <div className="homeContainer">
         <Navbar />
-        {columns && <TableContainer title={'Staff'} viewCollection="staff" columns={columns} rows={rows}/>}
+        {columns && <TableContainer title={'Staff'} viewCollection="Staff" columns={columns} rows={rows} setRows={setRows} deleteUrl="deleteStaff"/>}
       </div>
     </div>
   );

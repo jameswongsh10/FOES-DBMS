@@ -26,6 +26,16 @@ import ResearchAwardAddNew from './pages/add-new/ResearchAwardAddNew/ResearchAwa
 import MouMoaAddNew from './pages/add-new/MouMoaAddNew/MouMoaAddNew';
 import KtpUsrAddNew from './pages/add-new/KtpUsrAddNew/KtpUsrAddNew';
 import MobilityAddNew from './pages/add-new/MobilityAddNew/MobilityAddNew';
+import InactiveMouMoa from './pages/dashboard/inactive-mou-moa/inactiveMouMoa';
+import InactiveMouMoaAddNew from './pages/add-new/InactiveMouMoaAddNew/InactiveMouMoaAddNew';
+import AdminSingle from './pages/single/admin-single/AdminSingle';
+import StaffSingle from './pages/single/staff-single/StaffSingle';
+import AssetSingle from './pages/single/asset-single/AssetSingle';
+import ResearchAwardSingle from './pages/single/research-award-single/ResearchAwardSingle';
+import MouMoaSingle from './pages/single/mou-moa-single/MouMoaSingle';
+import InactiveMouMoaSingle from './pages/single/inactive-mou-moa-single/InactiveMouMoaSingle';
+import KtpUsrSingle from './pages/single/ktp-usr/KtpUsrSingle';
+import MobilitySingle from './pages/single/mobility-single/MobilitySingle';
 
 function App() {
   const dispatch = useDispatch();
@@ -47,24 +57,35 @@ function App() {
           {isLoggedIn && <Route path='/' element={<Admin />} />}
           {isLoggedIn && <Route path='/admin' element={<Admin />} />}
           {isLoggedIn && <Route path='/admin/new' element={<AdminAddNew />} />}
+          {isLoggedIn && <Route path='/admin/:id' element={<AdminSingle />} />}
 
           {isLoggedIn && <Route path='/staff' element={<Staff />} />}
           {isLoggedIn && <Route path='/staff/new' element={<StaffAddNew />} />}
+          {isLoggedIn && <Route path='/staff/:id' element={<StaffSingle />} />}
 
           {isLoggedIn && <Route path='/asset' element={<Asset />} />}
           {isLoggedIn && <Route path='/asset/new' element={<AssetAddNew />} />}
+          {isLoggedIn && <Route path='/asset/:id' element={<AssetSingle />} />}
 
-          {isLoggedIn && <Route path='/research-award' element={<ResearchAward />} />}
-          {isLoggedIn && <Route path='/research-award/new' element={<ResearchAwardAddNew />} />}
+          {isLoggedIn && <Route path='/awards' element={<ResearchAward />} />}
+          {isLoggedIn && <Route path='/awards/new' element={<ResearchAwardAddNew />} />}
+          {isLoggedIn && <Route path='/awards/:id' element={<ResearchAwardSingle />} />}
 
-          {isLoggedIn && <Route path='/mou-moa' element={<MouMoa />} />}
-          {isLoggedIn && <Route path='/mou-moa/new' element={<MouMoaAddNew />} />}
+          {isLoggedIn && <Route path='/moumoa' element={<MouMoa />} />}
+          {isLoggedIn && <Route path='/moumoa/new' element={<MouMoaAddNew />} />}
+          {isLoggedIn && <Route path='/moumoa/:id' element={<MouMoaSingle />} />}
 
-          {isLoggedIn && <Route path='/ktp-usr' element={<KtpUsr />} />}
-          {isLoggedIn && <Route path='/ktp-usr/new' element={<KtpUsrAddNew />} />}
+          {isLoggedIn && <Route path='/InactiveMOUMOA' element={<InactiveMouMoa />} />}
+          {isLoggedIn && <Route path='/InactiveMOUMOA/new' element={<InactiveMouMoaAddNew />} />}
+          {isLoggedIn && <Route path='/InactiveMOUMOA/:id' element={<InactiveMouMoaSingle />} />}
+
+          {isLoggedIn && <Route path='/KTPUSR' element={<KtpUsr />} />}
+          {isLoggedIn && <Route path='/KTPUSR/new' element={<KtpUsrAddNew />} />}
+          {isLoggedIn && <Route path='/KTPUSR/:id' element={<KtpUsrSingle />} />}
 
           {isLoggedIn && <Route path='/mobility' element={<Mobility />} />}
           {isLoggedIn && <Route path='/mobility/new' element={<MobilityAddNew />} />}
+          {isLoggedIn && <Route path='/mobility/:id' element={<MobilitySingle />} />}
 
           {isLoggedIn && <Route path='/backup' element={<Backup />} />}
           {isLoggedIn && <Route path='/pdf' element={<Pdf />} />}

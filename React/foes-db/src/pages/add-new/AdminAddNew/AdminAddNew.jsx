@@ -2,35 +2,60 @@ import { useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
 
 import './adminAddNew.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { Button } from '@mui/material';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
+import InputPassword from '../../../components/input-password/InputPassword';
+import { useEffect } from 'react';
+import InputEmail from '../../../components/input-email/InputEmail';
+import InputNormal from '../../../components/input-normal/InputNormal';
 
 const AdminAddNew = () => {
   const navigate = useNavigate();
 
-  const firstNameInput = useRef(null);
-  const lastNameInput = useRef(null);
-  const miriIdInput = useRef(null);
-  const perthIdInput = useRef(null);
-  const emailAddressInput = useRef(null);
-  const passwordInput = useRef(null);
+  const [firstName, setFirstName] = useState("");
+  const [isFirstNameValid, setIsFirstNameValid] = useState(false);
+
+  const [lastName, setLastName] = useState("");
+  const [isLastNameValid, setIsLastNameValid] = useState(false);
+
+  const [miriId, setMiriId] = useState("");
+  const [isMiriIdValid, setIsMiriIdValid] = useState(false);
+
+  const [perthId, setPerthId] = useState("");
+  const [isPerthIdValid, setIsPerthIdValid] = useState(false);
+
+  const [password, setPassword] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    if (isPasswordValid && isEmailValid && isFirstNameValid && isLastNameValid && isMiriIdValid && isPerthIdValid) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [isPasswordValid, isEmailValid, isFirstNameValid, isLastNameValid, isMiriIdValid, isPerthIdValid]);
 
   const submitHandler = (event) => {
     event.preventDefault();
 
     const jsonObject = {
-      "first_name": firstNameInput.current.value,
-      "last_name": lastNameInput.current.value,
-      "miri_id": miriIdInput.current.value,
-      "perth_id": perthIdInput.current.value,
-      "email": emailAddressInput.current.value,
-      "password": passwordInput.current.value,
+      "first_name": firstName,
+      "last_name": lastName,
+      "miri_id": miriId,
+      "perth_id": perthId,
+      "email": email,
+      "password": password,
       // default isSuperAdmin is set to false
       "isSuperAdmin": false,
-    }
+    };
 
     fetch('http://127.0.0.1:8000/api/createAdmin', {
       method: 'POST',
@@ -56,36 +81,21 @@ const AdminAddNew = () => {
         <div className="bottom">
           <form onSubmit={submitHandler}>
 
-            <div key='FirstName' className="formInput" >
-              <label>First Name</label>
-              <input type="text" name="FirstName" ref={firstNameInput} />
-            </div>
+            <InputNormal value={firstName} setHandler={setFirstName} label="First Name" isValid={isFirstNameValid} setIsValid={setIsFirstNameValid} />
 
-            <div key='LastName' className="formInput" >
-              <label>Last Name</label>
-              <input type="text" name="LastName" ref={lastNameInput} />
-            </div>
+            <InputNormal value={lastName} setHandler={setLastName} label="Last Name" isValid={isLastNameValid} setIsValid={setIsLastNameValid} />
 
-            <div key='miriId' className="formInput" >
-              <label>Miri ID</label>
-              <input type="text" name="miriId" ref={miriIdInput} />
-            </div>
+            <InputNormal value={miriId} setHandler={setMiriId} label="Miri ID" isValid={isMiriIdValid} setIsValid={setIsMiriIdValid} />
 
-            <div key='perthId' className="formInput" >
-              <label>Perth ID</label>
-              <input type="text" name="perthId" ref={perthIdInput} />
-            </div>
+            <InputNormal value={perthId} setHandler={setPerthId} label="Perth ID" isValid={isPerthIdValid} setIsValid={setIsPerthIdValid} />
 
-            <div key='emailAddress' className="formInput" >
-              <label>Email Address</label>
-              <input type="text" name="emailAddress" ref={emailAddressInput} />
-            </div>
+            <InputEmail value={email} setHandler={setEmail} label="Email Address" isValid={isEmailValid} setIsValid={setIsEmailValid} />
 
-            <div key='password' className="formInput" >
-              <label>Password</label>
-              <input type="text" name="password" ref={passwordInput} />
-            </div>
-            <Button type='submit'>Send</Button>
+            <InputPassword value={password} setHandler={setPassword} label="Password" isValid={isPasswordValid} setIsValid={setIsPasswordValid} />
+
+            {/* <Button type='submit'>Send</Button> */}
+            <Button disabled={!isFormValid} type='submit'>Send</Button>
+            {/* <Button type='submit' disabled="true">Send</Button> */}
           </form>
         </div>
         <div className="addColumnBox">

@@ -10,26 +10,43 @@ import AddColumn from '../../../components/add-column/AddColumn';
 
 const MouMoaAddNew = () => {
   const navigate = useNavigate();
+  
   const programCategoryInput = useRef(null);
-  const collaboratorsInput = useRef(null);
+  const countryInput = useRef(null);
+  const institutionInput = useRef(null);
   const signedDateInput = useRef(null);
   const dueDateInput = useRef(null);
-  const effectivePeriodInput = useRef(null);
-  const agreementInput = useRef(null);
+  const progressInput = useRef(null);
+  const areaOfCollaborationInput = useRef(null);
+  const researchInput = useRef(null);
+  const collaborationPartnershipInput = useRef(null);
+  const exchangeInput = useRef(null);
+  const teachingInput = useRef(null);
   const mutualExtensionInput = useRef(null);
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // listRef.current.forEach(el => {
-    //   if (el.value) {
-    //     newObj[`${el.name}`] = el.value;
-    //   }
-    // });
-    // fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(newObj)
-    // })
-    navigate('/mou-moa');
+    const jsonObject = {
+      "country": countryInput.current.value,
+      "institution": institutionInput.current.value,
+      "signed_date": signedDateInput.current.value,
+      "due_date": dueDateInput.current.value,
+      "area_of_collab": areaOfCollaborationInput.current.value,
+      "progress": progressInput.current.value,
+      // type_of_agreement: is to be changed to programCategory
+      "type_of_agreement": programCategoryInput.current.value,
+      "research": researchInput.current.value,
+      "teaching": teachingInput.current.value,
+      "exchange": exchangeInput.current.value,
+      "collab_and_partnerships": collaborationPartnershipInput.current.value,
+      "mutual_extension": mutualExtensionInput.current.value
+    };
+
+    fetch('http://127.0.0.1:8000/api/createMOUMOA', {
+      method: 'POST',
+      body: JSON.stringify(jsonObject)
+    })
+    .then(navigate('/mou-moa'));
   };
 
   return (
@@ -51,9 +68,13 @@ const MouMoaAddNew = () => {
               </select>
             </div>
      
-            <div key='collaborators' className="formInput" >
-              <label>Collaborators</label>
-              <input type="text" name="collaborators" ref={collaboratorsInput} />
+            <div key='country' className="formInput" >
+              <label>Country</label>
+              <input type="text" name="country" ref={countryInput} />
+            </div>
+            <div key='institution' className="formInput" >
+              <label>Institution</label>
+              <input type="text" name="institution" ref={institutionInput} />
             </div>
             <div key='signedDate' className="formInput">
               <label>Signed Date</label>
@@ -63,13 +84,30 @@ const MouMoaAddNew = () => {
               <label>Due Date</label>
               <input type="date" name="dueDate" ref={dueDateInput}></input>
             </div>
-            <div key='effectivePeriod' className="formInput" >
-              <label>Effective Period</label>
-              <input type="text" name="effectivePeriod" ref={effectivePeriodInput} />
+            <div key='progress' className="formInput" >
+              <label>Progress</label>
+              <input type="text" name="progress" ref={progressInput} />
             </div>
-            <div key='agreement' className="formInput" >
-              <label>Agreement</label>
-              <input type="text" name="agreement" ref={agreementInput} />
+            <div key='areaOfCollaboration' className="formInput" >
+              <label>Are of Collaboration</label>
+              <input type="text" name="areaOfCollaboration" ref={areaOfCollaborationInput} />
+            </div>
+            <div key='research' className="formInput" >
+              <label>Research</label>
+              <input type="number" min="0" name="research" ref={researchInput} />
+            </div>
+
+            <div key='collaborationPartnership' className="formInput" >
+              <label>Collaboration & Partnership</label>
+              <input type="number" min="0" name="collaborationPartnership" ref={collaborationPartnershipInput} />
+            </div>
+            <div key='exchange' className="formInput" >
+              <label>Exchange</label>
+              <input type="number" min="0" name="exchange" ref={exchangeInput} />
+            </div>
+            <div key='teaching' className="formInput" >
+              <label>Teaching</label>
+              <input type="number" min="0" name="teaching" ref={teachingInput} />
             </div>
             <div key='mutualExtension' className="formInput" >
               <label>Mutual Extension</label>

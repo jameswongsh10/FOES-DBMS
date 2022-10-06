@@ -44,6 +44,8 @@ const Sidebar = () => {
         return <WorkspacePremium className='icon' />;
       case 'MOU-MOA':
         return <LocationCity className='icon' />;
+      case 'Inactive-MOU-MOA':
+        return <LocationCity className='icon' />;
       case 'KTP-USR':
         return <Equalizer className='icon' />;
       case 'Mobility':
@@ -116,21 +118,28 @@ const Sidebar = () => {
             </li>
           </Link>
 
-          <Link to='/research-award' className='link'>
+          <Link to='/awards' className='link'>
             <li>
               <WorkspacePremium className='icon' />
               <span>Research-Award</span>
             </li>
           </Link>
 
-          <Link to='/mou-moa' className='link'>
+          <Link to='/moumoa' className='link'>
             <li>
               <LocationCity className='icon' />
               <span>MOU-MOA</span>
             </li>
           </Link>
 
-          <Link to='/ktp-usr' className='link'>
+          <Link to='/InactiveMOUMOA' className='link'>
+            <li>
+              <LocationCity className='icon' />
+              <span>MOU-MOA(Inactive)</span>
+            </li>
+          </Link>
+
+          <Link to='/KTPUSR' className='link'>
             <li>
               <Equalizer className='icon' />
               <span>KTP-USR</span>
