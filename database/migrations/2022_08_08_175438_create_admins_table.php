@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('miri_id');
             $table->string('perth_id');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->integer('isSuperAdmin')->default('0'); //0 for normal user, 1 for super admin
             $table->timestamps();
