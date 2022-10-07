@@ -131,11 +131,17 @@ class DataController extends Controller
 
     public function database_backup()
     {
+        $output = null;
+        $result_code = null;
         //This path will need to change to the client's artisan path.
-        echo shell_exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:run --only-db');
+        exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:run --only-db',$output,$result_code);
+        return $result_code;
     }
 
     public function database_restore(){
-        echo shell_exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:restore-last');
+        $output = null;
+        $result_code = null;
+        exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:restore-last',$output,$result_code);
+        return $result_code;
     }
 }
