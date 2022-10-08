@@ -32,20 +32,21 @@ class RestoreLastBackup extends Command
     public function handle()
     {
         // Get Last backup file
-        $fileArray = collect(Storage::disk($this->getBackupDisk())->allFiles())->toArray();
+        $fileArray = collect(Storage::disk($this->getBackupDisk())->files('Laravel'))->toArray();
         $matchingFiles = array();
-        foreach ($fileArray as $file){
+        foreach ($fileArray as $file) {
             $file_parts = pathinfo($file);
-            if($file_parts['extension'] == "zip"){
-                array_push($matchingFiles,$file);
+            if ($file_parts['extension'] == "zip") {
+                array_push($matchingFiles, $file);
+                $this->info("Push: ".$file);
             }
         }
 
         $lastFile = collect($matchingFiles)->last();
+        $this->info($lastFile);
 
         // Download File
-
-        Storage::disk('local')->writeStream('Laravel/' . $lastFile, Storage::disk($this->getBackupDisk())->readStream($lastFile));
+        Storage::disk('local')->writeStream('Laravel\\' . $lastFile, Storage::disk($this->getBackupDisk())->readStream($lastFile));
 
         // Unzip
         $success = $this->unzipBackup($lastFile);
@@ -74,7 +75,7 @@ class RestoreLastBackup extends Command
             Storage::disk('local')->path($file)
         );
         if ($res === TRUE) {
-            $zip->extractTo(Storage::disk('local')->path('backups\\'.$this->getBackupName()));
+            $zip->extractTo(Storage::disk('local')->path('backups\\' . $this->getBackupName()));
             $zip->close();
             return true;
         } else {
@@ -88,12 +89,12 @@ class RestoreLastBackup extends Command
         Artisan::call('db:wipe');
 
         // Import SQL file
-        $sqlFile = '"'.Storage::disk('local')->path('backups\\'.$this->getBackupName().'\\db-dumps\\mysql-'.config('database.connections.mysql.database').'.sql');
+        $sqlFile = '"' . Storage::disk('local')->path('backups\\' . $this->getBackupName() . '\\db-dumps\\mysql-' . config('database.connections.mysql.database') . '.sql');
         // Files is sometimes too big to be imported with PHP, so we run a mysql command instead
         if (config('database.mysql.password')) {
-            exec("mysql -u ".config('database.connections.mysql.username')." -p ".config('database.connections.mysql.password')." ".config('database.connections.mysql.database')." < " . $sqlFile);
+            exec("mysql -u " . config('database.connections.mysql.username') . " -p " . config('database.connections.mysql.password') . " " . config('database.connections.mysql.database') . " < " . $sqlFile);
         } else {
-            exec("mysql -u ".config('database.connections.mysql.username')." ".config('database.connections.mysql.database')." < " .$sqlFile);
+            exec("mysql -u " . config('database.connections.mysql.username') . " " . config('database.connections.mysql.database') . " < " . $sqlFile);
         }
     }
 }

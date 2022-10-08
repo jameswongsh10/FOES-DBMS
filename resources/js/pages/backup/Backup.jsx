@@ -17,11 +17,6 @@ import Sidebar from '../../components/sidebar/Sidebar';
 import axios from 'axios';
 
 import './backup.scss';
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Dialog from "@mui/material/Dialog";
 import Alert from "@mui/material/Alert";
 
 const Backup = () => {
@@ -29,8 +24,8 @@ const Backup = () => {
     const [databaseName, setDatabaseName] = useState('');
     const [isBackupLoading, setIsBackupLoading] = useState(false);
     const [isRestoreLoading, setIsRestoreLoading] = useState(false);
-    const [backupCode, setBackupCode] = useState(0);
-    const [restoreCode, setRestoreCode] = useState(false);
+    const [backupCode, setBackupCode] = useState(true);
+    const [restoreCode, setRestoreCode] = useState(true);
     const [showBackupMsg, setShowBackupMsg] = useState(false);
     const [showRestoreMsg, setShowRestoreMsg] = useState(false);
 
@@ -51,12 +46,9 @@ const Backup = () => {
         axios.get('/database_backup')
             .then(response => {
                 setIsBackupLoading(false);
-                setBackupCode(JSON.stringify(response.data));
-                if (backupCode == 0) {
-                    // alert("Database backup success!")
+                if (JSON.stringify(response.data) == 0) {
                     setBackupCode(true);
                 } else {
-                    // alert("Database backup failed.")
                     setBackupCode(false);
                 }
                 setShowBackupMsg(true);
@@ -72,18 +64,14 @@ const Backup = () => {
             .then(response => {
                 setIsRestoreLoading(false);
                 if (JSON.stringify(response.data) == 0) {
-                    // alert("Database restore success!")
                     setRestoreCode(true);
                 } else {
-                    // alert("Database restore failed.")
                     setRestoreCode(false);
                 }
                 setShowRestoreMsg(true);
             })
-            // .then(data => console.log(data))
             .catch(error => {
-                // console.log("ERROR:: ", error.response.data);
-                console.log("ERROR OCCURED")
+                console.log("ERROR:: ", error.response.data);
             })
     };
 
