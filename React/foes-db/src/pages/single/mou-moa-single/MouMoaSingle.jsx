@@ -5,9 +5,12 @@ import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './mouMoaSingle.scss';
+import KeyPersonSection from '../../../components/key-person-section/KeyPersonSection';
 
 const MouMoaSingle = () => {
+
   const [entry, setEntry] = useState({});
+  const [keyPersons, setKeyPersons] = useState([]);
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
@@ -18,6 +21,15 @@ const MouMoaSingle = () => {
       .then(data => {
         const { MOUMOA } = data;
         setEntry(MOUMOA);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getKeyContactPerson/moumoa/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        const KeyContactPerson = data.awards;
+        setKeyPersons(KeyContactPerson);
       });
   }, [id]);
 
@@ -40,7 +52,24 @@ const MouMoaSingle = () => {
     setEntry(newEntry);
   };
 
+  const generateSection = (arr) => {
+    let sectionHtml = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (keyPersons[i] === null) {
+        sectionHtml.push(
+          <KeyPersonSection obj={null} index={i} keyPersons={keyPersons} setKeyPersons={setKeyPersons} mouID={id} key={`temp${i}`} />
+        );
+      } else {
+        sectionHtml.push(
+          <KeyPersonSection obj={keyPersons[i]} index={i} keyPersons={keyPersons} setKeyPersons={setKeyPersons} key={keyPersons[i].id} mouID={id} />
+        );
+      }
+    }
+    return sectionHtml;
+  };
+
   const generatedForm = generateForm(entry);
+  const generatedSection = generateSection(keyPersons);
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
@@ -52,6 +81,11 @@ const MouMoaSingle = () => {
     response && navigate('/staff');
   };
 
+  const onAddNewKeyPerson = () => {
+    setKeyPersons([...keyPersons, null]);
+  };
+
+  console.log(keyPersons);
 
   return (
     <div className="single">
@@ -67,6 +101,11 @@ const MouMoaSingle = () => {
             </form>
             <div className="break" />
           </div>
+          <div className="content">
+            {generatedSection}
+            {/* <FileInputSection obj={null} /> */}
+          </div>
+          <button onClick={onAddNewKeyPerson}>Add New Doc</button>
         </div>
       </div>
     </div>
