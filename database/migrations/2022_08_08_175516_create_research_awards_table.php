@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('co_investigators')->nullable(true);
             $table->string('research_grant_scheme');
             $table->string('award_amount');
-            $table->string('evidence_link');
+            $table->string('evidence_link')->nullable(true);
             $table->timestamps();
         });
     }

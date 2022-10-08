@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('no_of_student')->nullable(true);
             $table->string('internal_funding');
             $table->string('external_funding');
+            $table->string('remark')->nullable(true);
             $table->timestamps();
         });
     }

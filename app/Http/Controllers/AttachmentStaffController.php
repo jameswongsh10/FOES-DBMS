@@ -2,96 +2,183 @@
 
 namespace App\Http\Controllers;
 
-
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use App\Models\AttachmentStaff;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AttachmentStaffController extends Controller
 {
-    public function createAttachmentStaff()
+    public function createAttachmentStaff(Request $request)
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        try {
 
-        $newAttachmentStaff = new AttachmentStaff();
+            $validator = Validator::make($request->all(), [
+                'file' => 'required|mimes:pdf,csv,zip|max:15360', //15mb
+            ]);
 
-        foreach ($data as $key => $value) {
-            $newAttachmentStaff->$key = $value;
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()
+                ], 401);
+            }
+
+            if ($file = $request->file('file')) {
+                $path = $file->store('public/files');
+                $name = $file->getClientOriginalName();
+
+                //store your file into directory and db
+                $newAttachment = new AttachmentStaff();
+                $newAttachment->staff_id = $request->staff_id;
+                $newAttachment->type = $request->type;
+                $newAttachment->description = $request->description;
+                $newAttachment->path = $path;
+                $newAttachment->file_name = $name;
+
+                $newAttachment->save();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "Attachment created successfully!",
+                    'attachment' => $newAttachment
+                ], 201);
+            }
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
 
-        //Save into database
-        $save = $newAttachmentStaff->save();
+    }
 
-        if ($save) {
+    public function readAttachment($id)
+    {
+        try {
+            $attachment = AttachmentStaff::find($id);
+
+            if (is_null($attachment)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Attachment not found",
+                ], 404);
+            }
             return response()->json([
-                'status' => $save,
-                'message' => "Attachment Staff created successfully!",
-                'AttachmentStaff' => $newAttachmentStaff
-            ], 201);
-        } else {
+                'status' => true,
+                'attachment' => $attachment
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
-                'status' => $save,
-                'message' => "Error in creating Attachment Staff.",
+                'status' => false,
+                'message' => $e->errorInfo[2]
             ], 400);
         }
     }
 
     public function getAttachmentByStaffID($staff_id)
     {
-        $column = 'staff_id'; // This is the name of the column you wish to search
+        try {
+            $column = 'staff_id'; // This is the name of the column you wish to search
 
-        $attachment = AttachmentStaff::where($column , '=', $staff_id)->with('staff')->get();
+            $attachment = AttachmentStaff::where($column, '=', $staff_id)->with('staff')->get();
 
-        if (is_null($attachment)) {
+            if (is_null($attachment)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Attachment not found",
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'attachment' => $attachment
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Attachment not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
-        return response()->json([
-            'status' => true,
-            'attachment' => $attachment
-        ], 200);
     }
 
-    public function updateAttachment($id)
+    public function updateAttachment(Request $request, $id)
     {
-        $attachment = AttachmentStaff::find($id);
+        try {
+            $attachment = AttachmentStaff::find($id);
 
-        if (is_null($attachment)) {
+            if (is_null($attachment)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Attachment not found",
+                ], 404);
+            }
+
+            $file = $request->file('file');
+            if (!is_null($file)) {
+                $validator = Validator::make($request->all(), [
+                    'file' => 'required|mimes:pdf,csv,zip|max:15360',//15mb
+                ]);
+
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => $validator->errors()
+                    ], 401);
+                }
+
+                $path = $file->store('public/files');
+                $name = $file->getClientOriginalName();
+                Storage::delete($attachment->path);
+                $attachment->update(['path' => $path]);
+                $attachment->update(['file_name' => $name]);
+
+            }
+
+            $attachment->update($request->except(['file']));
+
             return response()->json([
-                'status' => false,
-                'message' => "Attachment not found",
-            ], 404);
+                "success" => true,
+                "message" => "Attachment updated successfully!",
+                "attachment" => $attachment
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json(['status' => false,
+                'message' => $e->errorInfo[2]], 400);
         }
 
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $attachment->update($data);
-
-        return response()->json([
-            'status' => true,
-            'message' => "Attachment updated successfully!",
-            'awards' => $attachment
-        ], 200);
     }
 
     public function deleteAttachment($id)
     {
-        $attachment = AttachmentStaff::find($id);
+        try {
+            $attachment = AttachmentStaff::find($id);
 
-        if (is_null($attachment)) {
+            if (is_null($attachment)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Attachment not found",
+                ], 404);
+            }
+
+            $attachment->delete();
+            Storage::delete($attachment->path);
+
+            return response()->json([
+                'status' => true,
+                'message' => "Attachment deleted successfully!",
+                'attachment' => $attachment
+            ], 200);
+
+        } catch (QueryException $e) {
             return response()->json([
                 'status' => false,
-                'message' => "Attachment not found",
-            ], 404);
+                'message' => $e->errorInfo[2]
+            ], 400);
         }
-
-        $attachment->delete();
-
-        return response()->json([
-            'status' => true,
-            'message' => "Attachment deleted successfully!",
-            'awards' => $attachment
-        ], 200);
     }
 }
