@@ -1,0 +1,59 @@
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import './inputPassword.scss';
+
+const InputPassword = (props) => {
+  // const [isValid, setIsValid] = useState(true);
+  const isValid = props.isValid;
+  const setIsValid = props.setIsValid;
+  const [isEntered, setIsEntered] = useState(false);
+
+  const value = props.value;
+
+  useEffect(() => {
+    if (value != "") {
+      setIsEntered(true);
+      console.log("IS ENTERED");
+    } else {
+      setIsEntered(false);
+      // setIsValid(true);
+    }
+
+
+    if (isEntered) {
+      if (checkValidInput(value)) {
+        setIsValid(true);
+      } else {
+        setIsValid(false);
+      }
+    }
+
+
+  }, [value, isEntered, setIsValid]);
+
+
+  const checkValidInput = (input) => {
+    var pass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
+    if (input.match(pass)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  };
+
+  const onInputChangeHandler = (event) => {
+    props.setHandler(event.target.value);
+  };
+
+  return (
+    // <div className={isValid ? 'formInput' : 'formInput--invalid' }>
+    <div className={(isEntered && !isValid)? 'formInput--invalid' : 'formInput' }>
+      <label>{props.label}</label>
+      <input type="text" onChange={onInputChangeHandler}></input>
+    </div>
+  );
+};
+
+export default InputPassword;

@@ -9,6 +9,7 @@ use App\Http\Controllers\KTPUSR_Controller;
 use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\AttachmentStaffController;
 use Illuminate\Support\Facades\Route;
 
@@ -110,6 +111,8 @@ Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'u
 Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
 Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'getKeyContactPersonColumns']);
 
+//Data Controller
+Route::post('csvImport',  [DataController::class, 'csvImport']);
 //Attachment Staff CRUD
 Route::post('createAttachment', [AttachmentStaffController::class, 'createAttachmentStaff']);
 Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachment']);

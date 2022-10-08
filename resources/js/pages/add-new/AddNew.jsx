@@ -49,7 +49,7 @@ const AddNew = () => {
               // code block
               break;
           case "Mobility":
-              // code block
+              url = '/createMobility';
               break;
           case "Research-Award":
               // code block
