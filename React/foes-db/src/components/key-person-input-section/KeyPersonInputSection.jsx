@@ -1,0 +1,84 @@
+import React, { useEffect, useState } from 'react';
+
+const KeyPersonInputSection = (props) => {
+
+  const [institution, setInstitution] = useState(props.isNew ? "" : props.obj.institution);
+  const [name, setName] = useState(props.isNew ? "" : props.obj.name);
+  const [email, setEmail] = useState(props.isNew ? "" : props.obj.email);
+
+  const onCancelHandler = () => {
+    props.setIsEditing(false);
+  };
+
+  const onNewCancelHandler = () => {
+    const newKeyPersons = (props.keyPersons).filter((element, i) => !(i === props.index));
+    props.setKeyPersons(newKeyPersons);
+  };
+
+  const onUpdateHandler = (event) => {
+    // TODO: Find a way to use form-data on fetch request
+    // staff_id: props.staffID
+    // type: typeInput.current.value
+    // description: description
+    // file: file
+    event.preventDefault();
+    const jsonObject = {
+      "name": name,
+      "email": email,
+      "institution": institution
+    };
+
+    fetch(`http://127.0.0.1:8000/api/updateKeyContactPerson/${props.obj.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(jsonObject)
+    })
+      .then(response => {
+        const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+        props.setKeyPersons([...newArray, jsonObject]);
+      });
+  };
+
+  const onSaveHandler = (event) => {
+    event.preventDefault();
+    const jsonObject = {
+      "name": name,
+      "email": email,
+      "institution": institution,
+      "mou_moa_id": props.mouID
+    };
+
+    fetch('http://127.0.0.1:8000/api/createKeyContactPerson', {
+      method: 'POST',
+      body: JSON.stringify(jsonObject)
+    })
+      .then(response => {
+        const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+        props.setKeyPersons([...newArray, jsonObject]);
+      });
+  };
+
+
+  return (
+    <div className="section">
+      <p className='section-title'>{props.sectionTitle}</p>
+      <div className="form">
+        <div key='description' className="formInput" >
+          <label>name</label>
+          <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
+        </div>
+        <div key='institution' className="formInput" >
+          <label>institution</label>
+          <input type="text" name="institution" value={institution} onChange={e => setInstitution(e.target.value)} />
+        </div>
+        <div key='email' className="formInput" >
+          <label>email</label>
+          <input type="text" name="email" value={email} onChange={e => setEmail(e.target.value)} />
+        </div>
+        <button onClick={props.isNew === true ? onSaveHandler : onUpdateHandler}>Save</button>
+        <button onClick={props.isNew === true ? onNewCancelHandler : onCancelHandler}>Cancel</button>
+      </div>
+    </div>
+  );
+};
+
+export default KeyPersonInputSection;
