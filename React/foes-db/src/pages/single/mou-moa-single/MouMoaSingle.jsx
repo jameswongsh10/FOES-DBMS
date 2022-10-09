@@ -6,9 +6,10 @@ import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './mouMoaSingle.scss';
 import KeyPersonSection from '../../../components/key-person-section/KeyPersonSection';
+import { useSelector } from 'react-redux';
 
 const MouMoaSingle = () => {
-
+  const token = useSelector(state => state.auth.tokenId)
   const [entry, setEntry] = useState({});
   const [keyPersons, setKeyPersons] = useState([]);
   const params = useParams();
@@ -16,22 +17,30 @@ const MouMoaSingle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getMOUMOA/${id}`)
+    fetch(`http://127.0.0.1:8000/api/getMOUMOA/${id}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const { MOUMOA } = data;
         setEntry(MOUMOA);
       });
-  }, [id]);
+  }, [id, token]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getKeyContactPerson/moumoa/${id}`)
+    fetch(`http://127.0.0.1:8000/api/getKeyContactPerson/moumoa/${id}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const KeyContactPerson = data.awards;
         setKeyPersons(KeyContactPerson);
       });
-  }, [id]);
+  }, [id, token]);
 
   const generateForm = (obj) => {
     let formHtml = [];
@@ -75,7 +84,10 @@ const MouMoaSingle = () => {
     event.preventDefault();
     const response = fetch(`http://127.0.0.1:8000/api/updateMOUMOA/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(entry)
+      body: JSON.stringify(entry),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     });
 
     response && navigate('/staff');

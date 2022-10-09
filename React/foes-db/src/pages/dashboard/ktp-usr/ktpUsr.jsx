@@ -8,13 +8,18 @@ import './ktpUsr.scss';
 
 const KtpUsr = () => {
 
+  const token = useSelector(state => state.auth.tokenId)
   const [columns, setColumns] = useState();
   const [rows, setRows] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/readAllKTPUSR'
+        'http://127.0.0.1:8000/readAllKTPUSR', { 
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       if (!response.ok) {
@@ -27,7 +32,11 @@ const KtpUsr = () => {
       const { ["ktpusr"]: collectionObj } = data;
       
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getKTPUSRColumns'
+        'http://127.0.0.1:8000/getKTPUSRColumns', { 
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       const columnData = await getColumnResponse.json();
@@ -40,7 +49,7 @@ const KtpUsr = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div className="home">

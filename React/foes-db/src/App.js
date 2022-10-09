@@ -43,12 +43,13 @@ function App() {
   const isDarkMode = useSelector(state => state.ui.isDarkMode);
 
   const storedToken = localStorage.getItem('token');
+  const storedIsSuperUser = localStorage.getItem('isSuperAdmin');
   
   useEffect(() => {
     if (storedToken) {
-      dispatch(authActions.login(storedToken));
+      dispatch(authActions.login([ storedToken, storedIsSuperUser == 1 ? true : false ]));
     }
-  }, [storedToken, dispatch])
+  }, [storedToken, storedIsSuperUser, dispatch])
 
   return (
     <div className={isDarkMode ? 'app dark' : 'app'}>

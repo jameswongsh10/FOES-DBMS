@@ -29,6 +29,7 @@ const DataTable = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const token = useSelector(state => state.auth.tokenId)
 
   const mutateRow = useFakeMutation();
   const [snackbar, setSnackbar] = React.useState(null);
@@ -43,14 +44,18 @@ const DataTable = (props) => {
         `http://127.0.0.1:8000/api/update${viewCollection}/${elementID}`,
         {
           method: 'put',
-          body: JSON.stringify(newObj)
-        });
+          body: JSON.stringify(newObj),
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
+        );
 
       const response = await mutateRow(newRow);
       setSnackbar({ children: 'Successfully saved', severity: 'success' });
       return response;
     },
-    [mutateRow, viewCollection],
+    [mutateRow, viewCollection, token],
   );
 
   const handleProcessRowUpdateError = React.useCallback((error) => {
@@ -64,7 +69,10 @@ const DataTable = (props) => {
   const onDeleteEntryHandler = (deleteUrl, id) => {
     // TODO: implement http DEL fetch function using collection and ID
     fetch(`http://127.0.0.1:8000/api/${deleteUrl}/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
     .then(props.setRows(props.rows.filter(item => item.id !== id)))
   };

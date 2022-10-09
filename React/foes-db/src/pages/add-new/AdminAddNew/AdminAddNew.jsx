@@ -13,6 +13,7 @@ import InputEmail from '../../../components/input-email/InputEmail';
 import InputNormal from '../../../components/input-normal/InputNormal';
 
 const AdminAddNew = () => {
+  const token = useSelector(state => state.auth.tokenId)
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
@@ -59,7 +60,10 @@ const AdminAddNew = () => {
 
     fetch('http://127.0.0.1:8000/api/createAdmin', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
       .then(navigate('/'));
 

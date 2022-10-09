@@ -5,22 +5,28 @@ import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './adminSingle.scss';
+import { useSelector } from 'react-redux';
 
 const AdminSingle = () => {
 
+  const token = useSelector(state => state.auth.tokenId)
   const [entry, setEntry] = useState({});
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAdmin/${id}`)
+    fetch(`http://127.0.0.1:8000/api/getAdmin/${id}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const { admin } = data;
         setEntry(admin);
       });
-  }, [id]);
+  }, [id, token]);
 
   const generateForm = (obj) => {
     let formHtml = [];
@@ -46,7 +52,10 @@ const AdminSingle = () => {
     event.preventDefault();
     const response = fetch(`http://127.0.0.1:8000/api/updateAdmin/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(entry)
+      body: JSON.stringify(entry),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     });
 
     response && navigate('/');

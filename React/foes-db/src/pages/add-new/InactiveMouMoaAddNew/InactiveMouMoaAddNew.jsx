@@ -9,6 +9,7 @@ import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
 
 const InactiveMouMoaAddNew = () => {
+  const token = useSelector(state => state.auth.tokenId)
   const navigate = useNavigate();
   const programCategoryInput = useRef(null);
   const collaboratorsInput = useRef(null);
@@ -32,7 +33,10 @@ const InactiveMouMoaAddNew = () => {
 
     fetch('http://127.0.0.1:8000/api/createInactiveMOUMOA', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
       .then(navigate('/inactive-mou-moa'));
   };

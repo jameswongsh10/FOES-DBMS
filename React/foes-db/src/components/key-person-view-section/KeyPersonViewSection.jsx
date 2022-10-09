@@ -1,6 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 
 const KeyPersonViewSection = (props) => {
+
+  const token = useSelector(state => state.auth.tokenId)
 
   const onEditHandler = () => {
     props.setIsEditing(true);
@@ -8,7 +11,10 @@ const KeyPersonViewSection = (props) => {
 
   const onDeleteHandler = () => {
     fetch(`http://127.0.0.1:8000/api/deleteKeyContactPerson/${props.obj.id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
     const newKeyPersons = (props.keyPersons).filter((element, i) => !(i === props.index));
     props.setKeyPersons(newKeyPersons);

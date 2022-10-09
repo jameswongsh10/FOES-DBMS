@@ -9,6 +9,7 @@ import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
 
 const ResearchAwardAddNew = () => {
+  const token = useSelector(state => state.auth.tokenId)
   const navigate = useNavigate();
   const staffIdInput = useRef(null);
   const typeOfGrantInput = useRef(null);
@@ -32,7 +33,10 @@ const ResearchAwardAddNew = () => {
 
     fetch('http://127.0.0.1:8000/api/createAwards', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
     .then(navigate('/research-award'));
   };

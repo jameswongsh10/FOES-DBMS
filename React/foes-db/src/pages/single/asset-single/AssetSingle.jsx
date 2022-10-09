@@ -5,22 +5,28 @@ import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './assetSingle.scss';
+import { useSelector } from 'react-redux';
 
 const AssetSingle = () => {
 
+  const token = useSelector(state => state.auth.tokenId)
   const [entry, setEntry] = useState({});
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAsset/${id}`)
+    fetch(`http://127.0.0.1:8000/api/getAsset/${id}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const { asset } = data;
         setEntry(asset);
       });
-  }, [id]);
+  }, [id, token]);
 
   const generateForm = (obj) => {
     let formHtml = [];
@@ -47,7 +53,10 @@ const AssetSingle = () => {
     event.preventDefault();
     const response = fetch(`http://127.0.0.1:8000/api/updateAsset/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(entry)
+      body: JSON.stringify(entry),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     });
 
     response && navigate('/asset');

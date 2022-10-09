@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import FileInputSection from '../../../components/section/FileInputSection';
 
 const StaffAddNew = () => {
+  const token = useSelector(state => state.auth.tokenId)
   const navigate = useNavigate();
 
   const firstNameInput = useRef(null);
@@ -69,7 +70,10 @@ const StaffAddNew = () => {
 
     fetch('http://127.0.0.1:8000/api/createStaff', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
     .then(navigate('/staff'));
 

@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const ResearchAwardsSection = (props) => {
 
+  const token = useSelector(state => state.auth.tokenId)
   const [awardArr, setAwardArr] = useState([]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAwards/staff/${props.staffId}`)
+    fetch(`http://127.0.0.1:8000/api/getAwards/staff/${props.staffId}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const { awards } = data;
         setAwardArr(awards);
       });
-  }, [props.staffId]);
+  }, [props.staffId, token]);
 
   console.log(awardArr);
 

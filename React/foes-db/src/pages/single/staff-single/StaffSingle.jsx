@@ -8,9 +8,11 @@ import './staffSingle.scss';
 import FileInputSection from '../../../components/section/FileInputSection';
 import FileSection from '../../../components/file-section/FileSection';
 import ResearchAwardsSection from '../../../components/research-awards-section/ResearchAwardsSection';
+import { useSelector } from 'react-redux';
 
 const StaffSingle = () => {
 
+  const token = useSelector(state => state.auth.tokenId)
   const [entry, setEntry] = useState({});
   const [attachments, setAttachments] = useState([]);
   const params = useParams();
@@ -18,22 +20,30 @@ const StaffSingle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getStaff/${id}`)
+    fetch(`http://127.0.0.1:8000/api/getStaff/${id}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const { staff } = data;
         setEntry(staff);
       });
-  }, [id]);
+  }, [id, token]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`)
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const attachment = data.attachment;
         setAttachments(attachment);
       });
-  }, [id]);
+  }, [id, token]);
 
 
   const generateForm = (obj) => {
@@ -78,7 +88,10 @@ const StaffSingle = () => {
     event.preventDefault();
     const response = fetch(`http://127.0.0.1:8000/api/updateStaff/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(entry)
+      body: JSON.stringify(entry),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     });
 
     response && navigate('/staff');

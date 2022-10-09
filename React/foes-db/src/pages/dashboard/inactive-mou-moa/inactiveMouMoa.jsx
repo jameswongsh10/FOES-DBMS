@@ -7,14 +7,18 @@ import TableContainer from '../../../layout/table-container/TableContainer';
 import './mouMoa.scss';
 
 const InactiveMouMoa = () => {
-
+  const token = useSelector(state => state.auth.tokenId)
   const [columns, setColumns] = useState();
   const [rows, setRows] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/readAllInactiveMOUMOA'
+        'http://127.0.0.1:8000/readAllInactiveMOUMOA', { 
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       if (!response.ok) {
@@ -27,7 +31,11 @@ const InactiveMouMoa = () => {
       const { ["InactiveMOUMOA"]: collectionObj } = data;
       
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getInactiveMOUMOAColumns'
+        'http://127.0.0.1:8000/getInactiveMOUMOAColumns', { 
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       const columnData = await getColumnResponse.json();

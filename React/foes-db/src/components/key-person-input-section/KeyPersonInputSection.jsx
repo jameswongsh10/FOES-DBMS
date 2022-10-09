@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const KeyPersonInputSection = (props) => {
+
+  const token = useSelector(state => state.auth.tokenId)
 
   const [institution, setInstitution] = useState(props.isNew ? "" : props.obj.institution);
   const [name, setName] = useState(props.isNew ? "" : props.obj.name);
@@ -30,7 +33,10 @@ const KeyPersonInputSection = (props) => {
 
     fetch(`http://127.0.0.1:8000/api/updateKeyContactPerson/${props.obj.id}`, {
       method: 'PUT',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
       .then(response => {
         const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
@@ -49,7 +55,10 @@ const KeyPersonInputSection = (props) => {
 
     fetch('http://127.0.0.1:8000/api/createKeyContactPerson', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
       .then(response => {
         const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));

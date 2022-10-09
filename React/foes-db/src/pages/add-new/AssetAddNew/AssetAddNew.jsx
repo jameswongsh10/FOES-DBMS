@@ -9,6 +9,7 @@ import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
 
 const AssetAddNew = () => {
+  const token = useSelector(state => state.auth.tokenId)
   const navigate = useNavigate();
 
   const phsycialCheckInput = useRef(null);
@@ -51,7 +52,10 @@ const AssetAddNew = () => {
 
     fetch('http://127.0.0.1:8000/api/createAsset', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
       .then(response => {alert(response.json())})
       .then(navigate('/asset'));
