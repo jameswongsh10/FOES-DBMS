@@ -41,6 +41,7 @@ function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const isDarkMode = useSelector(state => state.ui.isDarkMode);
+  const isSuperAdmin = useSelector(state => state.auth.isSuperAdmin)
 
   const storedToken = localStorage.getItem('token');
   const storedIsSuperUser = localStorage.getItem('isSuperAdmin');
@@ -55,10 +56,11 @@ function App() {
     <div className={isDarkMode ? 'app dark' : 'app'}>
       <BrowserRouter>
         <Routes>
-          {isLoggedIn && <Route path='/' element={<Admin />} />}
-          {isLoggedIn && <Route path='/admin' element={<Admin />} />}
-          {isLoggedIn && <Route path='/admin/new' element={<AdminAddNew />} />}
-          {isLoggedIn && <Route path='/admin/:id' element={<AdminSingle />} />}
+          {isLoggedIn && isSuperAdmin && <Route path='/' element={<Admin />} />}
+          {isLoggedIn && !isSuperAdmin && <Route path='/' element={<Staff />} />}
+          {isLoggedIn && isSuperAdmin && <Route path='/admin' element={<Admin />} />}
+          {isLoggedIn && isSuperAdmin && <Route path='/admin/new' element={<AdminAddNew />} />}
+          {isLoggedIn && isSuperAdmin && <Route path='/admin/:id' element={<AdminSingle />} />}
 
           {isLoggedIn && <Route path='/staff' element={<Staff />} />}
           {isLoggedIn && <Route path='/staff/new' element={<StaffAddNew />} />}
