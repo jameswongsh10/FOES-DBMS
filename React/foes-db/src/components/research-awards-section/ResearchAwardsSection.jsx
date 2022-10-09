@@ -13,7 +13,7 @@ const ResearchAwardsSection = (props) => {
       });
   }, [props.staffId]);
 
-  console.log(awardArr);
+  //console.log(awardArr);
 
   const generateHtml = (arr) => {
     let sectionHtml = [];
