@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
 import './setting.scss';
-import {Button, FormControl, FormLabel, Radio, RadioGroup} from "@mui/material";
+import {AlertTitle, Button, FormControl, FormLabel, Radio, RadioGroup} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from 'axios';
 import Dialog from "@mui/material/Dialog";
@@ -10,9 +10,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
+import Alert from "@mui/material/Alert";
 
 const Setting = () => {
-    const [error, setError] = useState(false);
+    const [error, setError] = useState();
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState();
     const [array, setArray] = useState([]);
@@ -34,9 +35,7 @@ const Setting = () => {
                 object[header] = values[index].trim();
                 return object;
             }, {});
-
             return obj;
-
         });
 
         const table = document.querySelector('input[name="target_table"]:checked').value;
@@ -66,11 +65,14 @@ const Setting = () => {
             };
             fileReader.readAsText(file);
         }
-
     };
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const close = (e) => {
+        setError(false);
     };
 
     const headerKeys = Object.keys(Object.assign({}, ...array));
@@ -80,6 +82,13 @@ const Setting = () => {
             <Sidebar/>
             <div className="homeContainer">
                 <Navbar/>
+                {(error == false) &&
+                    <Alert severity="success" onClose={() => {
+                        close()
+                    }}>
+                        <AlertTitle>Success</AlertTitle>
+                        Data Import Success! — <strong>check it in the database!</strong>
+                    </Alert>}
                 <Dialog
                     open={open}
                     onClose={handleClose}
@@ -133,7 +142,6 @@ const Setting = () => {
                         <Button variant="contained"
                                 onClick={(e) => {
                                     handleOnSubmit(e);
-
                                 }}
                         >
                             IMPORT CSV
@@ -144,25 +152,25 @@ const Setting = () => {
 
                 <br/>
 
-                {/*   <table>
-                    <thead>
-                    <tr key={"header"}>
-                        {headerKeys.map((key) => (
-                            <th>{key}</th>
-                        ))}
-                    </tr>
-                    </thead>
+                {/*<table>*/}
+                {/*    <thead>*/}
+                {/*    <tr key={"header"}>*/}
+                {/*        {headerKeys.map((key) => (*/}
+                {/*            <th>{key}</th>*/}
+                {/*        ))}*/}
+                {/*    </tr>*/}
+                {/*    </thead>*/}
 
-                    <tbody>
-                    {array.map((item) => (
-                        <tr key={item.id}>
-                            {Object.values(item).map((val) => (
-                                <td>{val}</td>
-                            ))}
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>*/}
+                {/*    <tbody>*/}
+                {/*    {array.map((item) => (*/}
+                {/*        <tr key={item.id}>*/}
+                {/*            {Object.values(item).map((val) => (*/}
+                {/*                <td>{val}</td>*/}
+                {/*            ))}*/}
+                {/*        </tr>*/}
+                {/*    ))}*/}
+                {/*    </tbody>*/}
+                {/*</table>*/}
             </div>
         </div>
     );
