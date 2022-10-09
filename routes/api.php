@@ -120,3 +120,4 @@ Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachm
 Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
 Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAttachment']);
 Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
+Route::get('downloadAttachment/{id}', [AttachmentStaffController::class, 'downloadAttachment']);

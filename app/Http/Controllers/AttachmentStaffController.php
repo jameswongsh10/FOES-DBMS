@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\AttachmentStaff;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class AttachmentStaffController extends Controller
 {
@@ -15,7 +16,7 @@ class AttachmentStaffController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                'file' => 'required|mimes:pdf,csv,zip|max:15360', //15mb
+                'file' => 'required|mimes:pdf,csv,zip|max:15360', //15mb application/pdf, text/csv, application/zip
             ]);
 
             if ($validator->fails()) {
@@ -28,6 +29,16 @@ class AttachmentStaffController extends Controller
             if ($file = $request->file('file')) {
                 $path = $file->store('public/files');
                 $name = $file->getClientOriginalName();
+                $ownPath = explode("/",$path);
+                $fileExtensionArr = explode(".", $ownPath[2]);
+                $contentType = "";
+                if (strcmp($fileExtensionArr[1], "csv") == 0) {
+                    $contentType = "text/csv";
+                } elseif (strcmp($fileExtensionArr[1], "pdf") == 0) {
+                    $contentType = "application/pdf";
+                } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
+                    $contentType = "application/zip";
+                }
 
                 //store your file into directory and db
                 $newAttachment = new AttachmentStaff();
@@ -36,6 +47,7 @@ class AttachmentStaffController extends Controller
                 $newAttachment->description = $request->description;
                 $newAttachment->path = $path;
                 $newAttachment->file_name = $name;
+                $newAttachment->content_type = $contentType;
 
                 $newAttachment->save();
 
@@ -180,5 +192,20 @@ class AttachmentStaffController extends Controller
                 'message' => $e->errorInfo[2]
             ], 400);
         }
+    }
+
+    public function downloadAttachment($id) {
+        //TODO swap the json of content-type to both edit and create
+        $attachment = AttachmentStaff::find($id);
+        $path = explode("/",$attachment['path']);
+        $fullPath = 'app\\public\\files\\' . $path[2];
+//        return response()->download(storage_path($fullPath), $attachment['file_name']);
+        $data = json_encode([
+            'Content-Type' => $attachment->content_type,
+        ]);
+        $fileStorePath = storage_path($fullPath);
+        File::put($fileStorePath, $data);
+
+        return response()->download($fileStorePath, $attachment['file_name']);
     }
 }
