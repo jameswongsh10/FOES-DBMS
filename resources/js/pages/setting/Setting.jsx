@@ -72,7 +72,7 @@ const Setting = () => {
     };
 
     const close = (e) => {
-        setError(false);
+        setError(true);
     };
 
     const headerKeys = Object.keys(Object.assign({}, ...array));
