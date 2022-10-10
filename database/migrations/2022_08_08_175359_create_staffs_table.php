@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('title');
-            $table->string('miri_id');
+            $table->string('miri_id')->unique();
             $table->string('perth_id');
             $table->date('report_duty_date');
             $table->string('department');
