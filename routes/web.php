@@ -112,6 +112,8 @@ Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'u
 Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
 Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'getKeyContactPersonColumns']);
 
+//Data Controller
+Route::post('csvImport',  [DataController::class, 'csvImport']);
 //Attachment Staff CRUD
 Route::post('createAttachment', [AttachmentStaffController::class, 'createAttachmentStaff']);
 Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachment']);

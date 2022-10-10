@@ -45,6 +45,18 @@ const StaffSingle = () => {
       });
   }, [id, token]);
 
+  const updateAttachmentsHTTP = () => {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const attachment = data.attachment;
+        setAttachments(attachment);
+      }); 
+  }
 
   const generateForm = (obj) => {
     let formHtml = [];
@@ -70,11 +82,11 @@ const StaffSingle = () => {
     for (var i = 0; i < arr.length; i++) {
       if (attachments[i] === null) {
         sectionHtml.push(
-          <FileSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`}/>
+          <FileSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP}/>
         );
       } else {
         sectionHtml.push(
-          <FileSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} />
+          <FileSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP}/>
         );
       }
     }

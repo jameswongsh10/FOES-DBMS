@@ -113,17 +113,16 @@ Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'u
 Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
 Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'getKeyContactPersonColumns']);
 
+//CSV Import
+Route::post('csvImport', [DataController::class, 'csvImport']);
 //Attachment Staff CRUD
 Route::post('createAttachment', [AttachmentStaffController::class, 'createAttachmentStaff']);
 Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachment']);
 Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
 Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAttachment']);
 Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
-
-//CSV Import
-Route::post('csvImport', [DataController::class, 'csvImport']);
+Route::get('downloadAttachment/{id}', [AttachmentStaffController::class, 'downloadAttachment']);
 
 //Login
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
-

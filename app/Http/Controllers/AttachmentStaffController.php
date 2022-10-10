@@ -8,6 +8,7 @@ use App\Models\AttachmentStaff;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class AttachmentStaffController extends Controller
 {
@@ -26,19 +27,30 @@ class AttachmentStaffController extends Controller
                     ], 401);
                 }
 
-                if ($file = $request->file('file')) {
-                    $path = $file->store('public/files');
-                    $name = $file->getClientOriginalName();
+            if ($file = $request->file('file')) {
+                $path = $file->store('public/files');
+                $name = $file->getClientOriginalName();
+                $ownPath = explode("/",$path);
+                $fileExtensionArr = explode(".", $ownPath[2]);
+                $contentType = "";
+                if (strcmp($fileExtensionArr[1], "csv") == 0) {
+                    $contentType = "text/csv";
+                } elseif (strcmp($fileExtensionArr[1], "pdf") == 0) {
+                    $contentType = "application/pdf";
+                } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
+                    $contentType = "application/zip";
+                }
 
-                    //store your file into directory and db
-                    $newAttachment = new AttachmentStaff();
-                    $newAttachment->staff_id = $request->staff_id;
-                    $newAttachment->type = $request->type;
-                    $newAttachment->description = $request->description;
-                    $newAttachment->path = $path;
-                    $newAttachment->file_name = $name;
+                //store your file into directory and db
+                $newAttachment = new AttachmentStaff();
+                $newAttachment->staff_id = $request->staff_id;
+                $newAttachment->type = $request->type;
+                $newAttachment->description = $request->description;
+                $newAttachment->path = $path;
+                $newAttachment->file_name = $name;
+                $newAttachment->content_type = $contentType;
 
-                    $newAttachment->save();
+                $newAttachment->save();
 
                     return response()->json([
                         'status' => true,
@@ -209,5 +221,20 @@ class AttachmentStaffController extends Controller
             'status' => false,
             'message' => "Unauthorized user"
         ], 401);
+    }
+
+    public function downloadAttachment($id) {
+        //TODO swap the json of content-type to both edit and create
+        $attachment = AttachmentStaff::find($id);
+        $path = explode("/",$attachment['path']);
+        $fullPath = 'app/public/files/' . $path[2];
+//        return response()->download(storage_path($fullPath), $attachment['file_name']);
+        $data = json_encode([
+            'Content-Type' => $attachment->content_type,
+        ]);
+        $fileStorePath = storage_path($fullPath);
+        File::put($fileStorePath, $data);
+
+        return response()->download($fileStorePath, $attachment['file_name']);
     }
 }

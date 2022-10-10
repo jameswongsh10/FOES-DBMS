@@ -16,7 +16,7 @@ const FileViewSection = (props) => {
         Authorization: `Bearer ${token}`
       }
     });
-    const newAttachments = (props.attachments).filter((element, i) => !(i === props.index));
+    const newAttachments = (props.attachments).filter((element, i) => !(element.id === props.attachmentId));
     props.setAttachments(newAttachments);
   };
 
@@ -32,6 +32,8 @@ const FileViewSection = (props) => {
         <div className="formInput">
           <label>file_name: {props.obj.file_name}</label>
         </div>
+        <a href={`http://127.0.0.1:8000/api/downloadAttachment/${props.attachmentId}`} download='myFile'>Download</a>
+        attachmentID: {props.attachmentId}
         <button onClick={onEditHandler}>edit</button>
         <button onClick={onDeleteHandler}>delete</button>
       </div>

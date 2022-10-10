@@ -48,7 +48,7 @@ const InactiveMouMoa = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div className="home">

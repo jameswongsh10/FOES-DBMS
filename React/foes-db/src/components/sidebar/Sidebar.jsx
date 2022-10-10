@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { tableActions } from '../../store/table-slice';
-
+import { useNavigate} from 'react-router-dom';
 import { Transform, SettingsApplicationsOutlined, AccountCircleOutlined, ExitToAppOutlined, HomeWorkOutlined, BadgeOutlined, SupervisorAccountOutlined, WorkspacePremiumOutlined, LocationCityOutlined, FolderOutlined, OutputOutlined, BackupOutlined, EqualizerOutlined, AddBox, Badge, SupervisorAccount, HomeWork, WorkspacePremium, LocationCity, Equalizer, Folder, Backup, SettingsApplications, AccountCircle, InputOutlined } from '@mui/icons-material';
 import { uiActions } from '../../store/ui-slice';
 
@@ -12,6 +12,7 @@ import { authActions } from '../../store/auth-slice';
 
 const Sidebar = () => {
   const token = useSelector(state => state.auth.tokenId);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSuperAdmin = useSelector(state => state.auth.isSuperAdmin);
   const sidebarCollections = useSelector(state => state.table.sidebarCollections);
@@ -74,6 +75,7 @@ const Sidebar = () => {
       }
     });
     dispatch(authActions.logout());
+    navigate('/')
   };
 
   const [open, setOpen] = useState(false);

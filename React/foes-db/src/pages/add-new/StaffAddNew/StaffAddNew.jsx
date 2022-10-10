@@ -12,14 +12,13 @@ import { useEffect } from 'react';
 import FileInputSection from '../../../components/section/FileInputSection';
 
 const StaffAddNew = () => {
-  const token = useSelector(state => state.auth.tokenId)
+  const token = useSelector(state => state.auth.tokenId);
   const navigate = useNavigate();
 
   const firstNameInput = useRef(null);
   const lastNameInput = useRef(null);
   const miriIdInput = useRef(null);
   const perthIdInput = useRef(null);
-  const emailAddressInput = useRef(null);
   const reportDutyInput = useRef(null);
   const departmentInput = useRef(null);
   const titleInput = useRef(null);
@@ -33,10 +32,13 @@ const StaffAddNew = () => {
   const resignedDateInput = useRef(null);
   const remarkInput = useRef(null);
 
+  const [customColumn, setCustomColumn] = useState([]);
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
-
   const [isFormValid, setIsFormValid] = useState(false);
+
+  let inputArr = customColumn;
+  const listRef = useRef([]);
 
   useEffect(() => {
     if (isEmailValid) {
@@ -46,9 +48,45 @@ const StaffAddNew = () => {
     }
   }, [isEmailValid]);
 
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getStaffColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "first_name", "last_name", "title", "miri_id", "perth_id", "report_duty_date", "position", "room_no", "ext_no", "status", "department", "email", "appointment_level", "photocopy_id", "pigeonbox_no", "resigned_date", "remark", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+    // setCustomColumn()
+  }, [token]);
+
+  const onCustomColumnAddHandler = () => {
+    fetch(`http://127.0.0.1:8000/api/getStaffColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "first_name", "last_name", "title", "miri_id", "perth_id", "report_duty_date", "position", "room_no", "ext_no", "status", "department", "email", "appointment_level", "photocopy_id", "pigeonbox_no", "resigned_date", "remark", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }
+
   const submitHandler = (event) => {
     event.preventDefault();
-    const jsonObject = {
+    
+    let jsonObject = {
       "first_name": firstNameInput.current.value,
       "last_name": lastNameInput.current.value,
       "miri_id": miriIdInput.current.value,
@@ -68,14 +106,20 @@ const StaffAddNew = () => {
       "remark": remarkInput.current.value,
     };
 
+    listRef.current.forEach(el => {
+      if (el.value) {
+        jsonObject[`${el.name}`] = el.value;
+      }
+    })
+
     fetch('http://127.0.0.1:8000/api/createStaff', {
       method: 'POST',
       body: JSON.stringify(jsonObject),
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
-    .then(navigate('/staff'));
+      .then(navigate('/staff'));
 
     // listRef.current.forEach(el => {
     //   if (el.value) {
@@ -228,6 +272,15 @@ const StaffAddNew = () => {
               <input type="text" name="remark" ref={remarkInput} />
             </div>
 
+            {inputArr.map((label, i) => {
+              return (
+                <div key={label} className="formInput" >
+                  <label>{label}</label>
+                  <input type="text" name={label} ref={(ref) => (listRef.current[i] = ref)} />
+                </div>
+              );
+            })}
+
             <Button disabled={!isFormValid} type='submit'>Send</Button>
 
           </form>
@@ -238,7 +291,7 @@ const StaffAddNew = () => {
 
         <div className="addColumnBox">
           <p className='title'>Add Column</p>
-          <AddColumn />
+          <AddColumn apiEndPoint="addStaffColumn" onCustomColumnAddHandler={onCustomColumnAddHandler}/>
         </div>
       </div>
     </div>
