@@ -50,15 +50,24 @@ const ResearchAwardSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`http://127.0.0.1:8000/api/updateAwards/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/updateAwards/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {
         Authorization : `Bearer ${token}`
       }
+    })
+    .then(response => {
+      if (response.ok) {
+        navigate('/awards');
+        return response.json();
+      }
+      return Promise.reject(response);
+    })
+    .catch(response => {
+      response.json().then(json => alert(json.message));
     });
 
-    response && navigate('/awards');
   };
 
 

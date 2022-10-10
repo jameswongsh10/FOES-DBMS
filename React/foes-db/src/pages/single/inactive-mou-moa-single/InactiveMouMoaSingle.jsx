@@ -8,16 +8,16 @@ import './inactiveMouMoaSingle.scss';
 import { useSelector } from 'react-redux';
 
 const InactiveMouMoaSingle = () => {
-  const token = useSelector(state => state.auth.tokenId)
+  const token = useSelector(state => state.auth.tokenId);
   const [entry, setEntry] = useState({});
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getInactiveMOUMOA/${id}`, { 
+    fetch(`http://127.0.0.1:8000/api/getInactiveMOUMOA/${id}`, {
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => response.json())
@@ -50,15 +50,23 @@ const InactiveMouMoaSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`http://127.0.0.1:8000/api/updateInactiveMOUMOA/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/updateInactiveMOUMOA/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
-    });
-
-    response && navigate('/InactiveMOUMOA');
+    })
+      .then(response => {
+        if (response.ok) {
+          navigate('/InactiveMOUMOA');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
   };
 
 
@@ -80,6 +88,6 @@ const InactiveMouMoaSingle = () => {
       </div>
     </div>
   );
-}
+};
 
-export default InactiveMouMoaSingle
+export default InactiveMouMoaSingle;

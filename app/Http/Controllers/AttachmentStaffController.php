@@ -228,13 +228,9 @@ class AttachmentStaffController extends Controller
         $attachment = AttachmentStaff::find($id);
         $path = explode("/",$attachment['path']);
         $fullPath = 'app/public/files/' . $path[2];
-//        return response()->download(storage_path($fullPath), $attachment['file_name']);
-        $data = json_encode([
-            'Content-Type' => $attachment->content_type,
-        ]);
-        $fileStorePath = storage_path($fullPath);
-        File::put($fileStorePath, $data);
+        $filePath = storage_path($fullPath);
+        $testRealPath = realpath($filePath);
 
-        return response()->download($fileStorePath, $attachment['file_name']);
+       return response()->download($testRealPath, $attachment['file_name']);
     }
 }

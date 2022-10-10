@@ -63,7 +63,6 @@ const StaffAddNew = () => {
 
         setCustomColumn((data.column).filter((column) => !filters.includes(column)));
       });
-    // setCustomColumn()
   }, [token]);
 
   const onCustomColumnAddHandler = () => {
@@ -81,11 +80,11 @@ const StaffAddNew = () => {
 
         setCustomColumn((data.column).filter((column) => !filters.includes(column)));
       });
-  }
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    
+
     let jsonObject = {
       "first_name": firstNameInput.current.value,
       "last_name": lastNameInput.current.value,
@@ -110,7 +109,7 @@ const StaffAddNew = () => {
       if (el.value) {
         jsonObject[`${el.name}`] = el.value;
       }
-    })
+    });
 
     fetch('http://127.0.0.1:8000/api/createStaff', {
       method: 'POST',
@@ -119,17 +118,17 @@ const StaffAddNew = () => {
         Authorization: `Bearer ${token}`
       }
     })
-      .then(navigate('/staff'));
+      .then(response => {
+        if (response.ok) {
+          navigate('/staff');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
 
-    // listRef.current.forEach(el => {
-    //   if (el.value) {
-    //     newObj[`${el.name}`] = el.value;
-    //   }
-    // });
-    // fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(newObj)
-    // })
   };
 
   return (
@@ -233,11 +232,6 @@ const StaffAddNew = () => {
               <input type="text" name="extNo" ref={extNoInput} />
             </div>
 
-            {/* <div key='status' className="formInput" >
-              <label>Status</label>
-              <input type="text" name="status" ref={statusInput} />
-            </div> */}
-
             <div className="formInput">
               <label>Status</label>
               <select name="status" id="status" ref={statusInput}>
@@ -291,7 +285,7 @@ const StaffAddNew = () => {
 
         <div className="addColumnBox">
           <p className='title'>Add Column</p>
-          <AddColumn apiEndPoint="addStaffColumn" onCustomColumnAddHandler={onCustomColumnAddHandler}/>
+          <AddColumn apiEndPoint="addStaffColumn" onCustomColumnAddHandler={onCustomColumnAddHandler} />
         </div>
       </div>
     </div>

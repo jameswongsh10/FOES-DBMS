@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
 
 import './adminAddNew.scss';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import Navbar from '../../../components/navbar/Navbar';
@@ -13,7 +13,7 @@ import InputEmail from '../../../components/input-email/InputEmail';
 import InputNormal from '../../../components/input-normal/InputNormal';
 
 const AdminAddNew = () => {
-  const token = useSelector(state => state.auth.tokenId)
+  const token = useSelector(state => state.auth.tokenId);
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
@@ -62,10 +62,19 @@ const AdminAddNew = () => {
       method: 'POST',
       body: JSON.stringify(jsonObject),
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
-      .then(navigate('/'));
+      .then(response => {
+        if (response.ok) {
+          (navigate('/'));
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
 
     // fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
     //   method: 'POST',

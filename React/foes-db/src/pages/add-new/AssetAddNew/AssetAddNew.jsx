@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
-
+import { useEffect } from 'react';
 import './assetAddNew.scss';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -29,6 +29,43 @@ const AssetAddNew = () => {
   const warrantyInformationInput = useRef(null);
   const remarkInput = useRef(null);
 
+  const [customColumn, setCustomColumn] = useState([]);
+
+  let inputArr = customColumn;
+  const listRef = useRef([]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getAssetColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "getAssetColumns", "asset_tag_number", "physical_check", "item", "description", "serial_no", "year_purchased", "warranty", "quantity", "location", "original_cost", "condition_of_asset", "end_user", "grant", "brand", "model_no", "remark", "created_at", "updated_at"]
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }, [token]);
+
+  const onCustomColumnAddHandler = () => {
+    fetch(`http://127.0.0.1:8000/api/getAssetColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "getAssetColumns", "asset_tag_number", "physical_check", "item", "description", "serial_no", "year_purchased", "warranty", "quantity", "location", "original_cost", "condition_of_asset", "end_user", "grant", "brand", "model_no", "remark", "created_at", "updated_at"]
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }
+
   const submitHandler = (event) => {
     event.preventDefault();
     const jsonObject = {
@@ -50,6 +87,12 @@ const AssetAddNew = () => {
       "end_user": endUserInput.current.value
     };
 
+    listRef.current.forEach(el => {
+      if (el.value) {
+        jsonObject[`${el.name}`] = el.value;
+      }
+    })
+
     fetch('http://127.0.0.1:8000/api/createAsset', {
       method: 'POST',
       body: JSON.stringify(jsonObject),
@@ -57,8 +100,16 @@ const AssetAddNew = () => {
         Authorization : `Bearer ${token}`
       }
     })
-      .then(response => {alert(response.json())})
-      .then(navigate('/asset'));
+      .then(response => {
+        if (response.ok) {
+          navigate('/asset');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
 
   };
 
@@ -153,12 +204,21 @@ const AssetAddNew = () => {
               <input type="text" name="remark" ref={remarkInput} />
             </div>
 
+            {inputArr.map((label, i) => {
+              return (
+                <div key={label} className="formInput" >
+                  <label>{label}</label>
+                  <input type="text" name={label} ref={(ref) => (listRef.current[i] = ref)} />
+                </div>
+              );
+            })}
+
             <Button type='submit'>Send</Button>
           </form>
         </div>
         <div className="addColumnBox">
           <p className='title'>Add Column</p>
-          <AddColumn />
+          <AddColumn apiEndPoint="addAssetColumn" onCustomColumnAddHandler={onCustomColumnAddHandler}/>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 
 const StaffSingle = () => {
 
-  const token = useSelector(state => state.auth.tokenId)
+  const token = useSelector(state => state.auth.tokenId);
   const [entry, setEntry] = useState({});
   const [attachments, setAttachments] = useState([]);
   const params = useParams();
@@ -20,9 +20,9 @@ const StaffSingle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getStaff/${id}`, { 
+    fetch(`http://127.0.0.1:8000/api/getStaff/${id}`, {
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => response.json())
@@ -33,9 +33,9 @@ const StaffSingle = () => {
   }, [id, token]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, { 
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, {
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => response.json())
@@ -46,17 +46,17 @@ const StaffSingle = () => {
   }, [id, token]);
 
   const updateAttachmentsHTTP = () => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, { 
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, {
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => response.json())
       .then(data => {
         const attachment = data.attachment;
         setAttachments(attachment);
-      }); 
-  }
+      });
+  };
 
   const generateForm = (obj) => {
     let formHtml = [];
@@ -82,11 +82,11 @@ const StaffSingle = () => {
     for (var i = 0; i < arr.length; i++) {
       if (attachments[i] === null) {
         sectionHtml.push(
-          <FileSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP}/>
+          <FileSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} />
         );
       } else {
         sectionHtml.push(
-          <FileSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP}/>
+          <FileSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} />
         );
       }
     }
@@ -98,15 +98,23 @@ const StaffSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`http://127.0.0.1:8000/api/updateStaff/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/updateStaff/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
-    });
-
-    response && navigate('/staff');
+    })
+      .then(response => {
+        if (response.ok) {
+          navigate('/staff');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
   };
 
   const onAddNewDocument = () => {
@@ -138,7 +146,7 @@ const StaffSingle = () => {
         <button onClick={onAddNewDocument}>Add New Doc</button>
         {/* <FileInputSection /> */}
         <div className="section">
-          <ResearchAwardsSection staffId={id}/>
+          <ResearchAwardsSection staffId={id} />
         </div>
       </div>
     </div>

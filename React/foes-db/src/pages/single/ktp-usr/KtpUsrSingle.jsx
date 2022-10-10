@@ -8,16 +8,16 @@ import './ktpUsrSingle.scss';
 import { useSelector } from 'react-redux';
 
 const KtpUsrSingle = () => {
-  const token = useSelector(state => state.auth.tokenId)
+  const token = useSelector(state => state.auth.tokenId);
   const [entry, setEntry] = useState({});
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getKTPUSR/${id}`, { 
+    fetch(`http://127.0.0.1:8000/api/getKTPUSR/${id}`, {
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => response.json())
@@ -50,15 +50,24 @@ const KtpUsrSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`http://127.0.0.1:8000/api/updateKTPUSR/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/updateKTPUSR/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
-    });
+    })
+      .then(response => {
+        if (response.ok) {
+          navigate('/KTPUSR');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
 
-    response && navigate('/KTPUSR');
   };
 
 
@@ -80,6 +89,6 @@ const KtpUsrSingle = () => {
       </div>
     </div>
   );
-}
+};
 
-export default KtpUsrSingle
+export default KtpUsrSingle;

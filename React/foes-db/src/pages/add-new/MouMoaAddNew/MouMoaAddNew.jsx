@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
-
+import { useEffect } from 'react';
 import './mouMoaAddNew.scss';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -25,6 +25,44 @@ const MouMoaAddNew = () => {
   const teachingInput = useRef(null);
   const mutualExtensionInput = useRef(null);
 
+  const [customColumn, setCustomColumn] = useState([]);
+  let inputArr = customColumn;
+  const listRef = useRef([]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getMOUMOAColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "country", "institution", "signed_date", "due_date", "area_of_collab", "progress", "type_of_agreement", "research", "teaching", "exchange", "collab_and_partnerships", "mutual_extension", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }, [token]);
+
+  const onCustomColumnAddHandler = () => {
+    fetch(`http://127.0.0.1:8000/api/getMOUMOAColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "country", "institution", "signed_date", "due_date", "area_of_collab", "progress", "type_of_agreement", "research", "teaching", "exchange", "collab_and_partnerships", "mutual_extension", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      }); 
+  }
+
   const submitHandler = (event) => {
     event.preventDefault();
     const jsonObject = {
@@ -43,6 +81,12 @@ const MouMoaAddNew = () => {
       "mutual_extension": mutualExtensionInput.current.value
     };
 
+    listRef.current.forEach(el => {
+      if (el.value) {
+        jsonObject[`${el.name}`] = el.value;
+      }
+    })
+
     fetch('http://127.0.0.1:8000/api/createMOUMOA', {
       method: 'POST',
       body: JSON.stringify(jsonObject),
@@ -50,7 +94,16 @@ const MouMoaAddNew = () => {
         Authorization : `Bearer ${token}`
       }
     })
-    .then(navigate('/mou-moa'));
+    .then(response => {
+      if (response.ok) {
+        navigate('/moumoa');
+        return response.json();
+      }
+      return Promise.reject(response);
+    })
+    .catch(response => {
+      response.json().then(json => alert(json.message));
+    });
   };
 
   return (
@@ -117,12 +170,20 @@ const MouMoaAddNew = () => {
               <label>Mutual Extension</label>
               <input type="text" name="mutualExtension" ref={mutualExtensionInput} />
             </div>
+            {inputArr.map((label, i) => {
+              return (
+                <div key={label} className="formInput" >
+                  <label>{label}</label>
+                  <input type="text" name={label} ref={(ref) => (listRef.current[i] = ref)} />
+                </div>
+              );
+            })}
             <Button type='submit'>Send</Button>
           </form>
         </div>
         <div className="addColumnBox">
           <p className='title'>Add Column</p>
-          <AddColumn />
+          <AddColumn apiEndPoint="addMOUMOAColumn" onCustomColumnAddHandler={onCustomColumnAddHandler}/>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
-
+import { useEffect } from 'react';
 import './researchAwardAddNew.scss';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -19,6 +19,45 @@ const ResearchAwardAddNew = () => {
   const awardAmountInput = useRef(null);
   const evidenceLinkInput = useRef(null);
 
+  const [customColumn, setCustomColumn] = useState([]);
+
+  let inputArr = customColumn;
+  const listRef = useRef([]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getAwardsColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "staff_id", "type_of_grant", "project_title", "co_investigators", "research_grant_scheme", "award_amount", "evidence_link", "created_at", "updated_at"]
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }, [token]);
+
+  const onCustomColumnAddHandler = () => {
+    fetch(`http://127.0.0.1:8000/api/getAwardsColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "staff_id", "type_of_grant", "project_title", "co_investigators", "research_grant_scheme", "award_amount", "evidence_link", "created_at", "updated_at"]
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }
+
   const submitHandler = (event) => {
     event.preventDefault();
     const jsonObject = {
@@ -31,6 +70,12 @@ const ResearchAwardAddNew = () => {
       "evidence_link": evidenceLinkInput.current.value,
     };
 
+    listRef.current.forEach(el => {
+      if (el.value) {
+        jsonObject[`${el.name}`] = el.value;
+      }
+    })
+
     fetch('http://127.0.0.1:8000/api/createAwards', {
       method: 'POST',
       body: JSON.stringify(jsonObject),
@@ -38,7 +83,16 @@ const ResearchAwardAddNew = () => {
         Authorization : `Bearer ${token}`
       }
     })
-    .then(navigate('/research-award'));
+    .then(response => {
+      if (response.ok) {
+        navigate('/awards');
+        return response.json();
+      }
+      return Promise.reject(response);
+    })
+    .catch(response => {
+      response.json().then(json => alert(json.message));
+    });
   };
 
   return (
@@ -80,15 +134,20 @@ const ResearchAwardAddNew = () => {
               <label>Evidence Link</label>
               <input type="text" name="evidenceLink" ref={evidenceLinkInput} />
             </div>
-
-            {/* TODO: Add Attachment tag in here */}
-
+            {inputArr.map((label, i) => {
+              return (
+                <div key={label} className="formInput" >
+                  <label>{label}</label>
+                  <input type="text" name={label} ref={(ref) => (listRef.current[i] = ref)} />
+                </div>
+              );
+            })}
             <Button type='submit'>Send</Button>
           </form>
         </div>
         <div className="addColumnBox">
           <p className='title'>Add Column</p>
-          <AddColumn />
+          <AddColumn apiEndPoint="addAwardsColumn" onCustomColumnAddHandler={onCustomColumnAddHandler}/>
         </div>
       </div>
     </div>

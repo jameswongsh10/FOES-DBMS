@@ -50,15 +50,24 @@ const AdminSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`http://127.0.0.1:8000/api/updateAdmin/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/updateAdmin/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {
         Authorization : `Bearer ${token}`
       }
+    })
+    .then(response => {
+      if (response.ok) {
+        navigate('/');
+        return response.json();
+      }
+      return Promise.reject(response);
+    })
+    .catch(response => {
+      response.json().then(json => alert(json.message));
     });
 
-    response && navigate('/');
   };
 
   return (

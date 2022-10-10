@@ -51,15 +51,24 @@ const AssetSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`http://127.0.0.1:8000/api/updateAsset/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/updateAsset/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {
         Authorization : `Bearer ${token}`
       }
+    })
+    .then(response => {
+      if (response.ok) {
+      navigate('/asset');
+        return response.json();
+      }
+      return Promise.reject(response);
+    })
+    .catch(response => {
+      response.json().then(json => alert(json.message));
     });
 
-    response && navigate('/asset');
   };
 
   return (

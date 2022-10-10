@@ -67,14 +67,16 @@ const DataTable = (props) => {
   };
 
   const onDeleteEntryHandler = (deleteUrl, id) => {
-    // TODO: implement http DEL fetch function using collection and ID
-    fetch(`http://127.0.0.1:8000/api/${deleteUrl}/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization : `Bearer ${token}`
-      }
-    })
-    .then(props.setRows(props.rows.filter(item => item.id !== id)))
+    if (window.confirm("Are you sure you want to delete this element?") == true) {
+      fetch(`http://127.0.0.1:8000/api/${deleteUrl}/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization : `Bearer ${token}`
+        }
+      })
+      .then(props.setRows(props.rows.filter(item => item.id !== id)))
+    }
+ 
   };
 
   const actionColumn = [
