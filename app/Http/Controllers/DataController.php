@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Asset;
+use App\Models\InactiveMouMoa;
 use App\Models\KtpUsr;
 use App\Models\Mobility;
 use App\Models\MouMoa;
@@ -37,6 +38,9 @@ class DataController extends Controller
                 break;
             case "MOU-MOA":
                 $columnArray = Schema::getColumnListing('mou_moa');
+                break;
+            case "Inactive-MOU-MOA":
+                $columnArray = Schema::getColumnListing('inactive_mou_moa');
                 break;
             case "Mobility":
                 $columnArray = Schema::getColumnListing('mobility');
@@ -88,6 +92,9 @@ class DataController extends Controller
                     case "MOU-MOA":
                         $newData = new MouMoa();
                         break;
+                    case "Inactive-MOU-MOA":
+                        $newData = new InactiveMouMoa();
+                        break;
                     case "Mobility":
                         $newData = new Mobility();
                         break;
@@ -104,8 +111,12 @@ class DataController extends Controller
                         $newData->$key = $value;
                     }
                     $save = $newData->save();
+
                 } catch (\Exception $e) {
-                    return $e->getMessage();
+                    return response()->json([
+                        'status' => $save,
+                        'message' => $e->getMessage()
+                    ], 400);
                 }
             }
         }
