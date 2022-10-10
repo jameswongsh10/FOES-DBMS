@@ -131,22 +131,6 @@ const Backup = () => {
                             Database Restore
                         </div>
                         <div className="contentItem">
-                            {/*<FormControl sx={{m: 1, minWidth: 120}}>*/}
-                            {/*    <InputLabel id="demo-simple-select-helper-label">Database</InputLabel>*/}
-                            {/*    <Select*/}
-                            {/*        labelId="demo-simple-select-helper-label"*/}
-                            {/*        id="demo-simple-select-helper"*/}
-                            {/*        // value={databaseName}*/}
-                            {/*        label="Age"*/}
-                            {/*        // onChange={handleChange}*/}
-                            {/*    >*/}
-                            {/*        <MenuItem value="2022-01-01">2022-01-01</MenuItem>*/}
-                            {/*        <MenuItem value="2022-02-01">2022-02-01</MenuItem>*/}
-                            {/*        <MenuItem value="2022-03-01">2022-03-01</MenuItem>*/}
-                            {/*    </Select>*/}
-                            {/*    <FormHelperText>Select database backup to restore</FormHelperText>*/}
-                            {/*</FormControl>*/}
-
                             {!isRestoreLoading && <Button variant="contained" color="success" endIcon={<Restore/>}
                                                           size="large" onClick={restore}>Restore</Button>}
                             {isRestoreLoading && <CircularProgress/>}

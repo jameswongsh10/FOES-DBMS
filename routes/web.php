@@ -13,6 +13,7 @@ use App\Http\Controllers\DataController;
 use App\Http\Controllers\AttachmentStaffController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -119,6 +120,6 @@ Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAt
 Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
 
 //Data Controller
-Route::post('csvImport',  [DataController::class, 'csvImport']);
-Route::get('database_backup',  [DataController::class, 'database_backup']);
-Route::get('database_restore',  [DataController::class, 'database_restore']);
+Route::post('csvImport', [DataController::class, 'csvImport']);
+Route::get('database_backup', [DataController::class, 'database_backup']);
+Route::get('database_restore', [DataController::class, 'database_restore']);
