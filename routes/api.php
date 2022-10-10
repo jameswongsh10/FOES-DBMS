@@ -10,6 +10,7 @@ use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\AttachmentStaffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -116,3 +117,10 @@ Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'ge
 Route::post('csvImport', [DataController::class, 'csvImport']);
 Route::get('database_backup',  [DataController::class, 'database_backup']);
 Route::get('database_restore',  [DataController::class, 'database_restore']);
+
+//Attachment Staff CRUD
+Route::post('createAttachment', [AttachmentStaffController::class, 'createAttachmentStaff']);
+Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachment']);
+Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
+Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAttachment']);
+Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);

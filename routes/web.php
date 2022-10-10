@@ -5,13 +5,14 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\ResearchAwardsController;
 use App\Http\Controllers\MobilityController;
-use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\KTPUSR_Controller;
 use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\AttachmentStaffController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,7 +54,7 @@ Route::get('getAllStaffNames', [StaffController::class, 'getAllStaffName']);
 Route::put('updateStaff/{id}', [StaffController::class, 'updateStaff']);
 Route::delete('deleteStaff/{id}', [StaffController::class, 'deleteStaff']);
 Route::post('addStaffColumn', [StaffController::class, 'addStaffColumn']);
-Route::get('getStaffColumns', [StaffController::class,'getStaffColumns']);
+Route::get('getStaffColumns', [StaffController::class, 'getStaffColumns']);
 
 //ResearchAwards CRUD
 Route::post('createAwards', [ResearchAwardsController::class, 'createAwards']);
@@ -66,16 +67,16 @@ Route::post('addAwardsColumn', [ResearchAwardsController::class, 'addAwardsColum
 Route::get('getAwardsColumns', [ResearchAwardsController::class, 'getAwardsColumns']);
 
 //Mobility CRUD
-Route::post('createMobility',  [MobilityController::class, 'createMobility']);
-Route::get('getMobility/{id}',  [MobilityController::class, 'readMobility']);
-Route::get('readAllMobility',  [MobilityController::class, 'readAllMobility']);
-Route::put('updateMobility/{id}',  [MobilityController::class, 'updateMobility']);
-Route::delete('deleteMobility/{id}',  [MobilityController::class, 'deleteMobility']);
-Route::post('addMobilityColumn',  [MobilityController::class, 'addMobilityColumn']);
-Route::get('getMobilityColumns',  [MobilityController::class, 'getMobilityColumns']);
+Route::post('createMobility', [MobilityController::class, 'createMobility']);
+Route::get('getMobility/{id}', [MobilityController::class, 'readMobility']);
+Route::get('readAllMobility', [MobilityController::class, 'readAllMobility']);
+Route::put('updateMobility/{id}', [MobilityController::class, 'updateMobility']);
+Route::delete('deleteMobility/{id}', [MobilityController::class, 'deleteMobility']);
+Route::post('addMobilityColumn', [MobilityController::class, 'addMobilityColumn']);
+Route::get('getMobilityColumns', [MobilityController::class, 'getMobilityColumns']);
 
 //KTPUSR CRUD
-Route::post('createKTPUSR',  [KTPUSR_Controller::class, 'createKTPUSR']);
+Route::post('createKTPUSR', [KTPUSR_Controller::class, 'createKTPUSR']);
 Route::get('getKTPUSR/{id}', [KTPUSR_Controller::class, 'readKTPUSR']);
 Route::get('readAllKTPUSR', [KTPUSR_Controller::class, 'readAllKTPUSR']);
 Route::put('updateKTPUSR/{id}', [KTPUSR_Controller::class, 'updateKTPUSR']);
@@ -109,6 +110,13 @@ Route::get('readAllKeyContactPerson', [KeyContactPersonController::class, 'readA
 Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'updateKeyContactPerson']);
 Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
 Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'getKeyContactPersonColumns']);
+
+//Attachment Staff CRUD
+Route::post('createAttachment', [AttachmentStaffController::class, 'createAttachmentStaff']);
+Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachment']);
+Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
+Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAttachment']);
+Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
 
 //Data Controller
 Route::post('csvImport',  [DataController::class, 'csvImport']);

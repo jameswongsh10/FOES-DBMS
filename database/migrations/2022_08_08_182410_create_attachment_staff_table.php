@@ -18,12 +18,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('staff_id')->constrained('staffs')->onUpdate('cascade')->onDelete('cascade');
             $table->string('type');
-            $table->string('description');
+            $table->string('description')->nullable(true);
+            $table->string('path')->nullable(true);
+            $table->string('file_name')->nullable(true);
             $table->timestamps();
         });
-
-        DB::statement("ALTER TABLE attachment_staff ADD attachment MEDIUMBLOB");
-
     }
 
     /**
