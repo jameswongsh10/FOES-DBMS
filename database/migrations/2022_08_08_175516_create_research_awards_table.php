@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -15,7 +14,8 @@ return new class extends Migration
     {
         Schema::create('research_awards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('staff_id')->constrained('staffs')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('staff_miri_id');
+            $table->foreign('staff_miri_id')->references('miri_id')->on('staffs')->onUpdate('cascade')->onDelete('cascade');
             $table->string('type_of_grant');
             $table->string('project_title');
             $table->string('co_investigators');
