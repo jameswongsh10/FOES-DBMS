@@ -225,9 +225,15 @@ class AttachmentStaffController extends Controller
 
     public function downloadAttachment($id)
     {
-        if (Auth::check()) {
+//        if (Auth::check()) {
             try {
                 $attachment = AttachmentStaff::find($id);
+                if (is_null($attachment)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Attachment not found",
+                    ], 404);
+                }
                 $path = explode("/", $attachment['path']);
                 $fullPath = 'app/public/files/' . $path[2];
                 $filePath = storage_path($fullPath);
@@ -235,16 +241,16 @@ class AttachmentStaffController extends Controller
 
                 return response()->download($testRealPath, $attachment['file_name']);
 
-            } catch (FileNotFoundException $e) {
+            } catch (QueryException $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => $e->getMessage()
+                    'message' => $e->errorInfo[2]
                 ], 400);
             }
-        }
-        return response()->json([
-            'status' => false,
-            'message' => 'Unauthorized user'
-        ], 401);
+//        }
+//        return response()->json([
+//            'status' => false,
+//            'message' => 'Unauthorized user'
+//        ], 401);
     }
 }
