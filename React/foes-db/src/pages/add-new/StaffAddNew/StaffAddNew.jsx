@@ -180,6 +180,7 @@ const StaffAddNew = () => {
                 <option value="Electrical & Computer">Electrical & Computer</option>
                 <option value="Mechanical">Mechanical</option>
                 <option value="Foundation">Foundation</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -194,6 +195,7 @@ const StaffAddNew = () => {
                 <option value="Mr.">Mr.</option>
                 <option value="Mrs.">Mrs.</option>
                 <option value="Ms.">Ms.</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -219,6 +221,7 @@ const StaffAddNew = () => {
                 <option value="Technical Officer">Technical Officer</option>
                 <option value="Senior Lab Technician">Senior Lab Technician</option>
                 <option value="Lab Technician">Lab Technician</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -238,6 +241,7 @@ const StaffAddNew = () => {
                 <option value="Contract">Contract</option>
                 <option value="Permanent">Permanent</option>
                 <option value="Intern">Intern</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -246,9 +250,22 @@ const StaffAddNew = () => {
               <input type="text" name="photocopyId" ref={photocopyIdInput} />
             </div>
 
-            <div key='appointmentLevel' className="formInput" >
+            <div className="formInput">
               <label>Appointment Level</label>
-              <input type="text" name="appointmentLevel" ref={appointmentLevelInput} />
+              <select name="appointmentLevel" id="appointmentLevel" ref={appointmentLevelInput}>
+                <option value="Professor">Professor</option>
+                <option value="Associate Professor">Associate Professor</option>
+                <option value="Senior Lecturer">Senior Lecturer</option>
+                <option value="Lecturer">Lecturer</option>
+                <option value="Associate Lecturer">Associate Lecturer</option>
+                <option value="Dean">Dean</option>
+                <option value="Manager">Manager</option>
+                <option value="Senior Office">Senior Office</option>
+                <option value="Officer">Officer</option>
+                <option value="Admin Assistance">Admin Assistance</option>
+                <option value="Technician">Technician</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
 
             <div key='pigeonboxNo' className="formInput" >
