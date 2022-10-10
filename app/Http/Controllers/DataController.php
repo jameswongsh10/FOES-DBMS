@@ -100,7 +100,6 @@ class DataController extends Controller
                         $newData = new ResearchAwards();
                         break;
                     default:
-//                        $newData = new Admin();
                         break;
                 }
 
@@ -134,8 +133,6 @@ class DataController extends Controller
         $output = null;
         $result_code = null;
         $path = 'php ' . '"' . realpath("../") . '\artisan" backup:run --only-db';
-        //This path will need to change to the client's artisan path.
-        //exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:run --only-db',$output,$result_code);
         exec($path,$output,$result_code);
         return $result_code;
     }
@@ -145,7 +142,6 @@ class DataController extends Controller
         $result_code = null;
         $path = 'php ' . '"' . realpath("../") . '\artisan" backup:restore-last';
         exec($path,$output,$result_code);
-        // exec('php "C:\Users\User\Documents\2022 Sem 2\CCP2\foesdbms\2022_06_mi_foes-data-management-system-for-miri\artisan" backup:restore-last',$output,$result_code);
         return $result_code;
     }
 }
