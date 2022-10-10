@@ -127,13 +127,13 @@ class ResearchAwardsController extends Controller
         ], 401);
     }
 
-    public function getAwardsbyStaffID($staff_id)
+    public function getAwardsbyStaffID($staff_miri_id)
     {
         if (Auth::check()) {
             try {
-                $column = 'staff_id'; // This is the name of the column you wish to search
+                $column = 'staff_miri_id'; // This is the name of the column you wish to search
 
-                $awards = ResearchAwards::where($column, '=', $staff_id)->with('staff')->get();
+                $awards = ResearchAwards::where($column, '=', $staff_miri_id)->with('staff')->get();
 
                 if (is_null($awards)) {
                     return response()->json([
