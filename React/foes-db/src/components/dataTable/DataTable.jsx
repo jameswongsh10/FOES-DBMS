@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useLocation} from 'react-router-dom';
 import { tableActions } from '../../store/table-slice';
 import './dataTable.scss';
+import { Button } from '@mui/material';
 
 const useFakeMutation = () => {
   return React.useCallback(
@@ -29,6 +30,7 @@ const DataTable = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const token = useSelector(state => state.auth.tokenId)
 
   const mutateRow = useFakeMutation();
   const [snackbar, setSnackbar] = React.useState(null);
@@ -43,14 +45,18 @@ const DataTable = (props) => {
         `http://127.0.0.1:8000/api/update${viewCollection}/${elementID}`,
         {
           method: 'put',
-          body: JSON.stringify(newObj)
-        });
+          body: JSON.stringify(newObj),
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
+        );
 
       const response = await mutateRow(newRow);
       setSnackbar({ children: 'Successfully saved', severity: 'success' });
       return response;
     },
-    [mutateRow, viewCollection],
+    [mutateRow, viewCollection, token],
   );
 
   const handleProcessRowUpdateError = React.useCallback((error) => {
@@ -62,11 +68,16 @@ const DataTable = (props) => {
   };
 
   const onDeleteEntryHandler = (deleteUrl, id) => {
-    // TODO: implement http DEL fetch function using collection and ID
-    fetch(`http://127.0.0.1:8000/api/${deleteUrl}/${id}`, {
-      method: 'DELETE'
-    })
-    .then(props.setRows(props.rows.filter(item => item.id !== id)))
+    if (window.confirm("Are you sure you want to delete this element?") == true) {
+      fetch(`http://127.0.0.1:8000/api/${deleteUrl}/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization : `Bearer ${token}`
+        }
+      })
+      .then(props.setRows(props.rows.filter(item => item.id !== id)))
+    }
+ 
   };
 
   const actionColumn = [
@@ -78,14 +89,21 @@ const DataTable = (props) => {
         return (
           <div className="cellAction">
             <Link to={`/${viewCollection}/${params.row.id}`} style={{ textDecoration: "none" }} onClick={() => onSelectSingleHandler(params.row.id)}>
-              <div className="viewButton">View</div>
+              <Button className="viewButton">View</Button>
             </Link>
-            <div
+            {/* <div
               className="deleteButton"
               onClick={() => onDeleteEntryHandler(props.deleteUrl, params.row.id)}
             >
               Delete
-            </div>
+            </div> */}
+            <Button
+              className="deleteButton"
+              color='error'
+              onClick={() => onDeleteEntryHandler(props.deleteUrl, params.row.id)}
+            >
+              Delete
+            </Button>
           </div>
         );
       },

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { tableActions } from '../../store/table-slice';
-
+import { useNavigate} from 'react-router-dom';
 import { Transform, SettingsApplicationsOutlined, AccountCircleOutlined, ExitToAppOutlined, HomeWorkOutlined, BadgeOutlined, SupervisorAccountOutlined, WorkspacePremiumOutlined, LocationCityOutlined, FolderOutlined, OutputOutlined, BackupOutlined, EqualizerOutlined, AddBox, Badge, SupervisorAccount, HomeWork, WorkspacePremium, LocationCity, Equalizer, Folder, Backup, SettingsApplications, AccountCircle, InputOutlined } from '@mui/icons-material';
 import { uiActions } from '../../store/ui-slice';
 
@@ -11,9 +11,10 @@ import CreateDialog from '../create-dialog/CreateDialog';
 import { authActions } from '../../store/auth-slice';
 
 const Sidebar = () => {
-
+  const token = useSelector(state => state.auth.tokenId);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const isSuperAdmin = useSelector(state => state.auth.isSuperAdmin);
   const sidebarCollections = useSelector(state => state.table.sidebarCollections);
 
   const linkClickHandler = (title) => {
@@ -67,7 +68,14 @@ const Sidebar = () => {
   });
 
   const logoutHandler = () => {
+    fetch(`http://127.0.0.1:8000/api/logout`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     dispatch(authActions.logout());
+    navigate('/')
   };
 
   const [open, setOpen] = useState(false);
@@ -97,95 +105,88 @@ const Sidebar = () => {
         <ul>
           <p className="title">DATABASE</p>
 
-          <Link to='/admin' className='link'>
+          {isSuperAdmin && (<Link to='/admin' className='link'>
             <li>
               <Badge className='icon' />
               <span>Admin</span>
             </li>
-          </Link>
+          </Link>)}
 
-          <Link to='/staff' className='link'>
-            <li>
-              <SupervisorAccount className='icon' />
-              <span>Staff</span>
-            </li>
-          </Link>
+          {!isSuperAdmin && (
+            <>
+              <Link to='/staff' className='link'>
+                <li>
+                  <SupervisorAccount className='icon' />
+                  <span>Staff</span>
+                </li>
+              </Link>
 
-          <Link to='/asset' className='link'>
-            <li>
-              <HomeWork className='icon' />
-              <span>Asset</span>
-            </li>
-          </Link>
+              <Link to='/asset' className='link'>
+                <li>
+                  <HomeWork className='icon' />
+                  <span>Asset</span>
+                </li>
+              </Link>
 
-          <Link to='/awards' className='link'>
-            <li>
-              <WorkspacePremium className='icon' />
-              <span>Research-Award</span>
-            </li>
-          </Link>
+              <Link to='/awards' className='link'>
+                <li>
+                  <WorkspacePremium className='icon' />
+                  <span>Research-Award</span>
+                </li>
+              </Link>
 
-          <Link to='/moumoa' className='link'>
-            <li>
-              <LocationCity className='icon' />
-              <span>MOU-MOA</span>
-            </li>
-          </Link>
+              <Link to='/moumoa' className='link'>
+                <li>
+                  <LocationCity className='icon' />
+                  <span>MOU-MOA</span>
+                </li>
+              </Link>
 
-          <Link to='/InactiveMOUMOA' className='link'>
-            <li>
-              <LocationCity className='icon' />
-              <span>MOU-MOA(Inactive)</span>
-            </li>
-          </Link>
+              <Link to='/InactiveMOUMOA' className='link'>
+                <li>
+                  <LocationCity className='icon' />
+                  <span>MOU-MOA(Inactive)</span>
+                </li>
+              </Link>
 
-          <Link to='/KTPUSR' className='link'>
-            <li>
-              <Equalizer className='icon' />
-              <span>KTP-USR</span>
-            </li>
-          </Link>
+              <Link to='/KTPUSR' className='link'>
+                <li>
+                  <Equalizer className='icon' />
+                  <span>KTP-USR</span>
+                </li>
+              </Link>
 
-          <Link to='/mobility' className='link'>
-            <li>
-              <Transform className='icon' />
-              <span>Mobility</span>
-            </li>
-          </Link>
+              <Link to='/mobility' className='link'>
+                <li>
+                  <Transform className='icon' />
+                  <span>Mobility</span>
+                </li>
+              </Link>
+
+            </>
+          )}
 
 
           {/* {links} */}
-          <p className='title'>FEATURES</p>
-          {/* <li onClick={openDialogHandler}>
-            <AddBox className='icon' />
-            <span>Create Database</span>
-          </li> */}
-          <CreateDialog open={open} handleClose={handleClose} onCreateHandler={onCreateHandler} />
-          <Link to='/import' className='link'>
-            <li>
-              <InputOutlined className='icon' />
-              <span>Data Import</span>
-            </li>
-          </Link>
-          <Link to='/pdf' className='link'>
-            <li>
-              <OutputOutlined className='icon' />
-              <span>Generate PDF</span>
-            </li>
-          </Link>
-          <Link to='/backup' className='link'>
-            <li>
-              <Backup className='icon' />
-              <span>Backup & Restore</span>
-            </li>
-          </Link>
+          {!isSuperAdmin && (
+            <>
+              <p className='title'>FEATURES</p>
+              <CreateDialog open={open} handleClose={handleClose} onCreateHandler={onCreateHandler} />
+              <Link to='/import' className='link'>
+                <li>
+                  <InputOutlined className='icon' />
+                  <span>Data Import</span>
+                </li>
+              </Link>
+              <Link to='/backup' className='link'>
+                <li>
+                  <Backup className='icon' />
+                  <span>Backup & Restore</span>
+                </li>
+              </Link>
+            </>
+          )}
           <p className='title'>USER</p>
-          <Link to='/settings' className='link'>
-            <li>
-              <SettingsApplicationsOutlined className='icon' />
-              <span>Settings</span>
-            </li>
-          </Link>
           {/* <Link to='/profile' className='link'>
             <li>
               <AccountCircle className='icon' />

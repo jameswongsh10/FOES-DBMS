@@ -11,10 +11,16 @@ const Staff = () => {
   const [columns, setColumns] = useState();
   const [rows, setRows] = useState();
 
+  const token = useSelector(state => state.auth.tokenId)
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/readAllStaff'
+        'http://127.0.0.1:8000/readAllStaff', { 
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       if (!response.ok) {
@@ -27,7 +33,11 @@ const Staff = () => {
       const { ["Staff"]: collectionObj } = data;
 
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getStaffColumns'
+        'http://127.0.0.1:8000/getStaffColumns', { 
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       const columnData = await getColumnResponse.json();
@@ -40,7 +50,7 @@ const Staff = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div className="home">

@@ -1,6 +1,11 @@
+import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import './keyPersonInputSection.scss'
 
 const KeyPersonInputSection = (props) => {
+
+  const token = useSelector(state => state.auth.tokenId)
 
   const [institution, setInstitution] = useState(props.isNew ? "" : props.obj.institution);
   const [name, setName] = useState(props.isNew ? "" : props.obj.name);
@@ -30,7 +35,10 @@ const KeyPersonInputSection = (props) => {
 
     fetch(`http://127.0.0.1:8000/api/updateKeyContactPerson/${props.obj.id}`, {
       method: 'PUT',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
       .then(response => {
         const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
@@ -47,14 +55,26 @@ const KeyPersonInputSection = (props) => {
       "mou_moa_id": props.mouID
     };
 
+    const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+
     fetch('http://127.0.0.1:8000/api/createKeyContactPerson', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
-      .then(response => {
-        const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
-        props.setKeyPersons([...newArray, jsonObject]);
-      });
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      props.setKeyPersons([data.KeyContactPerson, ...newArray]);
+    });
+      // .then(response => {
+      //   const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+      //   props.setKeyPersons([...newArray, jsonObject]);
+      // });
   };
 
 
@@ -74,8 +94,8 @@ const KeyPersonInputSection = (props) => {
           <label>email</label>
           <input type="text" name="email" value={email} onChange={e => setEmail(e.target.value)} />
         </div>
-        <button onClick={props.isNew === true ? onSaveHandler : onUpdateHandler}>Save</button>
-        <button onClick={props.isNew === true ? onNewCancelHandler : onCancelHandler}>Cancel</button>
+        <Button className='section-btn' variant="contained" color="success" onClick={props.isNew === true ? onSaveHandler : onUpdateHandler}>Save</Button>
+        <Button className='section-btn' variant="outlined" onClick={props.isNew === true ? onNewCancelHandler : onCancelHandler}>Cancel</Button>
       </div>
     </div>
   );

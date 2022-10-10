@@ -9,8 +9,9 @@ use App\Http\Controllers\KTPUSR_Controller;
 use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
-use App\Http\Controllers\DataController;
 use App\Http\Controllers\AttachmentStaffController;
+use App\Http\Controllers\DataController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -118,8 +119,13 @@ Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachm
 Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
 Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAttachment']);
 Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
+Route::get('downloadAttachment/{id}', [AttachmentStaffController::class, 'downloadAttachment']);
 
 //CSV Import
 Route::post('csvImport', [DataController::class, 'csvImport']);
 Route::get('database_backup', [DataController::class, 'database_backup']);
 Route::get('database_restore', [DataController::class, 'database_restore']);
+
+//Login
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);

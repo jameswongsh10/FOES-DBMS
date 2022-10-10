@@ -11,6 +11,7 @@ use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
 use App\Http\Controllers\AttachmentStaffController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -122,3 +123,7 @@ Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'delet
 Route::post('csvImport', [DataController::class, 'csvImport']);
 Route::get('database_backup', [DataController::class, 'database_backup']);
 Route::get('database_restore', [DataController::class, 'database_restore']);
+
+//Login
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);

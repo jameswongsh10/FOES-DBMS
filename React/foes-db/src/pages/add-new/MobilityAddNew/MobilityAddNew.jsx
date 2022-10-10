@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
-
+import { useEffect } from 'react';
 import './mobilityAddNew.scss';
 import { useNavigate } from 'react-router-dom';
 import { Button, duration } from '@mui/material';
@@ -9,6 +9,7 @@ import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
 
 const MobilityAddNew = () => {
+  const token = useSelector(state => state.auth.tokenId)
   const navigate = useNavigate();
 
   const staffStudentInput = useRef(null);
@@ -22,6 +23,47 @@ const MobilityAddNew = () => {
   const toInput = useRef(null);
   const durationsInput = useRef(null);
   const remarkInput = useRef(null);
+
+  const [customColumn, setCustomColumn] = useState([]);
+
+  let inputArr = customColumn;
+  const listRef = useRef([]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getMobilityColumns/`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "staff_or_student", "in_or_out_bound", "name", "attendee_id", "program", "name_of_university", "country", "duration", "from_date", "to_date", "remark", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }, [token]);
+
+  const onCustomColumnAddHandler = () => {
+    fetch(`http://127.0.0.1:8000/api/getMobilityColumns/`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "staff_or_student", "in_or_out_bound", "name", "attendee_id", "program", "name_of_university", "country", "duration", "from_date", "to_date", "remark", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      }); 
+  }
+
+  console.log(customColumn);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -39,11 +81,29 @@ const MobilityAddNew = () => {
       "remark": remarkInput.current.value,
     };
 
+    listRef.current.forEach(el => {
+      if (el.value) {
+        jsonObject[`${el.name}`] = el.value;
+      }
+    })
+
     fetch('http://127.0.0.1:8000/api/createMobility', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
-      .then(navigate('/mobility'));
+      .then(response => {
+        if (response.ok) {
+          navigate('/mobility');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
   };
 
   return (
@@ -108,12 +168,20 @@ const MobilityAddNew = () => {
               <label>Remarks</label>
               <input type="text" name="remarks" ref={remarkInput} />
             </div>
+            {inputArr.map((label, i) => {
+              return (
+                <div key={label} className="formInput" >
+                  <label>{label}</label>
+                  <input type="text" name={label} ref={(ref) => (listRef.current[i] = ref)} />
+                </div>
+              );
+            })}
             <Button type='submit'>Send</Button>
           </form>
         </div>
         <div className="addColumnBox">
           <p className='title'>Add Column</p>
-          <AddColumn />
+          <AddColumn apiEndPoint="addMobilityColumn" onCustomColumnAddHandler={onCustomColumnAddHandler}/>
         </div>
       </div>
     </div>

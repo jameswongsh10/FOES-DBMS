@@ -4,27 +4,57 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { tableActions } from '../../store/table-slice';
 import './addColumn.scss';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
-const AddColumn = () => {
+const AddColumn = (props) => {
   const dispatch = useDispatch();
+
+  const token = useSelector(state => state.auth.tokenId);
 
   const [open, isOpen] = useState(false);
   const inputColumnName = useRef('');
-  
+
   const onOpenHandler = () => {
     isOpen(true);
   };
 
   const onConfirmHandler = () => {
+
+    console.log("inputColumnName", inputColumnName.current.value);
+
     isOpen(false);
-    dispatch(tableActions.addCustomColumn(inputColumnName.current.value));
-  }
+    // fetch(`http://127.0.0.1:8000/api/${props.apiEndPoint}`, { 
+    // fetch(`http://127.0.0.1:8000/api/addStaffColumn`, {
+    //   method: 'POST',
+      // headers: {
+      //   "Authorization": `Bearer ${token}`,
+        // "Content-Type": 'text/plain'
+      // },
+    //   body: "ee"
+    // })
+    //   .then(response => response.json())
+    //   .then(data => {
+
+    //   });
+
+    axios.post(`http://127.0.0.1:8000/api/${props.apiEndPoint}`, JSON.stringify(String(inputColumnName.current.value)), {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": 'text/plain'
+      } 
+    })
+      .then(
+        props.onCustomColumnAddHandler()
+      )
+
+  };
 
   const initialComponent = (
     <Button onClick={onOpenHandler}>
       <h1>+</h1>
     </Button>
-  )
+  );
 
   const formInput = (
     <div className="columnForm">

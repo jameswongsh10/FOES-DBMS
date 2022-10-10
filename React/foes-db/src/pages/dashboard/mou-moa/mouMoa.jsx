@@ -8,13 +8,18 @@ import './mouMoa.scss';
 
 const MouMoa = () => {
 
+  const token = useSelector(state => state.auth.tokenId)
   const [columns, setColumns] = useState();
   const [rows, setRows] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/readAllMOUMOA'
+        'http://127.0.0.1:8000/readAllMOUMOA', { 
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       if (!response.ok) {
@@ -27,7 +32,11 @@ const MouMoa = () => {
       const { ["MOUMOA"]: collectionObj } = data;
       
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getMOUMOAColumns'
+        'http://127.0.0.1:8000/getMOUMOAColumns', { 
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       const columnData = await getColumnResponse.json();
@@ -40,7 +49,7 @@ const MouMoa = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div className="home">

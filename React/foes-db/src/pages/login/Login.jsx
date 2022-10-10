@@ -39,18 +39,15 @@ export default function SignInSide() {
     //   password: data.get('password'),
     // });
 
-    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD31O7bULSsMFv15zDTPOrGvlcG2bFoOis', {
+    fetch('http://127.0.0.1:8000/api/login', {
       method: 'POST',
       body: JSON.stringify({
         email: data.get('email'),
         password: data.get('password'),
-        returnSecureToken: true,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      })
     })
       .then((res) => {
+        console.log(res);
         if (res.ok) {
           return res.json();
         } else {
@@ -58,7 +55,10 @@ export default function SignInSide() {
         }
       })
       .then((data) => {
-        dispatch(authActions.login(data.idToken))
+        console.log(data);
+        const arr = [data.token, data.isSuperAdmin];
+        dispatch(authActions.login(arr))
+        // dispatch(authActions.login(data))
         // navigate '/'
       })
   };

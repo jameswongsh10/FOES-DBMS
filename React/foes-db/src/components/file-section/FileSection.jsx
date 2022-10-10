@@ -16,8 +16,8 @@ const FileSection = (props) => {
   return (
     <div className="fileSection">
       {isEditing
-        ? (<FileInputSection obj={props.obj} index={props.index} attachments={props.attachments} setAttachments={props.setAttachments} setIsEditing={setIsEditing} staffID={props.staffID} isNew={isNew}/>)
-        : (<FileViewSection obj={props.obj} index={props.index} attachments={props.attachments} setAttachments={props.setAttachments} setIsEditing={setIsEditing}/>)}
+        ? (<FileInputSection obj={props.obj} index={props.index} attachments={props.attachments} setAttachments={props.setAttachments} setIsEditing={setIsEditing} staffID={props.staffID} isNew={isNew} attachmentId={props.attachmentId} updateAttachmentsHTTP={props.updateAttachmentsHTTP}/>)
+        : (<FileViewSection obj={props.obj} index={props.index} attachments={props.attachments} setAttachments={props.setAttachments} setIsEditing={setIsEditing} attachmentId={props.attachmentId} updateAttachmentsHTTP={props.updateAttachmentsHTTP}/>)}
     </div>
   );
 };

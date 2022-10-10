@@ -5,21 +5,27 @@ import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './researchAwardSingle.scss';
+import { useSelector } from 'react-redux';
 
 const ResearchAwardSingle = () => {
+  const token = useSelector(state => state.auth.tokenId)
   const [entry, setEntry] = useState({});
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAwards/${id}`)
+    fetch(`http://127.0.0.1:8000/api/getAwards/${id}`, { 
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const { awards } = data;
         setEntry(awards);
       });
-  }, [id]);
+  }, [id, token]);
 
   const generateForm = (obj) => {
     let formHtml = [];
@@ -44,12 +50,24 @@ const ResearchAwardSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`http://127.0.0.1:8000/api/updateAwards/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/updateAwards/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(entry)
+      body: JSON.stringify(entry),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        navigate('/awards');
+        return response.json();
+      }
+      return Promise.reject(response);
+    })
+    .catch(response => {
+      response.json().then(json => alert(json.message));
     });
 
-    response && navigate('/awards');
   };
 
 

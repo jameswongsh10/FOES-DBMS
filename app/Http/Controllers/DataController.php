@@ -11,6 +11,7 @@ use App\Models\MouMoa;
 use App\Models\ResearchAwards;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Console\Command;
 use Spatie\DbDumper\Databases\MySql;
@@ -19,14 +20,15 @@ class DataController extends Controller
 {
     public function csvImport()
     {
-        $save = false;
-        $data = json_decode(file_get_contents('php://input'), true);
+        if (Auth::check()) {
+            $save = false;
+            $data = json_decode(file_get_contents('php://input'), true);
 
-        //Get Column name and column value, make a copy of original backup for new array use.
-        $columnName = $data[0];
-        $columnInfo = $data[1];
-        $table = $data[2];
-        $columnArray = [];
+            //Get Column name and column value, make a copy of original backup for new array use.
+            $columnName = $data[0];
+            $columnInfo = $data[1];
+            $table = $data[2];
+            $columnArray = [];
 
         //Get all columns of the specific table from MySQL database
         switch ($table) {
@@ -55,15 +57,15 @@ class DataController extends Controller
                 break;
         }
 
-        //Remove unused columns, sort the arrays and compare between the column array from database and the column array reads from csv file.
-        $unusedElement = ['id', 'created_at', 'updated_at'];
+            //Remove unused columns, sort the arrays and compare between the column array from database and the column array reads from csv file.
+            $unusedElement = ['id', 'created_at', 'updated_at'];
 
-        foreach ($unusedElement as $col) {
-            $key = array_search($col, $columnArray, true);
-            if ($key !== false) {
-                unset($columnArray[$key]);
+            foreach ($unusedElement as $col) {
+                $key = array_search($col, $columnArray, true);
+                if ($key !== false) {
+                    unset($columnArray[$key]);
+                }
             }
-        }
 
         //Trim the last element of the array cuz it always comes with \r
         $arrayCount = count($columnName);
@@ -124,17 +126,22 @@ class DataController extends Controller
             }
         }
 
-        if ($save) {
-            return response()->json([
-                'status' => $save,
-                'message' => "CSV file imported successfully!",
-            ], 201);
-        } else {
-            return response()->json([
-                'status' => $save,
-                'message' => "Error in CSV file import.",
-            ], 400);
+            if ($save) {
+                return response()->json([
+                    'status' => $save,
+                    'message' => "CSV file imported successfully!",
+                ], 201);
+            } else {
+                return response()->json([
+                    'status' => $save,
+                    'message' => "Error in CSV file import.",
+                ], 400);
+            }
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function database_backup()

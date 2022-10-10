@@ -39,54 +39,57 @@ import KtpUsrSingle from './pages/single/ktp-usr/KtpUsrSingle';
 import MobilitySingle from './pages/single/mobility-single/MobilitySingle';
 
 function App() {
-    const dispatch = useDispatch();
-    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-    const isDarkMode = useSelector(state => state.ui.isDarkMode);
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isDarkMode = useSelector(state => state.ui.isDarkMode);
+  const isSuperAdmin = useSelector(state => state.auth.isSuperAdmin)
 
-    const storedToken = localStorage.getItem('token');
+  const storedToken = localStorage.getItem('token');
+  const storedIsSuperUser = localStorage.getItem('isSuperAdmin');
 
-    useEffect(() => {
-        if (storedToken) {
-            dispatch(authActions.login(storedToken));
-        }
-    }, [storedToken, dispatch])
+  useEffect(() => {
+    if (storedToken) {
+      dispatch(authActions.login([ storedToken, storedIsSuperUser == 1 ? true : false ]));
+    }
+  }, [storedToken, storedIsSuperUser, dispatch])
 
-    return (
-        <div className={isDarkMode ? 'app dark' : 'app'}>
-            <BrowserRouter>
-                <Routes>
-                    {isLoggedIn && <Route path='/' element={<Admin/>}/>}
-                    {isLoggedIn && <Route path='/admin' element={<Admin/>}/>}
-                    {isLoggedIn && <Route path='/admin/new' element={<AdminAddNew/>}/>}
-                    {isLoggedIn && <Route path='/admin/:id' element={<AdminSingle/>}/>}
+  return (
+    <div className={isDarkMode ? 'app dark' : 'app'}>
+      <BrowserRouter>
+        <Routes>
+          {isLoggedIn && isSuperAdmin && <Route path='/' element={<Admin />} />}
+          {isLoggedIn && !isSuperAdmin && <Route path='/' element={<Staff />} />}
+          {isLoggedIn && isSuperAdmin && <Route path='/admin' element={<Admin />} />}
+          {isLoggedIn && isSuperAdmin && <Route path='/admin/new' element={<AdminAddNew />} />}
+          {isLoggedIn && isSuperAdmin && <Route path='/admin/:id' element={<AdminSingle />} />}
 
-                    {isLoggedIn && <Route path='/staff' element={<Staff/>}/>}
-                    {isLoggedIn && <Route path='/staff/new' element={<StaffAddNew/>}/>}
-                    {isLoggedIn && <Route path='/staff/:id' element={<StaffSingle/>}/>}
+          {isLoggedIn && <Route path='/staff' element={<Staff />} />}
+          {isLoggedIn && <Route path='/staff/new' element={<StaffAddNew />} />}
+          {isLoggedIn && <Route path='/staff/:id' element={<StaffSingle />} />}
 
-                    {isLoggedIn && <Route path='/asset' element={<Asset/>}/>}
-                    {isLoggedIn && <Route path='/asset/new' element={<AssetAddNew/>}/>}
-                    {isLoggedIn && <Route path='/asset/:id' element={<AssetSingle/>}/>}
+          {isLoggedIn && <Route path='/asset' element={<Asset />} />}
+          {isLoggedIn && <Route path='/asset/new' element={<AssetAddNew />} />}
+          {isLoggedIn && <Route path='/asset/:id' element={<AssetSingle />} />}
 
-                    {isLoggedIn && <Route path='/awards' element={<ResearchAward/>}/>}
-                    {isLoggedIn && <Route path='/awards/new' element={<ResearchAwardAddNew/>}/>}
-                    {isLoggedIn && <Route path='/awards/:id' element={<ResearchAwardSingle/>}/>}
+          {isLoggedIn && <Route path='/awards' element={<ResearchAward />} />}
+          {isLoggedIn && <Route path='/awards/new' element={<ResearchAwardAddNew />} />}
+          {isLoggedIn && <Route path='/awards/:id' element={<ResearchAwardSingle />} />}
 
-                    {isLoggedIn && <Route path='/moumoa' element={<MouMoa/>}/>}
-                    {isLoggedIn && <Route path='/moumoa/new' element={<MouMoaAddNew/>}/>}
-                    {isLoggedIn && <Route path='/moumoa/:id' element={<MouMoaSingle/>}/>}
+          {isLoggedIn && <Route path='/moumoa' element={<MouMoa />} />}
+          {isLoggedIn && <Route path='/moumoa/new' element={<MouMoaAddNew />} />}
+          {isLoggedIn && <Route path='/moumoa/:id' element={<MouMoaSingle />} />}
 
-                    {isLoggedIn && <Route path='/InactiveMOUMOA' element={<InactiveMouMoa/>}/>}
-                    {isLoggedIn && <Route path='/InactiveMOUMOA/new' element={<InactiveMouMoaAddNew/>}/>}
-                    {isLoggedIn && <Route path='/InactiveMOUMOA/:id' element={<InactiveMouMoaSingle/>}/>}
+          {isLoggedIn && <Route path='/InactiveMOUMOA' element={<InactiveMouMoa />} />}
+          {isLoggedIn && <Route path='/InactiveMOUMOA/new' element={<InactiveMouMoaAddNew />} />}
+          {isLoggedIn && <Route path='/InactiveMOUMOA/:id' element={<InactiveMouMoaSingle />} />}
 
-                    {isLoggedIn && <Route path='/KTPUSR' element={<KtpUsr/>}/>}
-                    {isLoggedIn && <Route path='/KTPUSR/new' element={<KtpUsrAddNew/>}/>}
-                    {isLoggedIn && <Route path='/KTPUSR/:id' element={<KtpUsrSingle/>}/>}
+          {isLoggedIn && <Route path='/KTPUSR' element={<KtpUsr />} />}
+          {isLoggedIn && <Route path='/KTPUSR/new' element={<KtpUsrAddNew />} />}
+          {isLoggedIn && <Route path='/KTPUSR/:id' element={<KtpUsrSingle />} />}
 
-                    {isLoggedIn && <Route path='/mobility' element={<Mobility/>}/>}
-                    {isLoggedIn && <Route path='/mobility/new' element={<MobilityAddNew/>}/>}
-                    {isLoggedIn && <Route path='/mobility/:id' element={<MobilitySingle/>}/>}
+          {isLoggedIn && <Route path='/mobility' element={<Mobility />} />}
+          {isLoggedIn && <Route path='/mobility/new' element={<MobilityAddNew />} />}
+          {isLoggedIn && <Route path='/mobility/:id' element={<MobilitySingle />} />}
 
                     {isLoggedIn && <Route path='/backup' element={<Backup/>}/>}
                     {isLoggedIn && <Route path='/pdf' element={<Pdf/>}/>}
