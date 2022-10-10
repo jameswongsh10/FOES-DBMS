@@ -143,7 +143,7 @@ class StaffController extends Controller
 
                     $data2[] = [
                         'staff_id' => $data[$i]->id,
-                        'staff_miri_id' =>$data[$i]->miri_id,
+                        'staff_miri_id' => $data[$i]->miri_id,
                         'staff_name' => $name
                     ];
                 }

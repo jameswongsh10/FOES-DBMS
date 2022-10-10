@@ -27,30 +27,30 @@ class AttachmentStaffController extends Controller
                     ], 401);
                 }
 
-            if ($file = $request->file('file')) {
-                $path = $file->store('public/files');
-                $name = $file->getClientOriginalName();
-                $ownPath = explode("/",$path);
-                $fileExtensionArr = explode(".", $ownPath[2]);
-                $contentType = "";
-                if (strcmp($fileExtensionArr[1], "csv") == 0) {
-                    $contentType = "text/csv";
-                } elseif (strcmp($fileExtensionArr[1], "pdf") == 0) {
-                    $contentType = "application/pdf";
-                } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
-                    $contentType = "application/zip";
-                }
+                if ($file = $request->file('file')) {
+                    $path = $file->store('public/files');
+                    $name = $file->getClientOriginalName();
+                    $ownPath = explode("/", $path);
+                    $fileExtensionArr = explode(".", $ownPath[2]);
+                    $contentType = "";
+                    if (strcmp($fileExtensionArr[1], "csv") == 0) {
+                        $contentType = "text/csv";
+                    } elseif (strcmp($fileExtensionArr[1], "pdf") == 0) {
+                        $contentType = "application/pdf";
+                    } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
+                        $contentType = "application/zip";
+                    }
 
-                //store your file into directory and db
-                $newAttachment = new AttachmentStaff();
-                $newAttachment->staff_id = $request->staff_id;
-                $newAttachment->type = $request->type;
-                $newAttachment->description = $request->description;
-                $newAttachment->path = $path;
-                $newAttachment->file_name = $name;
-                $newAttachment->content_type = $contentType;
+                    //store your file into directory and db
+                    $newAttachment = new AttachmentStaff();
+                    $newAttachment->staff_id = $request->staff_id;
+                    $newAttachment->type = $request->type;
+                    $newAttachment->description = $request->description;
+                    $newAttachment->path = $path;
+                    $newAttachment->file_name = $name;
+                    $newAttachment->content_type = $contentType;
 
-                $newAttachment->save();
+                    $newAttachment->save();
 
                     return response()->json([
                         'status' => true,
@@ -223,14 +223,15 @@ class AttachmentStaffController extends Controller
         ], 401);
     }
 
-    public function downloadAttachment($id) {
+    public function downloadAttachment($id)
+    {
         //TODO swap the json of content-type to both edit and create
         $attachment = AttachmentStaff::find($id);
-        $path = explode("/",$attachment['path']);
+        $path = explode("/", $attachment['path']);
         $fullPath = 'app/public/files/' . $path[2];
         $filePath = storage_path($fullPath);
         $testRealPath = realpath($filePath);
 
-       return response()->download($testRealPath, $attachment['file_name']);
+        return response()->download($testRealPath, $attachment['file_name']);
     }
 }
