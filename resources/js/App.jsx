@@ -20,7 +20,7 @@ function App() {
   const sidebarCollections = useSelector(state => state.table.sidebarCollections);
 
   const storedToken = localStorage.getItem('token');
-  
+
   useEffect(() => {
     if (storedToken) {
       dispatch(authActions.login(storedToken));

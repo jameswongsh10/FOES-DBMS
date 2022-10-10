@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
-import './setting.scss';
+import './import.scss';
 import {AlertTitle, Button, FormControl, FormLabel, Radio, RadioGroup} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from 'axios';
@@ -12,7 +12,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
 import Alert from "@mui/material/Alert";
 
-const Setting = () => {
+const Import = () => {
     const [error, setError] = useState();
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState();
@@ -32,7 +32,8 @@ const Setting = () => {
             const values = i.split(",");
 
             const obj = csvHeader.reduce((object, header, index) => {
-                object[header] = values[index].trim();
+                values[index] != '' ? object[header] = values[index] : object[header] = null;
+                // object[header] = values[index];
                 return object;
             }, {});
             return obj;
@@ -41,7 +42,7 @@ const Setting = () => {
         const table = document.querySelector('input[name="target_table"]:checked').value;
         const csvArray = [csvHeader, array, table];
 
-        axios.post('/csvImport', JSON.stringify(csvArray)).then(response => {
+        axios.post('http://127.0.0.1:8000/api/csvImport', JSON.stringify(csvArray)).then(response => {
             console.log(JSON.stringify(response.data));
             setError(false);
             setOpen(false);
@@ -87,7 +88,7 @@ const Setting = () => {
                         close()
                     }}>
                         <AlertTitle>Success</AlertTitle>
-                        Data Import Success! — <strong>check it in the database!</strong>
+                        Data Imported Successfully! — <strong>check it in the dashboard!</strong>
                     </Alert>}
                 <Dialog
                     open={open}
@@ -104,7 +105,6 @@ const Setting = () => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        {/*<Button onClick={handleClose}>Disagree</Button>*/}
                         <Button onClick={handleClose} autoFocus>
                             Continue
                         </Button>
@@ -125,6 +125,8 @@ const Setting = () => {
                             <FormControlLabel value="Staff" control={<Radio/>} label="Staff Information"/>
                             <FormControlLabel value="MOU-MOA" control={<Radio/>}
                                               label="MOU & MOA Program Information"/>
+                            <FormControlLabel value="Inactive-MOU-MOA" control={<Radio/>}
+                                              label="Inactive MOU & MOA Program Information"/>
                             <FormControlLabel value="KTP-USR" control={<Radio/>} label="KTP USR Information"/>
                             <FormControlLabel value="Mobility" control={<Radio/>} label="Mobility Information"/>
                             <FormControlLabel value="Research-Award" control={<Radio/>}
@@ -151,29 +153,9 @@ const Setting = () => {
                 </div>
 
                 <br/>
-
-                {/*<table>*/}
-                {/*    <thead>*/}
-                {/*    <tr key={"header"}>*/}
-                {/*        {headerKeys.map((key) => (*/}
-                {/*            <th>{key}</th>*/}
-                {/*        ))}*/}
-                {/*    </tr>*/}
-                {/*    </thead>*/}
-
-                {/*    <tbody>*/}
-                {/*    {array.map((item) => (*/}
-                {/*        <tr key={item.id}>*/}
-                {/*            {Object.values(item).map((val) => (*/}
-                {/*                <td>{val}</td>*/}
-                {/*            ))}*/}
-                {/*        </tr>*/}
-                {/*    ))}*/}
-                {/*    </tbody>*/}
-                {/*</table>*/}
             </div>
         </div>
     );
 }
 
-export default Setting
+export default Import

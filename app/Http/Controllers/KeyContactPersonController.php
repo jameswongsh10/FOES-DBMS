@@ -87,7 +87,7 @@ class KeyContactPersonController extends Controller
 
             $contact = KeyContactPerson::where($column, '=', $moumoa_id)->with('moumoa')->get();
 
-            if (is_null($contact)) {
+            if (empty($contact)) {
                 return response()->json([
                     'status' => false,
                     'message' => "Contact not found",
