@@ -6,10 +6,13 @@ import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './staffSingle.scss';
 import FileInputSection from '../../../components/section/FileInputSection';
+import FileSection from '../../../components/file-section/FileSection';
+import ResearchAwardsSection from '../../../components/research-awards-section/ResearchAwardsSection';
 
 const StaffSingle = () => {
 
   const [entry, setEntry] = useState({});
+  const [attachments, setAttachments] = useState([]);
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
@@ -22,6 +25,16 @@ const StaffSingle = () => {
         setEntry(staff);
       });
   }, [id]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        const attachment = data.attachment;
+        setAttachments(attachment);
+      });
+  }, [id]);
+
 
   const generateForm = (obj) => {
     let formHtml = [];
@@ -42,7 +55,24 @@ const StaffSingle = () => {
     setEntry(newEntry);
   };
 
+  const generateSection = (arr) => {
+    let sectionHtml = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (attachments[i] === null) {
+        sectionHtml.push(
+          <FileSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`}/>
+        );
+      } else {
+        sectionHtml.push(
+          <FileSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} />
+        );
+      }
+    }
+    return sectionHtml;
+  };
+
   const generatedForm = generateForm(entry);
+  const generatedSection = generateSection(attachments);
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
@@ -54,6 +84,12 @@ const StaffSingle = () => {
     response && navigate('/staff');
   };
 
+  const onAddNewDocument = () => {
+    setAttachments([...attachments, null]);
+  };
+
+  // console.log(...attachments);
+  // console.log(attachments);
 
   return (
     <div className="single">
@@ -70,8 +106,14 @@ const StaffSingle = () => {
             <div className="break" />
           </div>
         </div>
+        <div className="content">
+          {generatedSection}
+          {/* <FileInputSection obj={null} /> */}
+        </div>
+        <button onClick={onAddNewDocument}>Add New Doc</button>
+        {/* <FileInputSection /> */}
         <div className="section">
-          <FileInputSection />
+          <ResearchAwardsSection staffId={id}/>
         </div>
       </div>
     </div>
