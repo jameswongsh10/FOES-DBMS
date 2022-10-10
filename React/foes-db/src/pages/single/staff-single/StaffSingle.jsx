@@ -143,9 +143,12 @@ const StaffSingle = () => {
           {generatedSection}
           {/* <FileInputSection obj={null} /> */}
         </div>
-        <button onClick={onAddNewDocument}>Add New Doc</button>
+        <div className="button-section">
+          <button className='add-new-btn' onClick={onAddNewDocument}>Add New Document</button>
+        </div>
         {/* <FileInputSection /> */}
         <div className="section">
+          <div className="title">Research Awards</div>
           <ResearchAwardsSection staffId={id} />
         </div>
       </div>

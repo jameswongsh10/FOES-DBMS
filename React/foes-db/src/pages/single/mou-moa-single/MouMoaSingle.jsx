@@ -9,7 +9,7 @@ import KeyPersonSection from '../../../components/key-person-section/KeyPersonSe
 import { useSelector } from 'react-redux';
 
 const MouMoaSingle = () => {
-  const token = useSelector(state => state.auth.tokenId)
+  const token = useSelector(state => state.auth.tokenId);
   const [entry, setEntry] = useState({});
   const [keyPersons, setKeyPersons] = useState([]);
   const params = useParams();
@@ -17,9 +17,9 @@ const MouMoaSingle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getMOUMOA/${id}`, { 
+    fetch(`http://127.0.0.1:8000/api/getMOUMOA/${id}`, {
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => response.json())
@@ -30,9 +30,9 @@ const MouMoaSingle = () => {
   }, [id, token]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getKeyContactPerson/moumoa/${id}`, { 
+    fetch(`http://127.0.0.1:8000/api/getKeyContactPerson/moumoa/${id}`, {
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => response.json())
@@ -86,19 +86,19 @@ const MouMoaSingle = () => {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
-    .then(response => {
-      if (response.ok) {
-        navigate('/moumoa');
-        return response.json();
-      }
-      return Promise.reject(response);
-    })
-    .catch(response => {
-      response.json().then(json => alert(json.message));
-    });
+      .then(response => {
+        if (response.ok) {
+          navigate('/moumoa');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
   };
 
   const onAddNewKeyPerson = () => {
@@ -122,10 +122,13 @@ const MouMoaSingle = () => {
             <div className="break" />
           </div>
           <div className="content">
+            <div className="title">Key Contact Person</div>
             {generatedSection}
             {/* <FileInputSection obj={null} /> */}
           </div>
-          <button onClick={onAddNewKeyPerson}>Add New Doc</button>
+          <div className="button-section">
+            <button className="add-new-btn" onClick={onAddNewKeyPerson}>ADD NEW KEY CONTACT PERSON</button>
+          </div>
         </div>
       </div>
     </div>

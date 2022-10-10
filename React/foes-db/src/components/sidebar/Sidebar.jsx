@@ -178,12 +178,6 @@ const Sidebar = () => {
                   <span>Data Import</span>
                 </li>
               </Link>
-              <Link to='/pdf' className='link'>
-                <li>
-                  <OutputOutlined className='icon' />
-                  <span>Generate PDF</span>
-                </li>
-              </Link>
               <Link to='/backup' className='link'>
                 <li>
                   <Backup className='icon' />

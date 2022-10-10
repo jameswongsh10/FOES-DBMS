@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useLocation} from 'react-router-dom';
 import { tableActions } from '../../store/table-slice';
 import './dataTable.scss';
+import { Button } from '@mui/material';
 
 const useFakeMutation = () => {
   return React.useCallback(
@@ -88,14 +89,21 @@ const DataTable = (props) => {
         return (
           <div className="cellAction">
             <Link to={`/${viewCollection}/${params.row.id}`} style={{ textDecoration: "none" }} onClick={() => onSelectSingleHandler(params.row.id)}>
-              <div className="viewButton">View</div>
+              <Button className="viewButton">View</Button>
             </Link>
-            <div
+            {/* <div
               className="deleteButton"
               onClick={() => onDeleteEntryHandler(props.deleteUrl, params.row.id)}
             >
               Delete
-            </div>
+            </div> */}
+            <Button
+              className="deleteButton"
+              color='error'
+              onClick={() => onDeleteEntryHandler(props.deleteUrl, params.row.id)}
+            >
+              Delete
+            </Button>
           </div>
         );
       },

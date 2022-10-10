@@ -19,8 +19,6 @@ const ResearchAwardsSection = (props) => {
       });
   }, [props.staffId, token]);
 
-  console.log(awardArr);
-
   const generateHtml = (arr) => {
     let sectionHtml = [];
     for (var i = 0; i < arr.length; i++) {

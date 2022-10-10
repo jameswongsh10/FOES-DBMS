@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import './fileInputSection.scss';
 import { useSelector } from 'react-redux';
+import { Button } from '@mui/material';
 
 const FileInputSection = (props) => {
 
@@ -40,7 +41,14 @@ const FileInputSection = (props) => {
       "file_name": file
     };
 
-    const newAttachments = (props.attachments).filter((element, i) => !(element.id === props.attachmentId));
+    // const newAttachments = (props.attachments).filter((element, i) => !(element.id === props.attachmentId));
+    const newAttachments = (props.attachments).filter((element, i) => {
+      console.log("element.id", element.id);
+      console.log("props.attachmentId", props.attachmentId);
+      return !(element.id === props.attachmentId);
+    });
+
+    console.log("newAttachments", newAttachments);
 
     fetch(`http://127.0.0.1:8000/api/updateAttachment/${props.attachmentId}`, {
       method: 'POST',
@@ -50,18 +58,16 @@ const FileInputSection = (props) => {
       body: data
     })
       .then(response => {
-        return response.json()
+        return response.json();
       })
       .then(data => {
-        // console.log(newAttachments, data.attachment);
-        // props.setAttachments(newAttachments);
-        // return data;
-        props.updateAttachmentsHTTP();
+        console.log(newAttachments, data.attachment);
+        props.setIsEditing(false);
+        props.setAttachments([data.attachment, ...newAttachments]);
       })
   };
 
   const onSaveHandler = () => {
-    // TODO: Find a way to use form-data on fetch request
     var data = new FormData();
     data.append("staff_id", props.staffID);
     data.append("type", typeInput.current.value);
@@ -88,18 +94,15 @@ const FileInputSection = (props) => {
     })
       .then(response => {
         return response.json();
-        // props.setAttachments(newAttachments)
-        // props.setAttachments([...newAttachments, jsonObject])
       })
       .then(data => {
-        // console.log(data);
-        // console.log(data.attachment);
-        // console.log(props.attachments);
         console.log(newAttachments, data.attachment);
-        props.setAttachments([data.attachment ,...newAttachments]);
+        props.setAttachments([data.attachment, ...newAttachments]);
       });
 
   };
+
+  // console.log(props.obj.file_name);
 
   return (
     <div className="section">
@@ -118,10 +121,12 @@ const FileInputSection = (props) => {
         </div>
         <div className="formInput">
           <label>Attachment</label>
-          <input className='custom-file-input' type="file" onChange={onFileUploadHandler}></input>
+          <input className='custom-file-input' type="file" id="files" onChange={onFileUploadHandler}></input>
+          {!props.isNew && (<label>file_name: {props.obj.file_name}</label>)}
+          <label className='custom-file-input' for="files">{file && file.name}</label>
         </div>
-        <button onClick={props.isNew === true ? onSaveHandler : onUpdateHandler}>Save</button>
-        <button onClick={props.isNew === true ? onNewCancelHandler : onCancelHandler}>Cancel</button>
+        <Button className='section-btn' variant='contained' color='success' onClick={props.isNew === true ? onSaveHandler : onUpdateHandler}>Save</Button>
+        <Button className='section-btn' variant='outlined' onClick={props.isNew === true ? onNewCancelHandler : onCancelHandler}>Cancel</Button>
       </div>
     </div>
   );
