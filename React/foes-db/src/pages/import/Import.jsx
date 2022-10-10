@@ -32,7 +32,8 @@ const Import = () => {
             const values = i.split(",");
 
             const obj = csvHeader.reduce((object, header, index) => {
-                object[header] = values[index].trim();
+                values[index] != '' ? object[header] = values[index] : object[header] = null;
+                // object[header] = values[index];
                 return object;
             }, {});
             return obj;
