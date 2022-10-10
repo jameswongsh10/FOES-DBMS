@@ -67,16 +67,16 @@ Route::post('addAwardsColumn', [ResearchAwardsController::class, 'addAwardsColum
 Route::get('getAwardsColumns', [ResearchAwardsController::class, 'getAwardsColumns']);
 
 //Mobility CRUD
-Route::post('createMobility',  [MobilityController::class, 'createMobility']);
-Route::get('getMobility/{id}',  [MobilityController::class, 'readMobility']);
-Route::get('readAllMobility',  [MobilityController::class, 'readAllMobility']);
-Route::put('updateMobility/{id}',  [MobilityController::class, 'updateMobility']);
-Route::delete('deleteMobility/{id}',  [MobilityController::class, 'deleteMobility']);
-Route::post('addMobilityColumn',  [MobilityController::class, 'addMobilityColumn']);
-Route::get('getMobilityColumns',  [MobilityController::class, 'getMobilityColumns']);
+Route::post('createMobility', [MobilityController::class, 'createMobility']);
+Route::get('getMobility/{id}', [MobilityController::class, 'readMobility']);
+Route::get('readAllMobility', [MobilityController::class, 'readAllMobility']);
+Route::put('updateMobility/{id}', [MobilityController::class, 'updateMobility']);
+Route::delete('deleteMobility/{id}', [MobilityController::class, 'deleteMobility']);
+Route::post('addMobilityColumn', [MobilityController::class, 'addMobilityColumn']);
+Route::get('getMobilityColumns', [MobilityController::class, 'getMobilityColumns']);
 
 //KTPUSR CRUD
-Route::post('createKTPUSR',  [KTPUSR_Controller::class, 'createKTPUSR']);
+Route::post('createKTPUSR', [KTPUSR_Controller::class, 'createKTPUSR']);
 Route::get('getKTPUSR/{id}', [KTPUSR_Controller::class, 'readKTPUSR']);
 Route::get('readAllKTPUSR', [KTPUSR_Controller::class, 'readAllKTPUSR']);
 Route::put('updateKTPUSR/{id}', [KTPUSR_Controller::class, 'updateKTPUSR']);
@@ -119,4 +119,6 @@ Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAt
 Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
 
 //Data Controller
-Route::post('csvImport',  [DataController::class, 'csvImport']);
+Route::post('csvImport', [DataController::class, 'csvImport']);
+Route::get('database_backup', [DataController::class, 'database_backup']);
+Route::get('database_restore', [DataController::class, 'database_restore']);

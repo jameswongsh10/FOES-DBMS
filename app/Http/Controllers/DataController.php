@@ -10,7 +10,10 @@ use App\Models\Mobility;
 use App\Models\MouMoa;
 use App\Models\ResearchAwards;
 use App\Models\Staff;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Console\Command;
+use Spatie\DbDumper\Databases\MySql;
 
 class DataController extends Controller
 {
@@ -132,5 +135,22 @@ class DataController extends Controller
                 'message' => "Error in CSV file import.",
             ], 400);
         }
+    }
+
+    public function database_backup()
+    {
+        $output = null;
+        $result_code = null;
+        $path = 'php ' . '"' . realpath("../") . '\artisan" backup:run --only-db';
+        exec($path,$output,$result_code);
+        return $result_code;
+    }
+
+    public function database_restore(){
+        $output = null;
+        $result_code = null;
+        $path = 'php ' . '"' . realpath("../") . '\artisan" backup:restore-last';
+        exec($path,$output,$result_code);
+        return $result_code;
     }
 }
