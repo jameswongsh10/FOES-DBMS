@@ -1,11 +1,11 @@
 import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import './keyPersonInputSection.scss'
+import './keyPersonInputSection.scss';
 
 const KeyPersonInputSection = (props) => {
 
-  const token = useSelector(state => state.auth.tokenId)
+  const token = useSelector(state => state.auth.tokenId);
 
   const [institution, setInstitution] = useState(props.isNew ? "" : props.obj.institution);
   const [name, setName] = useState(props.isNew ? "" : props.obj.name);
@@ -33,16 +33,25 @@ const KeyPersonInputSection = (props) => {
       "institution": institution
     };
 
+    const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+
+    console.log(newArray);
+
     fetch(`http://127.0.0.1:8000/api/updateKeyContactPerson/${props.obj.id}`, {
       method: 'PUT',
       body: JSON.stringify(jsonObject),
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
-        const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
-        props.setKeyPersons([...newArray, jsonObject]);
+        return response.json();
+        // const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+        // props.setKeyPersons([...newArray, jsonObject]);
+      })
+      .then(data => {
+        props.setIsEditing(false);
+        props.setKeyPersons([data.KeyContactPerson, ...newArray]);
       });
   };
 
@@ -61,20 +70,20 @@ const KeyPersonInputSection = (props) => {
       method: 'POST',
       body: JSON.stringify(jsonObject),
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
-    .then(response => {
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      props.setKeyPersons([data.KeyContactPerson, ...newArray]);
-    });
-      // .then(response => {
-      //   const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
-      //   props.setKeyPersons([...newArray, jsonObject]);
-      // });
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        props.setKeyPersons([data.KeyContactPerson, ...newArray]);
+      });
+    // .then(response => {
+    //   const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+    //   props.setKeyPersons([...newArray, jsonObject]);
+    // });
   };
 
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import './researchAwardsSection.scss'
 
 const ResearchAwardsSection = (props) => {
 
@@ -24,8 +25,10 @@ const ResearchAwardsSection = (props) => {
     for (var i = 0; i < arr.length; i++) {
       sectionHtml.push(
         <div className="single-award">
-          <label>Type of Grant : {awardArr[i].type_of_grant}</label>
-          <label>Project Title : {awardArr[i].project_title}</label>
+          <div className="award-text">Type of Grant : {awardArr[i].type_of_grant} </div>
+          <div className="award-text">Project Title : {awardArr[i].project_title} </div>
+          {/* <div>Type of Grant : {awardArr[i].type_of_grant}</div> */}
+          {/* <div>Project Title : {awardArr[i].project_title}</div> */}
         </div>
       );
     }

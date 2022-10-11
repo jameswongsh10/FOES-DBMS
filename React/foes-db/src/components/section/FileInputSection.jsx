@@ -13,7 +13,11 @@ const FileInputSection = (props) => {
 
   const onFileUploadHandler = (event) => {
     // check whether event.target.files[0] works to load the correct file
-    setFile(event.target.files[0]);
+    if (( event.target.files[0].size / 1024 / 1024 ) > 15) {
+      alert("File size should not be more than 15mb")
+    } else {
+      setFile(event.target.files[0]);
+    }
   };
 
   const onCancelHandler = () => {
@@ -121,7 +125,7 @@ const FileInputSection = (props) => {
         </div>
         <div className="formInput">
           <label>Attachment</label>
-          <input className='custom-file-input' type="file" id="files" onChange={onFileUploadHandler}></input>
+          <input className='custom-file-input' type="file" id="files" accept=".zip,.pdf" onChange={onFileUploadHandler}></input>
           {!props.isNew && (<label>file_name: {props.obj.file_name}</label>)}
           <label className='custom-file-input' for="files">{file && file.name}</label>
         </div>

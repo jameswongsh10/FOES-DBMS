@@ -18,6 +18,25 @@ const StaffSingle = () => {
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
+  console.log(entry.miri_id);
+
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [miriID, setMiriID] = useState();
+  const [perthID, setPerthID] = useState();
+  const [emailAddress, setEmailAddress] = useState();
+  const [reportDuty, setReportDuty] = useState();
+  const [department, setDepartment] = useState();
+  const [title, setTitle] = useState();
+  const [position, setPosition] = useState();
+  const [roomNo, setRoomNo] = useState();
+  const [extNo, setExtNo] = useState();
+  const [status, setStatus] = useState();
+  const [photocopyID, setPhotocopyID] = useState();
+  const [appointmentLevel, setAppointmentLevel] = useState();
+  const [pigeonBoxNo, setPigeonBoxNo] = useState();
+  const [resignedDate, setResignedDate] = useState();
+  const [remark, setRemark] = useState();
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/getStaff/${id}`, {
@@ -60,8 +79,12 @@ const StaffSingle = () => {
 
   const generateForm = (obj) => {
     let formHtml = [];
+
+    const filters = ["id", "first_name", "last_name", "title", "miri_id", "perth_id", "report_duty_date", "position", "room_no", "ext_no", "status", "department", "email", "appointment_level", "photocopy_id", "pigeonbox_no", "resigned_date", "remark", "created_at", "updated_at"];
+
     for (const key in obj) {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
+      // if (!filters.includes(key)) {
         formHtml.push(
           <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
         );
@@ -149,7 +172,7 @@ const StaffSingle = () => {
         {/* <FileInputSection /> */}
         <div className="section">
           <div className="title">Research Awards</div>
-          <ResearchAwardsSection staffId={id} />
+          <ResearchAwardsSection staffId={entry.miri_id} />
         </div>
       </div>
     </div>

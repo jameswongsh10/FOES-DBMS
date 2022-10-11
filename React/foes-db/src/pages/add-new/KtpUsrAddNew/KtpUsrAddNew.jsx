@@ -83,8 +83,8 @@ const KtpUsrAddNew = () => {
       "no_of_staff": noOfStaffInput.current.value,
       "no_of_student": noOfStudentInput.current.value,
       "internal_funding": internalFundingInput.current.value,
-      "external_funding": externalFundingInput.current.value
-      // remark: missing
+      "external_funding": externalFundingInput.current.value,
+      "remark": remarkInput.current.value
     };
 
     listRef.current.forEach(el => {
