@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\AttachmentStaff;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 
 class AttachmentStaffController extends Controller
 {
@@ -17,7 +16,7 @@ class AttachmentStaffController extends Controller
         if (Auth::check()) {
             try {
                 $validator = Validator::make($request->all(), [
-                    'file' => 'required|mimes:pdf,csv,zip|max:15360', //15mb
+                    'file' => 'required|mimes:pdf,csv,zip|max:15360', //15mb application/pdf, text/csv, application/zip
                 ]);
 
                 if ($validator->fails()) {
@@ -67,9 +66,8 @@ class AttachmentStaffController extends Controller
         }
         return response()->json([
             'status' => false,
-            'message' => "Unauthorized user"
+            'message' => 'Unauthorized user'
         ], 401);
-
     }
 
     public function readAttachment($id)
@@ -98,7 +96,7 @@ class AttachmentStaffController extends Controller
         }
         return response()->json([
             'status' => false,
-            'message' => "Unauthorized user"
+            'message' => 'Unauthorized user'
         ], 401);
     }
 
@@ -131,7 +129,7 @@ class AttachmentStaffController extends Controller
         }
         return response()->json([
             'status' => false,
-            'message' => "Unauthorized user"
+            'message' => 'Unauthorized user'
         ], 401);
     }
 
@@ -184,7 +182,7 @@ class AttachmentStaffController extends Controller
         }
         return response()->json([
             'status' => false,
-            'message' => "Unauthorized user"
+            'message' => 'Unauthorized user'
         ], 401);
     }
 
@@ -219,19 +217,38 @@ class AttachmentStaffController extends Controller
         }
         return response()->json([
             'status' => false,
-            'message' => "Unauthorized user"
+            'message' => 'Unauthorized user'
         ], 401);
     }
 
     public function downloadAttachment($id)
     {
-        //TODO swap the json of content-type to both edit and create
-        $attachment = AttachmentStaff::find($id);
-        $path = explode("/", $attachment['path']);
-        $fullPath = 'app/public/files/' . $path[2];
-        $filePath = storage_path($fullPath);
-        $testRealPath = realpath($filePath);
+        if (Auth::check()) {
+            try {
+                $attachment = AttachmentStaff::find($id);
+                if (is_null($attachment)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Attachment not found",
+                    ], 404);
+                }
+                $path = explode("/", $attachment['path']);
+                $fullPath = 'app/public/files/' . $path[2];
+                $filePath = storage_path($fullPath);
+                $testRealPath = realpath($filePath);
 
-        return response()->download($testRealPath, $attachment['file_name']);
+                return response()->download($testRealPath, $attachment['file_name']);
+
+            } catch (QueryException $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $e->errorInfo[2]
+                ], 400);
+            }
+        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Unauthorized user'
+        ], 401);
     }
 }
