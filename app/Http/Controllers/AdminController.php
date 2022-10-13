@@ -51,35 +51,6 @@ class AdminController extends Controller
 //        ], 401);
     }
 
-    public function addAdminColumn()
-    {
-        //    if (Auth::check()) {
-        try {
-            $columnName = json_decode(file_get_contents('php://input'), true);
-
-            Schema::table('admins', function (Blueprint $table) use ($columnName) {
-                $table->string($columnName)->after('password')->default('');
-            });
-
-            return response()->json([
-                'status' => true,
-                'message' => "Column added successfully!",
-                'column' => $columnName
-            ], 201);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
-        }
-//        }
-//        return response()->json([
-//            'status' => false,
-//            'message' => "Unauthorized user"
-//        ], 401);
-    }
-
     public function readAllAdmin()
     {
         //if (Auth::check()) {
@@ -117,7 +88,7 @@ class AdminController extends Controller
             }
 
             return response()->json([
-                //   'status' => true,
+                'status' => true,
                 'admin' => $admin
             ], 200);
 
@@ -149,8 +120,12 @@ class AdminController extends Controller
 
             $data = json_decode(file_get_contents('php://input'), true);
 
-            $encryptedPassword = Hash::make($data['password']);
-            $data['password'] = $encryptedPassword;
+            if(strcmp($data['password'], $admin->password) != 0){
+                $encryptedPassword = Hash::make($data['password']);
+                $data['password'] = $encryptedPassword;
+            }
+
+
             $admin->update($data);
 
             return response()->json([

@@ -17,7 +17,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchData = async () => {
       const readAllResponse = await fetch(
-        'http://127.0.0.1:8000/readAllAdmin', { 
+        'http://127.0.0.1:8000/readAllAdmin', {
           headers: {
             Authorization : `Bearer ${token}`
           }
@@ -34,7 +34,7 @@ const Admin = () => {
       const { ["Admin"]: collectionObj } = data;
 
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getAdminColumns', { 
+        'http://127.0.0.1:8000/getAdminColumns', {
           headers: {
             Authorization : `Bearer ${token}`
           }
@@ -56,7 +56,7 @@ const Admin = () => {
       //   }
       // }
 
-      const filters = ["id", "created_at", "updated_at"];
+      const filters = ["id", "created_at", "updated_at", "isSuperAdmin", "password"];
 
       setColumns(columnArr.filter((column) => !filters.includes(column)));
       setRows(collectionObj);

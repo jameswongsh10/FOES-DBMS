@@ -17,7 +17,7 @@ class Admin extends Authenticatable implements JWTSubject
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    protected $hidden = ['password'];
+    //protected $hidden = ['password'];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

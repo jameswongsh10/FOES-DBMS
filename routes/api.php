@@ -36,7 +36,6 @@ Route::get('getAdmin/{id}', [AdminController::class, 'readAdmin']);
 Route::get('readAllAdmin', [AdminController::class, 'readAllAdmin']);
 Route::put('updateAdmin/{id}', [AdminController::class, 'updateAdmin']);
 Route::delete('deleteAdmin/{id}', [AdminController::class, 'deleteAdmin']);
-Route::post('addAdminColumn', [AdminController::class, 'addAdminColumn']);
 Route::get('getAdminColumns', [AdminController::class, 'getAdminColumns']);
 
 //Asset CRUD

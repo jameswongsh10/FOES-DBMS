@@ -111,10 +111,6 @@ const AdminAddNew = () => {
             {/* <Button type='submit' disabled="true">Send</Button> */}
           </form>
         </div>
-        <div className="addColumnBox">
-          <p className='title'>Add Column</p>
-          <AddColumn />
-        </div>
       </div>
     </div>
   );

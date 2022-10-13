@@ -112,7 +112,7 @@ const ResearchAwardAddNew = () => {
 
             <div key='staffMiriId' className="formInput" >
               <label>Staff Miri ID</label>
-              <input type="number" min='0' name="staffMiriId" ref={staffMiriIdInput} />
+              <input type="text" min='0' name="staffMiriId" ref={staffMiriIdInput} />
             </div>
             <div key='typeOfGrant' className="formInput" >
               <label>Type of Grant</label>
