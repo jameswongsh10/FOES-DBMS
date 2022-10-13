@@ -11,6 +11,7 @@ use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
 use App\Http\Controllers\AttachmentStaffController;
 use App\Http\Controllers\AttachmentMobilityController;
+use App\Http\Controllers\AttachmentMoumoaController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
@@ -128,6 +129,14 @@ Route::get('getAttachment/staff/{id}', [AttachmentMobilityController::class, 'ge
 Route::put('updateAttachment/{id}', [AttachmentMobilityController::class, 'updateAttachment']);
 Route::delete('deleteAttachment/{id}', [AttachmentMobilityController::class, 'deleteAttachment']);
 Route::get('downloadAttachment/{id}', [AttachmentMobilityController::class, 'downloadAttachment']);
+
+//Attachment Moumoa CRUD
+Route::post('createAttachment', [AttachmentMoumoaController::class, 'createAttachmentMoumoa']);
+Route::get('getAttachment/{id}', [AttachmentMoumoaController::class, 'readAttachment']);
+Route::get('getAttachment/moumoa/{id}', [AttachmentMoumoaController::class, 'getAttachmentByMoumoaID']);
+Route::put('updateAttachment/{id}', [AttachmentMoumoaController::class, 'updateAttachment']);
+Route::delete('deleteAttachment/{id}', [AttachmentMoumoaController::class, 'deleteAttachment']);
+Route::get('downloadAttachment/{id}', [AttachmentMoumoaController::class, 'downloadAttachment']);
 
 //CSV Import
 Route::post('csvImport', [DataController::class, 'csvImport']);
