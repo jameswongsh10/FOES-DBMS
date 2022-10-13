@@ -14,6 +14,7 @@ class ResearchAwards extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     protected $with = ['staff'];
+
     public function staff()
     {
         return $this->belongsTo(Staff::class);

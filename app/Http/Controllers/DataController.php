@@ -4,17 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Asset;
+use App\Models\InactiveMouMoa;
 use App\Models\KtpUsr;
 use App\Models\Mobility;
 use App\Models\MouMoa;
 use App\Models\ResearchAwards;
 use App\Models\Staff;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Console\Command;
+use Spatie\DbDumper\Databases\MySql;
 
 class DataController extends Controller
 {
     public function csvImport()
     {
+        //  if (Auth::check()) {
         $save = false;
         $data = json_decode(file_get_contents('php://input'), true);
 
@@ -24,11 +30,8 @@ class DataController extends Controller
         $table = $data[2];
         $columnArray = [];
 
-        //Get all columns of admin table from MySQL database
+        //Get all columns of the specific table from MySQL database
         switch ($table) {
-            case "Admin":
-                $columnArray = Schema::getColumnListing('admins');
-                break;
             case "Asset":
                 $columnArray = Schema::getColumnListing('assets');
                 break;
@@ -40,6 +43,9 @@ class DataController extends Controller
                 break;
             case "MOU-MOA":
                 $columnArray = Schema::getColumnListing('mou_moa');
+                break;
+            case "Inactive-MOU-MOA":
+                $columnArray = Schema::getColumnListing('inactive_mou_moa');
                 break;
             case "Mobility":
                 $columnArray = Schema::getColumnListing('mobility');
@@ -64,20 +70,21 @@ class DataController extends Controller
         //Trim the last element of the array cuz it always comes with \r
         $arrayCount = count($columnName);
         $afterTrim = $columnName[$arrayCount - 1];
-        $afterTrim = rtrim($afterTrim, "\r");
+        $afterTrim = rtrim($afterTrim);
         $columnName[$arrayCount - 1] = $afterTrim;
 
         //Sort the two array and make comparison
         sort($columnArray);
         sort($columnName);
 
+        for ($i = 0; $i < count($columnName); $i++) {
+            $columnName[$i] = trim($columnName[$i]);
+        }
+
         //Proceed only if every column matched
         if ($columnArray == $columnName) {
             foreach ($columnInfo as $colInfo) {
                 switch ($table) {
-                    case "Admin":
-                        $newData = new Admin();
-                        break;
                     case "Asset":
                         $newData = new Asset();
                         break;
@@ -90,6 +97,9 @@ class DataController extends Controller
                     case "MOU-MOA":
                         $newData = new MouMoa();
                         break;
+                    case "Inactive-MOU-MOA":
+                        $newData = new InactiveMouMoa();
+                        break;
                     case "Mobility":
                         $newData = new Mobility();
                         break;
@@ -97,18 +107,21 @@ class DataController extends Controller
                         $newData = new ResearchAwards();
                         break;
                     default:
-//                        $newData = new Admin();
                         break;
                 }
 
                 try {
                     foreach ($colInfo as $key => $value) {
-                        $key = rtrim($key, "\r");
+                        $key = rtrim($key);
                         $newData->$key = $value;
                     }
                     $save = $newData->save();
+
                 } catch (\Exception $e) {
-                    return $e->getMessage();
+                    return response()->json([
+                        'status' => $save,
+                        'message' => $e->getMessage()
+                    ], 400);
                 }
             }
         }
@@ -124,5 +137,40 @@ class DataController extends Controller
                 'message' => "Error in CSV file import.",
             ], 400);
         }
+//        }
+//        return response()->json([
+//            'status' => false,
+//            'message' => "Unauthorized user"
+//        ], 401);
+    }
+
+    public function database_backup()
+    {
+        // if (Auth::check()) {
+        $output = null;
+        $result_code = null;
+        $path = 'php ' . '"' . realpath("../") . '\artisan" backup:run --only-db';
+        exec($path, $output, $result_code);
+        return $result_code;
+        /*   }
+           return response()->json([
+               'status' => false,
+               'message' => "Unauthorized user"
+           ], 401);*/
+    }
+
+    public function database_restore()
+    {
+        //  if (Auth::check()) {
+        $output = null;
+        $result_code = null;
+        $path = 'php ' . '"' . realpath("../") . '\artisan" backup:restore-last';
+        exec($path, $output, $result_code);
+        return $result_code;
+        /*   }
+           return response()->json([
+               'status' => false,
+               'message' => "Unauthorized user"
+           ], 401);*/
     }
 }

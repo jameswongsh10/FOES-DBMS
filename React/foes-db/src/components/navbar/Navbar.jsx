@@ -45,13 +45,6 @@ const Navbar = () => {
           <div className="item">
             <MaterialUISwitch sx={{ m: 1 }} checked={isDarkMode} onClick={onToggleHandler} />
           </div>
-          <div className="item">
-            <img
-              src={avatarImage}
-              alt=""
-              className='avatar'
-            />
-          </div>
         </div>
       </div>
     </div>

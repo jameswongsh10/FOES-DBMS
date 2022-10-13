@@ -5,203 +5,252 @@ namespace App\Http\Controllers;
 use App\Models\ResearchAwards;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 
 class ResearchAwardsController extends Controller
 {
     public function createAwards()
     {
-        try {
-            $data = json_decode(file_get_contents('php://input'), true);
+        if (Auth::check()) {
+            try {
+                $data = json_decode(file_get_contents('php://input'), true);
 
-            $newAwards = new ResearchAwards();
+                $newAwards = new ResearchAwards();
 
-            foreach ($data as $key => $value) {
-                $newAwards->$key = $value;
+                foreach ($data as $key => $value) {
+                    $newAwards->$key = $value;
+                }
+
+                //Save into database
+                $newAwards->save();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "Awards created successfully!",
+                    'awards' => $newAwards
+                ], 201);
+
+            } catch (QueryException $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $e->errorInfo[2]
+                ], 400);
             }
-
-            //Save into database
-            $newAwards->save();
-
-            return response()->json([
-                'status' => true,
-                'message' => "Awards created successfully!",
-                'awards' => $newAwards
-            ], 201);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function addAwardsColumn()
     {
-        try {
-            $columnName = json_decode(file_get_contents('php://input'), true);
+        if (Auth::check()) {
+            try {
+                $columnName = json_decode(file_get_contents('php://input'), true);
 
-            Schema::table('research_awards', function (Blueprint $table) use ($columnName) {
-                $table->string($columnName)->after('evidence_link')->default('');
-            });
+                Schema::table('research_awards', function (Blueprint $table) use ($columnName) {
+                    $table->string($columnName)->after('evidence_link')->default('');
+                });
 
-            return response()->json([
-                'status' => true,
-                'message' => "Column added successfully!",
-                'column' => $columnName
-            ], 201);
+                return response()->json([
+                    'status' => true,
+                    'message' => "Column added successfully!",
+                    'column' => $columnName
+                ], 201);
 
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
+            } catch (QueryException $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $e->errorInfo[2]
+                ], 400);
+            }
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function readAllAwards()
     {
-        try {
-            $awards = ResearchAwards::all();
+        if (Auth::check()) {
+            try {
+                $awards = ResearchAwards::all();
 
-            return response()->json([
-                'status' => true,
-                'Awards' => $awards
-            ]);
+                return response()->json([
+                    'status' => true,
+                    'Awards' => $awards
+                ]);
 
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
+            } catch (QueryException $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $e->errorInfo[2]
+                ], 400);
+            }
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function readAwards($id)
     {
-        try {
-            $awards = ResearchAwards::find($id);
+        if (Auth::check()) {
+            try {
+                $awards = ResearchAwards::find($id);
 
-            if (is_null($awards)) {
+                if (is_null($awards)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Awards not found",
+                    ], 404);
+                }
+                return response()->json([
+                    'status' => true,
+                    'awards' => $awards
+                ], 200);
+
+            } catch (QueryException $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => "Awards not found",
-                ], 404);
+                    'message' => $e->errorInfo[2]
+                ], 400);
             }
-            return response()->json([
-                'status' => true,
-                'awards' => $awards
-            ], 200);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function getAwardsbyStaffID($staff_miri_id)
     {
-        try {
-            $column = 'staff_miri_id'; // This is the name of the column you wish to search
+        if (Auth::check()) {
+            try {
+                $column = 'staff_miri_id'; // This is the name of the column you wish to search
 
-            $awards = ResearchAwards::where($column, '=', $staff_miri_id)->with('staff')->get();
+                $awards = ResearchAwards::where($column, '=', $staff_miri_id)->with('staff')->get();
 
-            if (is_null($awards)) {
+                if (is_null($awards)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Awards not found",
+                    ], 404);
+                }
+
+                return response()->json([
+                    'status' => true,
+                    'awards' => $awards
+                ], 200);
+
+            } catch (QueryException $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => "Awards not found",
-                ], 404);
+                    'message' => $e->errorInfo[2]
+                ], 400);
             }
-
-            return response()->json([
-                'status' => true,
-                'awards' => $awards
-            ], 200);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function updateAwards($id)
     {
-        try {
-            $awards = ResearchAwards::find($id);
+        if (Auth::check()) {
+            try {
+                $awards = ResearchAwards::find($id);
 
-            if (is_null($awards)) {
+                if (is_null($awards)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Awards not found",
+                    ], 404);
+                }
+
+                $data = json_decode(file_get_contents('php://input'), true);
+
+                $awards->update($data);
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "Awards updated successfully!",
+                    'awards' => $awards
+                ], 200);
+
+            } catch (QueryException $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => "Awards not found",
-                ], 404);
+                    'message' => $e->errorInfo[2]
+                ], 400);
             }
-
-            $data = json_decode(file_get_contents('php://input'), true);
-
-            $awards->update($data);
-
-            return response()->json([
-                'status' => true,
-                'message' => "Awards updated successfully!",
-                'awards' => $awards
-            ], 200);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function deleteAwards($id)
     {
-        try {
-            $awards = ResearchAwards::find($id);
+        if (Auth::check()) {
+            try {
+                $awards = ResearchAwards::find($id);
 
-            if (is_null($awards)) {
+                if (is_null($awards)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Awards not found",
+                    ], 404);
+                }
+
+                $awards->delete();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "Awards deleted successfully!",
+                    'awards' => $awards
+                ], 200);
+
+            } catch (QueryException $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => "Awards not found",
-                ], 404);
+                    'message' => $e->errorInfo[2]
+                ], 400);
             }
-
-            $awards->delete();
-
-            return response()->json([
-                'status' => true,
-                'message' => "Awards deleted successfully!",
-                'awards' => $awards
-            ], 200);
-
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 
     public function getAwardsColumns()
     {
-        try {
-            $columns = Schema::getColumnListing('research_awards');
+        if (Auth::check()) {
+            try {
+                $columns = Schema::getColumnListing('research_awards');
 
-            return response()->json([
-                'status' => true,
-                'column' => $columns
-            ], 200);
+                return response()->json([
+                    'status' => true,
+                    'column' => $columns
+                ], 200);
 
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->errorInfo[2]
-            ], 400);
+            } catch (QueryException $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $e->errorInfo[2]
+                ], 400);
+            }
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
 }

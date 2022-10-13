@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
-
+import { useEffect } from 'react';
 import './ktpUsrAddNew.scss';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -9,6 +9,7 @@ import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
 
 const KtpUsrAddNew = () => {
+  const token = useSelector(state => state.auth.tokenId)
   const navigate = useNavigate();
 
   const programCategoryInput = useRef(null);
@@ -26,6 +27,47 @@ const KtpUsrAddNew = () => {
   const externalFundingInput = useRef(null);
   const remarkInput = useRef(null);
 
+  const [customColumn, setCustomColumn] = useState([]);
+
+  let inputArr = customColumn;
+  const listRef = useRef([]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getKTPUSRColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "category", "date", "program_name", "community_industry_name", "location", "lead_by", "faculty", "cm_driven", "partner_name", "no_of_staff", "no_of_student", "internal_funding", "external_funding", "remark", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }, [token]);
+
+  const onCustomColumnAddHandler = () => {
+    fetch(`http://127.0.0.1:8000/api/getKTPUSRColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "category", "date", "program_name", "community_industry_name", "location", "lead_by", "faculty", "cm_driven", "partner_name", "no_of_staff", "no_of_student", "internal_funding", "external_funding", "remark", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      }); 
+  }
+
+  console.log(customColumn);
+
   const submitHandler = (event) => {
     event.preventDefault();
     const jsonObject = {
@@ -41,15 +83,33 @@ const KtpUsrAddNew = () => {
       "no_of_staff": noOfStaffInput.current.value,
       "no_of_student": noOfStudentInput.current.value,
       "internal_funding": internalFundingInput.current.value,
-      "external_funding": externalFundingInput.current.value
-      // remark: missing
+      "external_funding": externalFundingInput.current.value,
+      "remark": remarkInput.current.value
     };
+
+    listRef.current.forEach(el => {
+      if (el.value) {
+        jsonObject[`${el.name}`] = el.value;
+      }
+    })
 
     fetch('http://127.0.0.1:8000/api/createKTPUSR', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization : `Bearer ${token}`
+      }
     })
-    .then(navigate('/ktp-usr'));
+    .then(response => {
+      if (response.ok) {
+        navigate('/ktpusr');
+        return response.json();
+      }
+      return Promise.reject(response);
+    })
+    .catch(response => {
+      response.json().then(json => alert(json.message));
+    });
   };
 
   return (
@@ -132,12 +192,20 @@ const KtpUsrAddNew = () => {
               <label>Remark</label>
               <input type="text" name="remark" ref={remarkInput} />
             </div>
+            {inputArr.map((label, i) => {
+              return (
+                <div key={label} className="formInput" >
+                  <label>{label}</label>
+                  <input type="text" name={label} ref={(ref) => (listRef.current[i] = ref)} />
+                </div>
+              );
+            })}
             <Button type='submit'>Send</Button>
           </form>
         </div>
         <div className="addColumnBox">
           <p className='title'>Add Column</p>
-          <AddColumn />
+          <AddColumn apiEndPoint="addKTPUSRColumn" onCustomColumnAddHandler={onCustomColumnAddHandler}/>
         </div>
       </div>
     </div>

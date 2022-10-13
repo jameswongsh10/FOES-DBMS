@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth-slice';
+import './login.scss';
+import CampusImage from '../../assets/image/campus-image.jpeg';
 
 function Copyright(props) {
   return (
@@ -39,18 +41,15 @@ export default function SignInSide() {
     //   password: data.get('password'),
     // });
 
-    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD31O7bULSsMFv15zDTPOrGvlcG2bFoOis', {
+    fetch('http://127.0.0.1:8000/api/login', {
       method: 'POST',
       body: JSON.stringify({
         email: data.get('email'),
         password: data.get('password'),
-        returnSecureToken: true,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      })
     })
       .then((res) => {
+        console.log(res);
         if (res.ok) {
           return res.json();
         } else {
@@ -58,7 +57,10 @@ export default function SignInSide() {
         }
       })
       .then((data) => {
-        dispatch(authActions.login(data.idToken))
+        console.log(data);
+        const arr = [data.token, data.isSuperAdmin];
+        dispatch(authActions.login(arr))
+        // dispatch(authActions.login(data))
         // navigate '/'
       })
   };
@@ -72,15 +74,17 @@ export default function SignInSide() {
           xs={false}
           sm={4}
           md={7}
-          sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
+          // sx={{
+          //   backgroundImage: 'url(https://source.unsplash.com/random)',
+          //   backgroundRepeat: 'no-repeat',
+          //   backgroundColor: (t) =>
+          //     t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+          //   backgroundSize: 'cover',
+          //   backgroundPosition: 'center',
+          // }}
+        >
+          <img className='login-image' src={CampusImage} alt="Campus"></img>
+          </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{

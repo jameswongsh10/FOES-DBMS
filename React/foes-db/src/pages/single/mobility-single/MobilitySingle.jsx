@@ -5,21 +5,27 @@ import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './mobilitySingle.scss';
+import { useSelector } from 'react-redux';
 
 const MobilitySingle = () => {
+  const token = useSelector(state => state.auth.tokenId);
   const [entry, setEntry] = useState({});
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getMobility/${id}`)
+    fetch(`http://127.0.0.1:8000/api/getMobility/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const { mobility } = data;
         setEntry(mobility);
       });
-  }, [id]);
+  }, [id, token]);
 
   const generateForm = (obj) => {
     let formHtml = [];
@@ -44,12 +50,24 @@ const MobilitySingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    const response = fetch(`http://127.0.0.1:8000/api/updateMobility/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/updateMobility/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(entry)
-    });
+      body: JSON.stringify(entry),
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          navigate('/mobility');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
 
-    response && navigate('/mobility');
   };
 
 
@@ -71,6 +89,6 @@ const MobilitySingle = () => {
       </div>
     </div>
   );
-}
+};
 
-export default MobilitySingle
+export default MobilitySingle;

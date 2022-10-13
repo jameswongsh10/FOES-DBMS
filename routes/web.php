@@ -9,8 +9,10 @@ use App\Http\Controllers\KTPUSR_Controller;
 use App\Http\Controllers\MOUMOA_Controller;
 use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
-use App\Http\Controllers\DataController;
 use App\Http\Controllers\AttachmentStaffController;
+use App\Http\Controllers\AttachmentMoumoaController;
+use App\Http\Controllers\DataController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,7 +36,6 @@ Route::get('getAdmin/{id}', [AdminController::class, 'readAdmin']);
 Route::get('readAllAdmin', [AdminController::class, 'readAllAdmin']);
 Route::put('updateAdmin/{id}', [AdminController::class, 'updateAdmin']);
 Route::delete('deleteAdmin/{id}', [AdminController::class, 'deleteAdmin']);
-Route::post('addAdminColumn', [AdminController::class, 'addAdminColumn']);
 Route::get('getAdminColumns', [AdminController::class, 'getAdminColumns']);
 
 //Asset CRUD
@@ -111,11 +112,26 @@ Route::put('updateKeyContactPerson/{id}', [KeyContactPersonController::class, 'u
 Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class, 'deleteKeyContactPerson']);
 Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'getKeyContactPersonColumns']);
 
-//Data Controller
-Route::post('csvImport',  [DataController::class, 'csvImport']);
 //Attachment Staff CRUD
 Route::post('createAttachment', [AttachmentStaffController::class, 'createAttachmentStaff']);
 Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachment']);
 Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
 Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAttachment']);
 Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
+
+//Attachment Moumoa CRUD
+Route::post('createAttachment', [AttachmentMoumoaController::class, 'createAttachmentMoumoa']);
+Route::get('getAttachment/{id}', [AttachmentMoumoaController::class, 'readAttachment']);
+Route::get('getAttachment/moumoa/{id}', [AttachmentMoumoaController::class, 'getAttachmentByMoumoaID']);
+Route::put('updateAttachment/{id}', [AttachmentMoumoaController::class, 'updateAttachment']);
+Route::delete('deleteAttachment/{id}', [AttachmentMoumoaController::class, 'deleteAttachment']);
+Route::get('downloadAttachment/{id}', [AttachmentMoumoaController::class, 'downloadAttachment']);
+
+//Data Controller
+Route::post('csvImport', [DataController::class, 'csvImport']);
+Route::get('database_backup', [DataController::class, 'database_backup']);
+Route::get('database_restore', [DataController::class, 'database_restore']);
+
+//Login
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
@@ -8,13 +9,19 @@ import './admin.scss';
 
 const Admin = () => {
 
+  const token = useSelector(state => state.auth.tokenId)
+
   const [columns, setColumns] = useState();
   const [rows, setRows] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       const readAllResponse = await fetch(
-        'http://127.0.0.1:8000/readAllAdmin'
+        'http://127.0.0.1:8000/readAllAdmin', {
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       if (!readAllResponse.ok) {
@@ -27,7 +34,11 @@ const Admin = () => {
       const { ["Admin"]: collectionObj } = data;
 
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getAdminColumns'
+        'http://127.0.0.1:8000/getAdminColumns', {
+          headers: {
+            Authorization : `Bearer ${token}`
+          }
+        }
       );
 
       const columnData = await getColumnResponse.json();
@@ -45,14 +56,14 @@ const Admin = () => {
       //   }
       // }
 
-      const filters = ["id", "created_at", "updated_at"];
+      const filters = ["id", "created_at", "updated_at", "isSuperAdmin", "password"];
 
       setColumns(columnArr.filter((column) => !filters.includes(column)));
       setRows(collectionObj);
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div className="home">

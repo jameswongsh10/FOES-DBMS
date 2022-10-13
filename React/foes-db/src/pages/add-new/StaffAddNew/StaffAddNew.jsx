@@ -12,13 +12,13 @@ import { useEffect } from 'react';
 import FileInputSection from '../../../components/section/FileInputSection';
 
 const StaffAddNew = () => {
+  const token = useSelector(state => state.auth.tokenId);
   const navigate = useNavigate();
 
   const firstNameInput = useRef(null);
   const lastNameInput = useRef(null);
   const miriIdInput = useRef(null);
   const perthIdInput = useRef(null);
-  const emailAddressInput = useRef(null);
   const reportDutyInput = useRef(null);
   const departmentInput = useRef(null);
   const titleInput = useRef(null);
@@ -32,10 +32,13 @@ const StaffAddNew = () => {
   const resignedDateInput = useRef(null);
   const remarkInput = useRef(null);
 
+  const [customColumn, setCustomColumn] = useState([]);
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
-
   const [isFormValid, setIsFormValid] = useState(false);
+
+  let inputArr = customColumn;
+  const listRef = useRef([]);
 
   useEffect(() => {
     if (isEmailValid) {
@@ -45,9 +48,44 @@ const StaffAddNew = () => {
     }
   }, [isEmailValid]);
 
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getStaffColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "first_name", "last_name", "title", "miri_id", "perth_id", "report_duty_date", "position", "room_no", "ext_no", "status", "department", "email", "appointment_level", "photocopy_id", "pigeonbox_no", "resigned_date", "remark", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  }, [token]);
+
+  const onCustomColumnAddHandler = () => {
+    fetch(`http://127.0.0.1:8000/api/getStaffColumns`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const filters = ["id", "first_name", "last_name", "title", "miri_id", "perth_id", "report_duty_date", "position", "room_no", "ext_no", "status", "department", "email", "appointment_level", "photocopy_id", "pigeonbox_no", "resigned_date", "remark", "created_at", "updated_at"];
+
+        setCustomColumn((data.column).filter((column) => !filters.includes(column)));
+      });
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
-    const jsonObject = {
+
+    let jsonObject = {
       "first_name": firstNameInput.current.value,
       "last_name": lastNameInput.current.value,
       "miri_id": miriIdInput.current.value,
@@ -67,21 +105,30 @@ const StaffAddNew = () => {
       "remark": remarkInput.current.value,
     };
 
+    listRef.current.forEach(el => {
+      if (el.value) {
+        jsonObject[`${el.name}`] = el.value;
+      }
+    });
+
     fetch('http://127.0.0.1:8000/api/createStaff', {
       method: 'POST',
-      body: JSON.stringify(jsonObject)
+      body: JSON.stringify(jsonObject),
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
-    .then(navigate('/staff'));
+      .then(response => {
+        if (response.ok) {
+          navigate('/staff');
+          return response.json();
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
+      });
 
-    // listRef.current.forEach(el => {
-    //   if (el.value) {
-    //     newObj[`${el.name}`] = el.value;
-    //   }
-    // });
-    // fetch(`https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database/${viewCollection}.json`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(newObj)
-    // })
   };
 
   return (
@@ -133,6 +180,7 @@ const StaffAddNew = () => {
                 <option value="Electrical & Computer">Electrical & Computer</option>
                 <option value="Mechanical">Mechanical</option>
                 <option value="Foundation">Foundation</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -147,6 +195,7 @@ const StaffAddNew = () => {
                 <option value="Mr.">Mr.</option>
                 <option value="Mrs.">Mrs.</option>
                 <option value="Ms.">Ms.</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -172,6 +221,7 @@ const StaffAddNew = () => {
                 <option value="Technical Officer">Technical Officer</option>
                 <option value="Senior Lab Technician">Senior Lab Technician</option>
                 <option value="Lab Technician">Lab Technician</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -185,17 +235,13 @@ const StaffAddNew = () => {
               <input type="text" name="extNo" ref={extNoInput} />
             </div>
 
-            {/* <div key='status' className="formInput" >
-              <label>Status</label>
-              <input type="text" name="status" ref={statusInput} />
-            </div> */}
-
             <div className="formInput">
               <label>Status</label>
               <select name="status" id="status" ref={statusInput}>
                 <option value="Contract">Contract</option>
                 <option value="Permanent">Permanent</option>
                 <option value="Intern">Intern</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -204,9 +250,22 @@ const StaffAddNew = () => {
               <input type="text" name="photocopyId" ref={photocopyIdInput} />
             </div>
 
-            <div key='appointmentLevel' className="formInput" >
+            <div className="formInput">
               <label>Appointment Level</label>
-              <input type="text" name="appointmentLevel" ref={appointmentLevelInput} />
+              <select name="appointmentLevel" id="appointmentLevel" ref={appointmentLevelInput}>
+                <option value="Professor">Professor</option>
+                <option value="Associate Professor">Associate Professor</option>
+                <option value="Senior Lecturer">Senior Lecturer</option>
+                <option value="Lecturer">Lecturer</option>
+                <option value="Associate Lecturer">Associate Lecturer</option>
+                <option value="Dean">Dean</option>
+                <option value="Manager">Manager</option>
+                <option value="Senior Office">Senior Office</option>
+                <option value="Officer">Officer</option>
+                <option value="Admin Assistance">Admin Assistance</option>
+                <option value="Technician">Technician</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
 
             <div key='pigeonboxNo' className="formInput" >
@@ -224,6 +283,15 @@ const StaffAddNew = () => {
               <input type="text" name="remark" ref={remarkInput} />
             </div>
 
+            {inputArr.map((label, i) => {
+              return (
+                <div key={label} className="formInput" >
+                  <label>{label}</label>
+                  <input type="text" name={label} ref={(ref) => (listRef.current[i] = ref)} />
+                </div>
+              );
+            })}
+
             <Button disabled={!isFormValid} type='submit'>Send</Button>
 
           </form>
@@ -234,7 +302,7 @@ const StaffAddNew = () => {
 
         <div className="addColumnBox">
           <p className='title'>Add Column</p>
-          <AddColumn />
+          <AddColumn apiEndPoint="addStaffColumn" onCustomColumnAddHandler={onCustomColumnAddHandler} />
         </div>
       </div>
     </div>
