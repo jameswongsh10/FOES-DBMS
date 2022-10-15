@@ -42,7 +42,6 @@ class AttachmentMoumoaController extends Controller
                     //store your file into directory and db
                     $newAttachment = new AttachmentMoumoa();
                     $newAttachment->mou_moa_id = $request->mou_moa_id;
-                    $newAttachment->type = $request->type;
                     $newAttachment->description = $request->description;
                     $newAttachment->path = $path;
                     $newAttachment->file_name = $name;

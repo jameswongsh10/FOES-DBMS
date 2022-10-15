@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('attachment_moumoas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mou_moa_id')->constrained('mou_moa')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('type');
             $table->string('description')->nullable(true);
             $table->string('path')->nullable(true);
             $table->string('file_name')->nullable(true);
