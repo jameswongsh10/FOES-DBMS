@@ -52,7 +52,7 @@ const StaffSingle = () => {
   }, [id, token]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff_id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -65,7 +65,7 @@ const StaffSingle = () => {
   }, [id, token]);
 
   const updateAttachmentsHTTP = () => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff_id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -84,11 +84,16 @@ const StaffSingle = () => {
 
     for (const key in obj) {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
-      // if (!filters.includes(key)) {
-        formHtml.push(
-          <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
-        );
-
+        // if (!filters.includes(key)) {
+        if (key == 'resigned_date' || key == 'report_duty_date') {
+          formHtml.push(
+            <Input name={key + " (yyyy-mm-dd)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else {
+          formHtml.push(
+            <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        }
       }
     }
     return formHtml;

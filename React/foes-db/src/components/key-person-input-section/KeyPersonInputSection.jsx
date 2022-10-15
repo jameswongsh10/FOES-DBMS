@@ -21,80 +21,80 @@ const KeyPersonInputSection = (props) => {
     }
   }, [isEmailValid])
 
-  const onCancelHandler = () => {
-    props.setIsEditing(false);
-  };
-
-  const onNewCancelHandler = () => {
-    const newKeyPersons = (props.keyPersons).filter((element, i) => !(i === props.index));
-    props.setKeyPersons(newKeyPersons);
-  };
-
-  const onUpdateHandler = (event) => {
-    // TODO: Find a way to use form-data on fetch request
-    // staff_id: props.staffID
-    // type: typeInput.current.value
-    // description: description
-    // file: file
-    event.preventDefault();
-    const jsonObject = {
-      "name": name,
-      "email": email,
-      "institution": institution
-    };
-
-    const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
-
-    console.log(newArray);
-
-    fetch(`http://127.0.0.1:8000/api/updateKeyContactPerson/${props.obj.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(jsonObject),
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(response => {
-        return response.json();
-        // const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
-        // props.setKeyPersons([...newArray, jsonObject]);
-      })
-      .then(data => {
+    const onCancelHandler = () => {
         props.setIsEditing(false);
-        props.setKeyPersons([data.KeyContactPerson, ...newArray]);
-      });
-  };
-
-  const onSaveHandler = (event) => {
-    event.preventDefault();
-    const jsonObject = {
-      "name": name,
-      "email": email,
-      "institution": institution,
-      "mou_moa_id": props.mouID
     };
 
-    const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+    const onNewCancelHandler = () => {
+        const newKeyPersons = (props.keyPersons).filter((element, i) => !(i === props.index));
+        props.setKeyPersons(newKeyPersons);
+    };
 
-    fetch('http://127.0.0.1:8000/api/createKeyContactPerson', {
-      method: 'POST',
-      body: JSON.stringify(jsonObject),
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        props.setKeyPersons([data.KeyContactPerson, ...newArray]);
-      });
-    // .then(response => {
-    //   const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
-    //   props.setKeyPersons([...newArray, jsonObject]);
-    // });
-  };
+    const onUpdateHandler = (event) => {
+        // TODO: Find a way to use form-data on fetch request
+        // staff_id: props.staffID
+        // type: typeInput.current.value
+        // description: description
+        // file: file
+        event.preventDefault();
+        const jsonObject = {
+            "name": name,
+            "email": email,
+            "institution": institution
+        };
+
+        const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+
+        console.log(newArray);
+
+        fetch(`http://127.0.0.1:8000/api/updateKeyContactPerson/${props.obj.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(jsonObject),
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                return response.json();
+                // const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+                // props.setKeyPersons([...newArray, jsonObject]);
+            })
+            .then(data => {
+                props.setIsEditing(false);
+                props.setKeyPersons([data.KeyContactPerson, ...newArray]);
+            });
+    };
+
+    const onSaveHandler = (event) => {
+        event.preventDefault();
+        const jsonObject = {
+            "name": name,
+            "email": email,
+            "institution": institution,
+            "mou_moa_id": props.mouID
+        };
+
+        const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+
+        fetch('http://127.0.0.1:8000/api/createKeyContactPerson', {
+            method: 'POST',
+            body: JSON.stringify(jsonObject),
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                props.setKeyPersons([data.KeyContactPerson, ...newArray]);
+            });
+        // .then(response => {
+        //   const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
+        //   props.setKeyPersons([...newArray, jsonObject]);
+        // });
+    };
 
 
   return (

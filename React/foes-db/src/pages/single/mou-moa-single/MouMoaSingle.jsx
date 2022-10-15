@@ -45,7 +45,7 @@ const MouMoaSingle = () => {
   }, [id, token]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/moumoa/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/moumoa_id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -58,7 +58,7 @@ const MouMoaSingle = () => {
   }, [id, token]);
 
   const updateAttachmentsHTTP = () => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/moumoa/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/moumoa_id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

@@ -13,7 +13,7 @@ const FileViewSection = (props) => {
 
   const onDeleteHandler = () => {
     if (window.confirm("Are you sure you want to delete this element?") == true) {
-      fetch(`http://127.0.0.1:8000/api/deleteAttachment/${props.obj.id}`, {
+      fetch(`http://127.0.0.1:8000/api/deleteAttachment/staff/${props.obj.id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`
@@ -36,8 +36,8 @@ const FileViewSection = (props) => {
         <div className="formInput">
           <label>file_name: {props.obj.file_name}</label>
         </div>
-        <a href={`http://127.0.0.1:8000/api/downloadAttachment/${props.attachmentId}`} download='myFile'>
-          <Button variant="contained" color='success' endIcon={<DownloadIcon />} onClick={() => { (<a href={`http://127.0.0.1:8000/api/downloadAttachment/${props.attachmentId}`} download='myFile'>Download</a>); }}>
+        <a href={`http://127.0.0.1:8000/api/downloadAttachment/staff/${props.attachmentId}`} download='myFile'>
+          <Button variant="contained" color='success' endIcon={<DownloadIcon />} onClick={() => { (<a href={`http://127.0.0.1:8000/api/downloadAttachment/staff/${props.attachmentId}`} download='myFile'>Download</a>); }}>
             Download
           </Button>
         </a>

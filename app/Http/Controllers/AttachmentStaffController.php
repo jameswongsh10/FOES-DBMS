@@ -16,7 +16,7 @@ class AttachmentStaffController extends Controller
         if (Auth::check()) {
             try {
                 $validator = Validator::make($request->all(), [
-                    'file' => 'required|mimes:pdf,csv,zip|max:15360', //15mb application/pdf, text/csv, application/zip
+                    'file' => 'required|mimes:pdf,zip|max:15360', //15mb application/pdf, application/zip
                 ]);
 
                 if ($validator->fails()) {
@@ -32,9 +32,8 @@ class AttachmentStaffController extends Controller
                     $ownPath = explode("/", $path);
                     $fileExtensionArr = explode(".", $ownPath[2]);
                     $contentType = "";
-                    if (strcmp($fileExtensionArr[1], "csv") == 0) {
-                        $contentType = "text/csv";
-                    } elseif (strcmp($fileExtensionArr[1], "pdf") == 0) {
+
+                    if (strcmp($fileExtensionArr[1], "pdf") == 0) {
                         $contentType = "application/pdf";
                     } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
                         $contentType = "application/zip";
@@ -149,7 +148,7 @@ class AttachmentStaffController extends Controller
                 $file = $request->file('file');
                 if (!is_null($file)) {
                     $validator = Validator::make($request->all(), [
-                        'file' => 'required|mimes:pdf,csv,zip|max:15360',//15mb
+                        'file' => 'required|mimes:pdf,zip|max:15360',//15mb
                     ]);
 
                     if ($validator->fails()) {
@@ -223,7 +222,7 @@ class AttachmentStaffController extends Controller
 
     public function downloadAttachment($id)
     {
-        if (Auth::check()) {
+//        if (Auth::check()) {
             try {
                 $attachment = AttachmentStaff::find($id);
                 if (is_null($attachment)) {
@@ -245,10 +244,10 @@ class AttachmentStaffController extends Controller
                     'message' => $e->errorInfo[2]
                 ], 400);
             }
-        }
-        return response()->json([
-            'status' => false,
-            'message' => 'Unauthorized user'
-        ], 401);
+//        }
+//        return response()->json([
+//            'status' => false,
+//            'message' => 'Unauthorized user'
+//        ], 401);
     }
 }

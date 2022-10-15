@@ -47,7 +47,7 @@ const InputEmail = (props) => {
   return (
     <div className={isValid ? 'formInput' : 'formInput--invalid'}>
       <label>{props.label}</label>
-      <input type="text" onChange={onInputChangeHandler} value={value}></input>
+      <input type="text" onChange={onInputChangeHandler} value={value} placeholder="example@email.com"></input>
     </div>
   );
 };

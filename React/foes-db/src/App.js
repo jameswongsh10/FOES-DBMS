@@ -27,14 +27,11 @@ import ResearchAwardAddNew from './pages/add-new/ResearchAwardAddNew/ResearchAwa
 import MouMoaAddNew from './pages/add-new/MouMoaAddNew/MouMoaAddNew';
 import KtpUsrAddNew from './pages/add-new/KtpUsrAddNew/KtpUsrAddNew';
 import MobilityAddNew from './pages/add-new/MobilityAddNew/MobilityAddNew';
-import InactiveMouMoa from './pages/dashboard/inactive-mou-moa/inactiveMouMoa';
-import InactiveMouMoaAddNew from './pages/add-new/InactiveMouMoaAddNew/InactiveMouMoaAddNew';
 import AdminSingle from './pages/single/admin-single/AdminSingle';
 import StaffSingle from './pages/single/staff-single/StaffSingle';
 import AssetSingle from './pages/single/asset-single/AssetSingle';
 import ResearchAwardSingle from './pages/single/research-award-single/ResearchAwardSingle';
 import MouMoaSingle from './pages/single/mou-moa-single/MouMoaSingle';
-import InactiveMouMoaSingle from './pages/single/inactive-mou-moa-single/InactiveMouMoaSingle';
 import KtpUsrSingle from './pages/single/ktp-usr/KtpUsrSingle';
 import MobilitySingle from './pages/single/mobility-single/MobilitySingle';
 
@@ -78,10 +75,6 @@ function App() {
           {isLoggedIn && <Route path='/moumoa' element={<MouMoa />} />}
           {isLoggedIn && <Route path='/moumoa/new' element={<MouMoaAddNew />} />}
           {isLoggedIn && <Route path='/moumoa/:id' element={<MouMoaSingle />} />}
-
-          {isLoggedIn && <Route path='/InactiveMOUMOA' element={<InactiveMouMoa />} />}
-          {isLoggedIn && <Route path='/InactiveMOUMOA/new' element={<InactiveMouMoaAddNew />} />}
-          {isLoggedIn && <Route path='/InactiveMOUMOA/:id' element={<InactiveMouMoaSingle />} />}
 
           {isLoggedIn && <Route path='/KTPUSR' element={<KtpUsr />} />}
           {isLoggedIn && <Route path='/KTPUSR/new' element={<KtpUsrAddNew />} />}
