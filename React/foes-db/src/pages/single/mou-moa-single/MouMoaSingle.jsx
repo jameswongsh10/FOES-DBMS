@@ -8,6 +8,7 @@ import './mouMoaSingle.scss';
 import KeyPersonSection from '../../../components/key-person-section/KeyPersonSection';
 import { useSelector } from 'react-redux';
 import FileSection from '../../../components/file-section/FileSection';
+import DocSection from '../../../components/DocSection/DocSection';
 
 const MouMoaSingle = () => {
   const token = useSelector(state => state.auth.tokenId);
@@ -111,11 +112,11 @@ const MouMoaSingle = () => {
     for (var i = 0; i < arr.length; i++) {
       if (attachments[i] === null) {
         sectionHtml.push(
-          <FileSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} />
+          <DocSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} url="moumoa"/>
         );
       } else {
         sectionHtml.push(
-          <FileSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} />
+          <DocSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} url="moumoa"/>
         );
       }
     }
