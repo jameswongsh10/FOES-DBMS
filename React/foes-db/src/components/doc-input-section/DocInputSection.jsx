@@ -31,13 +31,13 @@ export const DocInputSection = (props) => {
   const onUpdateHandler = () => {
 
     var data = new FormData();
-    data.append("staff_id", props.staffID);
+    data.append("mou_moa_id", props.staffID);
     data.append("description", description);
     data.append("file", file);
     data.append("_method", "PUT");
 
     const jsonObject = {
-      "staff_id": props.staffID,
+      "mou_moa_id": props.staffID,
       "description": description,
       "file_name": file
     };
@@ -70,12 +70,12 @@ export const DocInputSection = (props) => {
 
   const onSaveHandler = () => {
     var data = new FormData();
-    data.append("staff_id", props.staffID);
+    data.append("mou_moa_id", props.staffID);
     data.append("description", description);
     data.append("file", file);
 
     const jsonObject = {
-      "staff_id": props.staffID,
+      "mou_moa_id": props.staffID,
       "description": description,
       "file_name": file
     };
@@ -95,6 +95,7 @@ export const DocInputSection = (props) => {
         return response.json();
       })
       .then(data => {
+        console.log("data:::", data);
         console.log(newAttachments, data.attachment);
         props.setAttachments([data.attachment, ...newAttachments]);
       });
