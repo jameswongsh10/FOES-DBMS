@@ -164,6 +164,16 @@ class AttachmentStaffController extends Controller
                     $attachment->update(['path' => $path]);
                     $attachment->update(['file_name' => $name]);
 
+                    $ownPath = explode("/", $path);
+                    $fileExtensionArr = explode(".", $ownPath[2]);
+                    $contentType = "";
+                    if (strcmp($fileExtensionArr[1], "pdf") == 0) {
+                        $contentType = "application/pdf";
+                    } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
+                        $contentType = "application/zip";
+                    }
+
+                    $attachment->update(['content_type' => $contentType]);
                 }
 
                 $attachment->update($request->except(['file']));

@@ -42,7 +42,6 @@ class AttachmentMobilityController extends Controller
                     //store your file into directory and db
                     $newAttachment = new AttachmentMobility();
                     $newAttachment->mobility_id = $request->mobility_id;
-                    $newAttachment->type = $request->type;
                     $newAttachment->description = $request->description;
                     $newAttachment->path = $path;
                     $newAttachment->file_name = $name;
@@ -164,6 +163,16 @@ class AttachmentMobilityController extends Controller
                     $attachment->update(['path' => $path]);
                     $attachment->update(['file_name' => $name]);
 
+                    $ownPath = explode("/", $path);
+                    $fileExtensionArr = explode(".", $ownPath[2]);
+                    $contentType = "";
+                    if (strcmp($fileExtensionArr[1], "pdf") == 0) {
+                        $contentType = "application/pdf";
+                    } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
+                        $contentType = "application/zip";
+                    }
+
+                    $attachment->update(['content_type' => $contentType]);
                 }
 
                 $attachment->update($request->except(['file']));
