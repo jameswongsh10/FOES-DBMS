@@ -125,8 +125,6 @@ const Import = () => {
                             <FormControlLabel value="Staff" control={<Radio/>} label="Staff Information"/>
                             <FormControlLabel value="MOU-MOA" control={<Radio/>}
                                               label="MOU & MOA Program Information"/>
-                            <FormControlLabel value="Inactive-MOU-MOA" control={<Radio/>}
-                                              label="Inactive MOU & MOA Program Information"/>
                             <FormControlLabel value="KTP-USR" control={<Radio/>} label="KTP USR Information"/>
                             <FormControlLabel value="Mobility" control={<Radio/>} label="Mobility Information"/>
                             <FormControlLabel value="Research-Award" control={<Radio/>}

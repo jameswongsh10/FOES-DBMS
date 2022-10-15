@@ -7,7 +7,6 @@ use App\Http\Controllers\ResearchAwardsController;
 use App\Http\Controllers\MobilityController;
 use App\Http\Controllers\KTPUSR_Controller;
 use App\Http\Controllers\MOUMOA_Controller;
-use App\Http\Controllers\Inactive_MOUMOA_Controller;
 use App\Http\Controllers\KeyContactPersonController;
 use App\Http\Controllers\AttachmentStaffController;
 use App\Http\Controllers\AttachmentMoumoaController;
@@ -94,15 +93,6 @@ Route::delete('deleteMOUMOA/{id}', [MOUMOA_Controller::class, 'deleteMOUMOA']);
 Route::post('addMOUMOAColumn', [MOUMOA_Controller::class, 'addMOUMOAColumn']);
 Route::get('getMOUMOAColumns', [MOUMOA_Controller::class, 'getMOUMOAColumns']);
 
-//InactiveMOUMOA CRUD
-Route::post('createInactiveMOUMOA', [Inactive_MOUMOA_Controller::class, 'createInactiveMOUMOA']);
-Route::get('getInactiveMOUMOA/{id}', [Inactive_MOUMOA_Controller::class, 'readInactiveMOUMOA']);
-Route::get('readAllInactiveMOUMOA', [Inactive_MOUMOA_Controller::class, 'readAllInactiveMOUMOA']);
-Route::put('updateInactiveMOUMOA/{id}', [Inactive_MOUMOA_Controller::class, 'updateInactiveMOUMOA']);
-Route::delete('deleteInactiveMOUMOA/{id}', [Inactive_MOUMOA_Controller::class, 'deleteInactiveMOUMOA']);
-Route::post('addInactiveMOUMOAColumn', [Inactive_MOUMOA_Controller::class, 'addInactiveMOUMOAColumn']);
-Route::get('getInactiveMOUMOAColumns', [Inactive_MOUMOA_Controller::class, 'getInactiveMOUMOAColumns']);
-
 //Key Contact Person CRUD
 Route::post('createKeyContactPerson', [KeyContactPersonController::class, 'createKeyContactPerson']);
 Route::get('getKeyContactPerson/{id}', [KeyContactPersonController::class, 'readKeyContactPerson']);
@@ -113,19 +103,28 @@ Route::delete('deleteKeyContactPerson/{id}', [KeyContactPersonController::class,
 Route::get('getKeyContactPersonColumns', [KeyContactPersonController::class, 'getKeyContactPersonColumns']);
 
 //Attachment Staff CRUD
-Route::post('createAttachment', [AttachmentStaffController::class, 'createAttachmentStaff']);
-Route::get('getAttachment/{id}', [AttachmentStaffController::class, 'readAttachment']);
-Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
-Route::put('updateAttachment/{id}', [AttachmentStaffController::class, 'updateAttachment']);
-Route::delete('deleteAttachment/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
+Route::post('createAttachment/staff', [AttachmentStaffController::class, 'createAttachmentStaff']);
+Route::get('getAttachment/staff/{id}', [AttachmentStaffController::class, 'readAttachment']);
+Route::get('getAttachment/staff_id/{id}', [AttachmentStaffController::class, 'getAttachmentByStaffID']);
+Route::put('updateAttachment/staff/{id}', [AttachmentStaffController::class, 'updateAttachment']);
+Route::delete('deleteAttachment/staff/{id}', [AttachmentStaffController::class, 'deleteAttachment']);
+Route::get('downloadAttachment/staff/{id}', [AttachmentStaffController::class, 'downloadAttachment']);
+
+//Attachment Mobility CRUD
+Route::post('createAttachment/mobility', [AttachmentMobilityController::class, 'createAttachmentMobility']);
+Route::get('getAttachment/mobility/{id}', [AttachmentMobilityController::class, 'readAttachment']);
+Route::get('getAttachment/mobility_id/{id}', [AttachmentMobilityController::class, 'getAttachmentByMobilityID']);
+Route::put('updateAttachment/mobility/{id}', [AttachmentMobilityController::class, 'updateAttachment']);
+Route::delete('deleteAttachment/mobility/{id}', [AttachmentMobilityController::class, 'deleteAttachment']);
+Route::get('downloadAttachment/mobility/{id}', [AttachmentMobilityController::class, 'downloadAttachment']);
 
 //Attachment Moumoa CRUD
-Route::post('createAttachment', [AttachmentMoumoaController::class, 'createAttachmentMoumoa']);
-Route::get('getAttachment/{id}', [AttachmentMoumoaController::class, 'readAttachment']);
-Route::get('getAttachment/moumoa/{id}', [AttachmentMoumoaController::class, 'getAttachmentByMoumoaID']);
-Route::put('updateAttachment/{id}', [AttachmentMoumoaController::class, 'updateAttachment']);
-Route::delete('deleteAttachment/{id}', [AttachmentMoumoaController::class, 'deleteAttachment']);
-Route::get('downloadAttachment/{id}', [AttachmentMoumoaController::class, 'downloadAttachment']);
+Route::post('createAttachment/moumoa', [AttachmentMoumoaController::class, 'createAttachmentMoumoa']);
+Route::get('getAttachment/moumoa/{id}', [AttachmentMoumoaController::class, 'readAttachment']);
+Route::get('getAttachment/moumoa_id/{id}', [AttachmentMoumoaController::class, 'getAttachmentByMoumoaID']);
+Route::put('updateAttachment/moumoa/{id}', [AttachmentMoumoaController::class, 'updateAttachment']);
+Route::delete('deleteAttachment/moumoa/{id}', [AttachmentMoumoaController::class, 'deleteAttachment']);
+Route::get('downloadAttachment/moumoa/{id}', [AttachmentMoumoaController::class, 'downloadAttachment']);
 
 //Data Controller
 Route::post('csvImport', [DataController::class, 'csvImport']);
