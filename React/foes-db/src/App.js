@@ -91,12 +91,13 @@ function App() {
           {isLoggedIn && <Route path='/mobility/new' element={<MobilityAddNew />} />}
           {isLoggedIn && <Route path='/mobility/:id' element={<MobilitySingle />} />}
 
-                    {isLoggedIn && <Route path='/backup' element={<Backup/>}/>}
-                    {isLoggedIn && <Route path='/pdf' element={<Pdf/>}/>}
-                    {isLoggedIn && <Route path='/import' element={<Import/>}/>}
-                    {isLoggedIn && <Route path='/settings' element={<Setting/>}/>}
-                    {isLoggedIn && <Route path='/profile' element={<Profile/>}/>}
-                    {!isLoggedIn && <Route path='/' element={<Login/>}/>}
+          {isLoggedIn && <Route path='/backup' element={<Backup/>}/>}
+          {isLoggedIn && <Route path='/pdf' element={<Pdf/>}/>}
+          {isLoggedIn && <Route path='/import' element={<Import/>}/>}
+          {isLoggedIn && <Route path='/settings' element={<Setting/>}/>}
+          {isLoggedIn && <Route path='/profile' element={<Profile/>}/>}
+          {!isLoggedIn && <Route path='/' element={<Login/>}/>}
+          {!isLoggedIn && <Route path='*' element={<Login/>}/>}
                 </Routes>
             </BrowserRouter>
         </div>

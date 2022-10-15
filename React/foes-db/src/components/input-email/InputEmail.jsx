@@ -19,7 +19,6 @@ const InputEmail = (props) => {
       setIsValid(true);
     }
 
-
     if (isEntered) {
       if (checkValidInput(value)) {
         setIsValid(true);
@@ -27,7 +26,6 @@ const InputEmail = (props) => {
         setIsValid(false);
       }
     }
-
 
   }, [value, isEntered, setIsValid]);
 
@@ -49,7 +47,7 @@ const InputEmail = (props) => {
   return (
     <div className={isValid ? 'formInput' : 'formInput--invalid'}>
       <label>{props.label}</label>
-      <input type="text" onChange={onInputChangeHandler}></input>
+      <input type="text" onChange={onInputChangeHandler} value={value}></input>
     </div>
   );
 };

@@ -12,8 +12,6 @@ const authSlice = createSlice({
   reducers: {
     login(state, action) {
       state.tokenId = action.payload[0];
-      console.log(action.payload[1]);
-      console.log(action.payload[1] == 1);
       state.isSuperAdmin = action.payload[1] == 1 ? true : false;
       state.isLoggedIn = true;
       localStorage.setItem('token', state.tokenId);

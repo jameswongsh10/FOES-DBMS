@@ -6,6 +6,7 @@ import Sidebar from '../../../components/sidebar/Sidebar';
 import {Button} from '@mui/material';
 import './adminSingle.scss';
 import {useSelector} from 'react-redux';
+import InputPassword from '../../../components/input-password/InputPassword';
 
 const AdminSingle = () => {
 
@@ -33,7 +34,7 @@ const AdminSingle = () => {
         for (const key in obj) {
             if (key == 'password') {
                 formHtml.push(
-                    <Input name={key} key={key} initialValue={""} onFormChangeHandler={onFormChangeHandler}/>
+                    <Input name={key} key={key} initialValue={""} onFormChangeHandler={onFormChangeHandler} type="password"/>
                 );
             } else if (!(key == 'id' || key == 'created_at' || key == 'updated_at' || key == 'isSuperAdmin')) {
                 formHtml.push(

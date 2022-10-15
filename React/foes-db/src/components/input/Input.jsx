@@ -14,7 +14,7 @@ const Input = (props) => {
   return (
     <div className="formInput">
       <label>{props.name}</label>
-      <input type="text" name={props.name} value={value} onChange={(event) => onChangeHandler(event)} />
+      <input type={props.type == null ? "text" : props.type} name={props.name} value={value} onChange={(event) => onChangeHandler(event)} />
     </div>
   );
 };

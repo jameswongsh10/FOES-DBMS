@@ -52,9 +52,8 @@ export default function SignInSide() {
         console.log(res);
         if (res.ok) {
           return res.json();
-        } else {
-          throw new Error('Login Failed');
-        }
+        } 
+        return Promise.reject(res);
       })
       .then((data) => {
         console.log(data);
@@ -62,6 +61,9 @@ export default function SignInSide() {
         dispatch(authActions.login(arr))
         // dispatch(authActions.login(data))
         // navigate '/'
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
       })
   };
 
