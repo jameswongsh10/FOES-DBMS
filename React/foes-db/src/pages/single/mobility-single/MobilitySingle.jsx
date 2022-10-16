@@ -60,10 +60,15 @@ const MobilitySingle = () => {
     let formHtml = [];
     for (const key in obj) {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
-        formHtml.push(
-          <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
-        );
-
+        if (key == 'from_date' || key == 'to_date') {
+          formHtml.push(
+            <Input name={key + " (yyyy-mm-dd)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else {
+          formHtml.push(
+            <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        }
       }
     }
     return formHtml;
@@ -80,11 +85,11 @@ const MobilitySingle = () => {
     for (var i = 0; i < arr.length; i++) {
       if (attachments[i] === null) {
         sectionHtml.push(
-          <DocSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} url="mobility"/>
+          <DocSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} url="mobility" />
         );
       } else {
         sectionHtml.push(
-          <DocSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} url="mobility"/>
+          <DocSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} url="mobility" />
         );
       }
     }
@@ -92,7 +97,7 @@ const MobilitySingle = () => {
   };
 
   const generatedForm = generateForm(entry);
-  const generatedDocumentSection = generateDocumentSection(attachments)
+  const generatedDocumentSection = generateDocumentSection(attachments);
 
   const onUpdateHandler = (event) => {
     event.preventDefault();

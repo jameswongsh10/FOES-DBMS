@@ -31,10 +31,19 @@ const KtpUsrSingle = () => {
     let formHtml = [];
     for (const key in obj) {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
-        formHtml.push(
-          <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
-        );
-
+        if (key == 'category') {
+          formHtml.push(
+            <Input name={key + " (KTP or USR)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else if (key == 'date') {
+          formHtml.push(
+            <Input name={key + " (yyyy-mm-dd)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else {
+          formHtml.push(
+            <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        }
       }
     }
     return formHtml;

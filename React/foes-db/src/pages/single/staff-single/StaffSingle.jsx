@@ -89,6 +89,10 @@ const StaffSingle = () => {
           formHtml.push(
             <Input name={key + " (yyyy-mm-dd)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
           );
+        } else if (key == 'email') {
+          formHtml.push(
+            <Input name={key + " (eg: name@email.com)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
         } else {
           formHtml.push(
             <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />

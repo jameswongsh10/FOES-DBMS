@@ -76,10 +76,15 @@ const MouMoaSingle = () => {
     let formHtml = [];
     for (const key in obj) {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
-        formHtml.push(
-          <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
-        );
-
+        if (key == 'isActive') {
+          formHtml.push(
+            <Input name={key + " (Yes or No)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else {
+          formHtml.push(
+            <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        }
       }
     }
     return formHtml;
@@ -112,11 +117,11 @@ const MouMoaSingle = () => {
     for (var i = 0; i < arr.length; i++) {
       if (attachments[i] === null) {
         sectionHtml.push(
-          <DocSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} url="moumoa"/>
+          <DocSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} url="moumoa" />
         );
       } else {
         sectionHtml.push(
-          <DocSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} url="moumoa"/>
+          <DocSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} url="moumoa" />
         );
       }
     }
@@ -125,7 +130,7 @@ const MouMoaSingle = () => {
 
   const generatedForm = generateForm(entry);
   const generatedKeyPersonSection = generateSection(keyPersons);
-  const generatedDocumentSection = generateDocumentSection(attachments)
+  const generatedDocumentSection = generateDocumentSection(attachments);
 
   const onUpdateHandler = (event) => {
     event.preventDefault();

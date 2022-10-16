@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Input from '../../../components/input/Input';
 import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
-import {Button} from '@mui/material';
+import { Button } from '@mui/material';
 import './adminSingle.scss';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import InputPassword from '../../../components/input-password/InputPassword';
 
 const AdminSingle = () => {
 
-    const token = useSelector(state => state.auth.tokenId)
+    const token = useSelector(state => state.auth.tokenId);
     const [entry, setEntry] = useState({});
     const params = useParams();
-    const {id} = params;
+    const { id } = params;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const AdminSingle = () => {
         })
             .then(response => response.json())
             .then(data => {
-                const {admin} = data;
+                const { admin } = data;
                 setEntry(admin);
             });
     }, [id, token]);
@@ -32,16 +32,32 @@ const AdminSingle = () => {
     const generateForm = (obj) => {
         let formHtml = [];
         for (const key in obj) {
-            if (key == 'password') {
-                formHtml.push(
-                    <Input name={key} key={key} initialValue={""} onFormChangeHandler={onFormChangeHandler} type="password"/>
-                );
-            } else if (!(key == 'id' || key == 'created_at' || key == 'updated_at' || key == 'isSuperAdmin')) {
-                formHtml.push(
-                    <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler}/>
-                );
+            // if (key == 'password') {
+            //     formHtml.push(
+            //         <Input name={key} key={key} initialValue={""} onFormChangeHandler={onFormChangeHandler} type="password"/>
+            //     );
+            // } else if (!(key == 'id' || key == 'created_at' || key == 'updated_at' || key == 'isSuperAdmin')) {
+            //     formHtml.push(
+            //         <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler}/>
+            //     );
+            // }
+
+            if (!(key == 'id' || key == 'created_at' || key == 'updated_at' || key == 'isSuperAdmin')) {
+                if (key == 'password') {
+                    formHtml.push(
+                        <Input name={key} key={key} initialValue={""} onFormChangeHandler={onFormChangeHandler} type="password" />
+                    );
+                } else if (key == 'email') {
+                    formHtml.push(
+                        <Input name={key + " (eg: name@email.com)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+                      ); 
+                } else {
+                    formHtml.push(
+                        <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+                    );
+                }
             }
-        }
+        };
         return formHtml;
     };
 
@@ -77,9 +93,9 @@ const AdminSingle = () => {
 
     return (
         <div className="single">
-            <Sidebar/>
+            <Sidebar />
             <div className="homeContainer">
-                <Navbar/>
+                <Navbar />
                 <div className="title">Update</div>
                 <div className="content">
                     <div className="singleEntry">
@@ -87,7 +103,7 @@ const AdminSingle = () => {
                             {generatedForm}
                             <Button type='submit'>Update</Button>
                         </form>
-                        <div className="break"/>
+                        <div className="break" />
                     </div>
                 </div>
             </div>
