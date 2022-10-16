@@ -10,6 +10,8 @@ export const DocInputSection = (props) => {
   const [file, setFile] = useState(null);
   const [description, setDescription] = useState(props.isNew ? "" : props.obj.description);
 
+  const jsonField = (props.url === "moumoa") ? "mou_moa_id" : "mobility_id";
+
   const onFileUploadHandler = (event) => {
     // check whether event.target.files[0] works to load the correct file
     if ((event.target.files[0].size / 1024 / 1024) > 15) {
@@ -31,13 +33,13 @@ export const DocInputSection = (props) => {
   const onUpdateHandler = () => {
 
     var data = new FormData();
-    data.append("mou_moa_id", props.staffID);
+    data.append(jsonField, props.staffID);
     data.append("description", description);
     data.append("file", file);
     data.append("_method", "PUT");
 
     const jsonObject = {
-      "mou_moa_id": props.staffID,
+      jsonField: props.staffID,
       "description": description,
       "file_name": file
     };
@@ -70,12 +72,12 @@ export const DocInputSection = (props) => {
 
   const onSaveHandler = () => {
     var data = new FormData();
-    data.append("mou_moa_id", props.staffID);
+    data.append(jsonField, props.staffID);
     data.append("description", description);
     data.append("file", file);
 
     const jsonObject = {
-      "mou_moa_id": props.staffID,
+      jsonField: props.staffID,
       "description": description,
       "file_name": file
     };
