@@ -11,9 +11,13 @@ const Input = (props) => {
     props.onFormChangeHandler(props.name, event.target.value);
   }
 
+  const label = props.hint 
+    ? (<label>{props.name + props.hint}</label>)
+    : (<label>{props.name}</label>);
+
   return (
     <div className="formInput">
-      <label>{props.name}</label>
+      <label>{label}</label>
       <input type={props.type == null ? "text" : props.type} name={props.name} value={value} onChange={(event) => onChangeHandler(event)} />
     </div>
   );

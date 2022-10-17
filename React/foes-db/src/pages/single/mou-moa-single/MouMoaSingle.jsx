@@ -78,7 +78,7 @@ const MouMoaSingle = () => {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
         if (key == 'isActive') {
           formHtml.push(
-            <Input name={key + " (Yes or No)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+            <Input name={key} hint=" (Yes or No)" key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
           );
         } else {
           formHtml.push(

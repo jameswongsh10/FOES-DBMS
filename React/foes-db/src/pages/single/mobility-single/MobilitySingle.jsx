@@ -62,7 +62,7 @@ const MobilitySingle = () => {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
         if (key == 'from_date' || key == 'to_date') {
           formHtml.push(
-            <Input name={key + " (yyyy-mm-dd)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+            <Input name={key} hint=" (yyyy-mm-dd)" key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
           );
         } else {
           formHtml.push(
