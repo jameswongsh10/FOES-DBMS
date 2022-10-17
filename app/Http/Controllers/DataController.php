@@ -113,25 +113,19 @@ class DataController extends Controller
                 try {
                     foreach ($colInfo as $key => $value) {
                         $key = rtrim($key);
-
                         if (preg_match('/(.*)([0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{2,4})(.*)/', $value, $matches)) {
                             $value = date('Y-m-d', strtotime($value));
-                            echo $value;
                         } else if (preg_match('/(.*)([0-9]{1,2}\-[0-9]{1,2}\-[0-9]{2,4})(.*)/', $value, $matches)) {
                             $value = date('Y-m-d', strtotime($value));
-                            echo $value;
                         } else if (preg_match('/(.*)([0-9]{1,2}\.[0-9]{1,2}\.[0-9]{2,4})(.*)/', $value, $matches)) {
                             $value = date('Y-m-d', strtotime($value));
-                            echo $value;
                         } else if (preg_match('/(.*)([0-9]{2,4}\\/[0-9]{1,2}\\/[0-9]{1,2})(.*)/', $value, $matches)) {
                             $value = date('Y-m-d', strtotime($value));
-                            echo $value;
+                        }else{
+                            $newData->$key = $value;
                         }
-
-                        $newData->$key = $value;
                     }
                     $save = $newData->save();
-
                 } catch (\Exception $e) {
                     return response()->json([
                         'status' => $save,
