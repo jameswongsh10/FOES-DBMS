@@ -16,7 +16,7 @@ class AttachmentMobilityController extends Controller
         if (Auth::check()) {
             try {
                 $validator = Validator::make($request->all(), [
-                    'file' => 'required|mimes:pdf,zip|max:15360', //15mb application/pdf, text/csv, application/zip
+                    'file' => 'required|mimes:pdf,zip|max:15360', //15mb application/pdf, application/zip
                 ]);
 
                 if ($validator->fails()) {
@@ -32,9 +32,8 @@ class AttachmentMobilityController extends Controller
                     $ownPath = explode("/", $path);
                     $fileExtensionArr = explode(".", $ownPath[2]);
                     $contentType = "";
-                    if (strcmp($fileExtensionArr[1], "csv") == 0) {
-                        $contentType = "text/csv";
-                    } elseif (strcmp($fileExtensionArr[1], "pdf") == 0) {
+
+                    if (strcmp($fileExtensionArr[1], "pdf") == 0) {
                         $contentType = "application/pdf";
                     } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
                         $contentType = "application/zip";
@@ -43,7 +42,6 @@ class AttachmentMobilityController extends Controller
                     //store your file into directory and db
                     $newAttachment = new AttachmentMobility();
                     $newAttachment->mobility_id = $request->mobility_id;
-                    $newAttachment->type = $request->type;
                     $newAttachment->description = $request->description;
                     $newAttachment->path = $path;
                     $newAttachment->file_name = $name;
@@ -104,7 +102,7 @@ class AttachmentMobilityController extends Controller
     {
         if (Auth::check()) {
             try {
-                $column = 'staff_id'; // This is the name of the column you wish to search
+                $column = 'mobility_id'; // This is the name of the column you wish to search
 
                 $attachment = AttachmentMobility::where($column, '=', $mobility_id)->with('mobility')->get();
 
@@ -165,6 +163,16 @@ class AttachmentMobilityController extends Controller
                     $attachment->update(['path' => $path]);
                     $attachment->update(['file_name' => $name]);
 
+                    $ownPath = explode("/", $path);
+                    $fileExtensionArr = explode(".", $ownPath[2]);
+                    $contentType = "";
+                    if (strcmp($fileExtensionArr[1], "pdf") == 0) {
+                        $contentType = "application/pdf";
+                    } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
+                        $contentType = "application/zip";
+                    }
+
+                    $attachment->update(['content_type' => $contentType]);
                 }
 
                 $attachment->update($request->except(['file']));

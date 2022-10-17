@@ -52,7 +52,7 @@ const StaffSingle = () => {
   }, [id, token]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff_id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -65,7 +65,7 @@ const StaffSingle = () => {
   }, [id, token]);
 
   const updateAttachmentsHTTP = () => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/staff/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/staff_id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

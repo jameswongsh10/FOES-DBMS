@@ -32,6 +32,7 @@ class AttachmentMoumoaController extends Controller
                     $ownPath = explode("/", $path);
                     $fileExtensionArr = explode(".", $ownPath[2]);
                     $contentType = "";
+
                     if (strcmp($fileExtensionArr[1], "pdf") == 0) {
                         $contentType = "application/pdf";
                     } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
@@ -40,8 +41,7 @@ class AttachmentMoumoaController extends Controller
 
                     //store your file into directory and db
                     $newAttachment = new AttachmentMoumoa();
-                    $newAttachment->mou_moa_id = $request->staff_id;
-                    $newAttachment->type = $request->type;
+                    $newAttachment->mou_moa_id = $request->mou_moa_id;
                     $newAttachment->description = $request->description;
                     $newAttachment->path = $path;
                     $newAttachment->file_name = $name;
