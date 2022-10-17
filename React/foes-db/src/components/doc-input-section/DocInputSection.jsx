@@ -121,7 +121,7 @@ export const DocInputSection = (props) => {
           <label className='custom-file-input' for="files">{file && file.name}</label>
         </div>
         <Button className='section-btn' variant='contained' color='success'
-          onClick={props.isNew === true ? onSaveHandler : onUpdateHandler}>Save</Button>
+          onClick={props.isNew === true ? onSaveHandler : onUpdateHandler} disabled={!file}>Save</Button>
         <Button className='section-btn' variant='outlined'
           onClick={props.isNew === true ? onNewCancelHandler : onCancelHandler}>Cancel</Button>
       </div>
