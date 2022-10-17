@@ -50,7 +50,7 @@ class DataController extends Controller
             }
 
             //Remove unused columns, sort the arrays and compare between the column array from database and the column array reads from csv file.
-            $unusedElement = ['id', 'created_at', 'updated_at', 'isActive'];
+            $unusedElement = ['id', 'created_at', 'updated_at'];
 
             foreach ($unusedElement as $col) {
                 $key = array_search($col, $columnArray, true);
@@ -141,14 +141,15 @@ class DataController extends Controller
                     'message' => "Error in CSV file import.",
                 ], 400);
             }
+            return response()->json([
+                'status' => false,
+                'message' => "Unauthorized user"
+            ], 401);
         }
-        return response()->json([
-            'status' => false,
-            'message' => "Unauthorized user"
-        ], 401);
     }
 
-    public function database_backup()
+    public
+    function database_backup()
     {
         // if (Auth::check()) {
         $output = null;
@@ -163,7 +164,8 @@ class DataController extends Controller
            ], 401);*/
     }
 
-    public function database_restore()
+    public
+    function database_restore()
     {
         //  if (Auth::check()) {
         $output = null;
