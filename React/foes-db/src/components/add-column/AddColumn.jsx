@@ -27,10 +27,10 @@ const AddColumn = (props) => {
     // fetch(`http://127.0.0.1:8000/api/${props.apiEndPoint}`, { 
     // fetch(`http://127.0.0.1:8000/api/addStaffColumn`, {
     //   method: 'POST',
-      // headers: {
-      //   "Authorization": `Bearer ${token}`,
-        // "Content-Type": 'text/plain'
-      // },
+    // headers: {
+    //   "Authorization": `Bearer ${token}`,
+    // "Content-Type": 'text/plain'
+    // },
     //   body: "ee"
     // })
     //   .then(response => response.json())
@@ -42,11 +42,21 @@ const AddColumn = (props) => {
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": 'text/plain'
-      } 
+      }
     })
-      .then(
-        props.onCustomColumnAddHandler()
-      )
+      .then(response => {
+        if (response.status == 201) {
+          props.onCustomColumnAddHandler();
+          return response;
+        }
+        return Promise.reject(response);
+      })
+      .catch(response => {
+        // console.log(response);
+        // console.log(response.response.data.message);
+        alert(response.response.data.message)
+        // response.then(response => alert(response.response.data.message));
+      });
 
   };
 
