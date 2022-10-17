@@ -54,7 +54,7 @@ const FileInputSection = (props) => {
 
         console.log("newAttachments", newAttachments);
 
-        fetch(`http://127.0.0.1:8000/api/updateAttachment/${props.attachmentId}`, {
+        fetch(`http://127.0.0.1:8000/api/updateAttachment/staff/${props.attachmentId}`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`
@@ -89,7 +89,7 @@ const FileInputSection = (props) => {
 
         console.log(newAttachments);
 
-        fetch(`http://127.0.0.1:8000/api/createAttachment`, {
+        fetch(`http://127.0.0.1:8000/api/createAttachment/staff`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`

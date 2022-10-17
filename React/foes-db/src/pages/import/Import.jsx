@@ -11,12 +11,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
 import Alert from "@mui/material/Alert";
+import { useSelector } from 'react-redux';
 
 const Import = () => {
     const [error, setError] = useState();
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState();
     const [array, setArray] = useState([]);
+    const token = useSelector(state => state.auth.tokenId);
 
     const fileReader = new FileReader();
 
@@ -42,7 +44,11 @@ const Import = () => {
         const table = document.querySelector('input[name="target_table"]:checked').value;
         const csvArray = [csvHeader, array, table];
 
-        axios.post('http://127.0.0.1:8000/api/csvImport', JSON.stringify(csvArray)).then(response => {
+        axios.post('http://127.0.0.1:8000/api/csvImport', JSON.stringify(csvArray), {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        }).then(response => {
             console.log(JSON.stringify(response.data));
             setError(false);
             setOpen(false);
@@ -125,8 +131,6 @@ const Import = () => {
                             <FormControlLabel value="Staff" control={<Radio/>} label="Staff Information"/>
                             <FormControlLabel value="MOU-MOA" control={<Radio/>}
                                               label="MOU & MOA Program Information"/>
-                            <FormControlLabel value="Inactive-MOU-MOA" control={<Radio/>}
-                                              label="Inactive MOU & MOA Program Information"/>
                             <FormControlLabel value="KTP-USR" control={<Radio/>} label="KTP USR Information"/>
                             <FormControlLabel value="Mobility" control={<Radio/>} label="Mobility Information"/>
                             <FormControlLabel value="Research-Award" control={<Radio/>}

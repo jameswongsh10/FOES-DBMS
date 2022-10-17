@@ -6,10 +6,12 @@ import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './mobilitySingle.scss';
 import { useSelector } from 'react-redux';
+import DocSection from '../../../components/DocSection/DocSection';
 
 const MobilitySingle = () => {
   const token = useSelector(state => state.auth.tokenId);
   const [entry, setEntry] = useState({});
+  const [attachments, setAttachments] = useState([]);
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
@@ -27,14 +29,46 @@ const MobilitySingle = () => {
       });
   }, [id, token]);
 
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/mobility_id/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const attachment = data.attachment;
+        setAttachments(attachment);
+      });
+  }, [id, token]);
+
+  const updateAttachmentsHTTP = () => {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/mobility_id/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const attachment = data.attachment;
+        setAttachments(attachment);
+      });
+  };
+
+
   const generateForm = (obj) => {
     let formHtml = [];
     for (const key in obj) {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
-        formHtml.push(
-          <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
-        );
-
+        if (key == 'from_date' || key == 'to_date') {
+          formHtml.push(
+            <Input name={key + " (yyyy-mm-dd)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else {
+          formHtml.push(
+            <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        }
       }
     }
     return formHtml;
@@ -46,7 +80,24 @@ const MobilitySingle = () => {
     setEntry(newEntry);
   };
 
+  const generateDocumentSection = (arr) => {
+    let sectionHtml = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (attachments[i] === null) {
+        sectionHtml.push(
+          <DocSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} url="mobility" />
+        );
+      } else {
+        sectionHtml.push(
+          <DocSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} url="mobility" />
+        );
+      }
+    }
+    return sectionHtml;
+  };
+
   const generatedForm = generateForm(entry);
+  const generatedDocumentSection = generateDocumentSection(attachments);
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
@@ -70,6 +121,9 @@ const MobilitySingle = () => {
 
   };
 
+  const onAddNewDocument = () => {
+    setAttachments([...attachments, null]);
+  };
 
   return (
     <div className="single">
@@ -84,6 +138,13 @@ const MobilitySingle = () => {
               <Button type='submit'>Update</Button>
             </form>
             <div className="break" />
+          </div>
+          <div className="content">
+            {generatedDocumentSection}
+            {/* <FileInputSection obj={null} /> */}
+          </div>
+          <div className="button-section">
+            <button className='add-new-btn' onClick={onAddNewDocument}>Add New Document</button>
           </div>
         </div>
       </div>

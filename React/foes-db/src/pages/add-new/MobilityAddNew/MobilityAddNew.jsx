@@ -76,8 +76,8 @@ const MobilityAddNew = () => {
       "name_of_university": nameOfUniversityInput.current.value,
       "country": countryInput.current.value,
       "duration": durationsInput.current.value,
-      "from_date": fromInput.current.value,
-      "to_date": toInput.current.value,
+      "from_date": fromInput.current.value === "" ? null : fromInput.current.value,
+      "to_date": toInput.current.value === "" ? null : toInput.current.value,
       "remark": remarkInput.current.value,
     };
 

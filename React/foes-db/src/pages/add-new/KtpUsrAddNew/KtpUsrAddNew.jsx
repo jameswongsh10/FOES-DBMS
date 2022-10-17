@@ -72,7 +72,7 @@ const KtpUsrAddNew = () => {
     event.preventDefault();
     const jsonObject = {
       "category": programCategoryInput.current.value,
-      "date": eventDateInput.current.value,
+      "date": eventDateInput.current.value === "" ? null : eventDateInput.current.value,
       "program_name": nameOfUsrKtpProgramInput.current.value,
       "community_industry_name": communityIndustryInput.current.value,
       "location": locationInput.current.value,

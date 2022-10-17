@@ -15,12 +15,12 @@ import {useState} from 'react';
 import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
 import axios from 'axios';
-
+import { useSelector } from 'react-redux';
 import './backup.scss';
 import Alert from "@mui/material/Alert";
 
 const Backup = () => {
-
+    
     const [databaseName, setDatabaseName] = useState('');
     const [isBackupLoading, setIsBackupLoading] = useState(false);
     const [isRestoreLoading, setIsRestoreLoading] = useState(false);
@@ -28,6 +28,8 @@ const Backup = () => {
     const [restoreCode, setRestoreCode] = useState(true);
     const [showBackupMsg, setShowBackupMsg] = useState(false);
     const [showRestoreMsg, setShowRestoreMsg] = useState(false);
+
+    const token = useSelector(state => state.auth.tokenId);
 
     const date1 = new Date("2022", "01", "01");
     const [file, setFile] = useState();
@@ -43,7 +45,11 @@ const Backup = () => {
 
     const backup = (e) => {
         setIsBackupLoading(true);
-        axios.get('http://127.0.0.1:8000/api/database_backup')
+        axios.get('http://127.0.0.1:8000/api/database_backup', {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        })
             .then(response => {
                 setIsBackupLoading(false);
                 if (JSON.stringify(response.data) == 0) {
@@ -60,7 +66,11 @@ const Backup = () => {
 
     const restore = (e) => {
         setIsRestoreLoading(true);
-        axios.get('http://127.0.0.1:8000/api/database_restore')
+        axios.get('http://127.0.0.1:8000/api/database_restore', {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        })
             .then(response => {
                 setIsRestoreLoading(false);
                 if (JSON.stringify(response.data) == 0) {

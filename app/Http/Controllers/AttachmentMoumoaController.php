@@ -32,6 +32,7 @@ class AttachmentMoumoaController extends Controller
                     $ownPath = explode("/", $path);
                     $fileExtensionArr = explode(".", $ownPath[2]);
                     $contentType = "";
+
                     if (strcmp($fileExtensionArr[1], "pdf") == 0) {
                         $contentType = "application/pdf";
                     } elseif (strcmp($fileExtensionArr[1], "zip") == 0) {
@@ -40,8 +41,7 @@ class AttachmentMoumoaController extends Controller
 
                     //store your file into directory and db
                     $newAttachment = new AttachmentMoumoa();
-                    $newAttachment->mou_moa_id = $request->staff_id;
-                    $newAttachment->type = $request->type;
+                    $newAttachment->mou_moa_id = $request->mou_moa_id;
                     $newAttachment->description = $request->description;
                     $newAttachment->path = $path;
                     $newAttachment->file_name = $name;
@@ -231,7 +231,7 @@ class AttachmentMoumoaController extends Controller
 
     public function downloadAttachment($id)
     {
-        if (Auth::check()) {
+//        if (Auth::check()) {
             try {
                 $attachment = AttachmentMoumoa::find($id);
                 if (is_null($attachment)) {
@@ -253,10 +253,10 @@ class AttachmentMoumoaController extends Controller
                     'message' => $e->errorInfo[2]
                 ], 400);
             }
-        }
-        return response()->json([
-            'status' => false,
-            'message' => 'Unauthorized user'
-        ], 401);
+//        }
+//        return response()->json([
+//            'status' => false,
+//            'message' => 'Unauthorized user'
+//        ], 401);
     }
 }

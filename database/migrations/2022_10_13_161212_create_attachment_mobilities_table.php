@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('attachment_mobilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mobility_id')->constrained('mobility')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('type');
             $table->string('description')->nullable(true);
             $table->string('path')->nullable(true);
             $table->string('file_name')->nullable(true);

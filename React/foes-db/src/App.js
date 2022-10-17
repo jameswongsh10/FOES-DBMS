@@ -27,14 +27,11 @@ import ResearchAwardAddNew from './pages/add-new/ResearchAwardAddNew/ResearchAwa
 import MouMoaAddNew from './pages/add-new/MouMoaAddNew/MouMoaAddNew';
 import KtpUsrAddNew from './pages/add-new/KtpUsrAddNew/KtpUsrAddNew';
 import MobilityAddNew from './pages/add-new/MobilityAddNew/MobilityAddNew';
-import InactiveMouMoa from './pages/dashboard/inactive-mou-moa/inactiveMouMoa';
-import InactiveMouMoaAddNew from './pages/add-new/InactiveMouMoaAddNew/InactiveMouMoaAddNew';
 import AdminSingle from './pages/single/admin-single/AdminSingle';
 import StaffSingle from './pages/single/staff-single/StaffSingle';
 import AssetSingle from './pages/single/asset-single/AssetSingle';
 import ResearchAwardSingle from './pages/single/research-award-single/ResearchAwardSingle';
 import MouMoaSingle from './pages/single/mou-moa-single/MouMoaSingle';
-import InactiveMouMoaSingle from './pages/single/inactive-mou-moa-single/InactiveMouMoaSingle';
 import KtpUsrSingle from './pages/single/ktp-usr/KtpUsrSingle';
 import MobilitySingle from './pages/single/mobility-single/MobilitySingle';
 
@@ -46,12 +43,33 @@ function App() {
 
   const storedToken = localStorage.getItem('token');
   const storedIsSuperUser = localStorage.getItem('isSuperAdmin');
+  const exp = localStorage.getItem('exp');
 
   useEffect(() => {
-    if (storedToken) {
-      dispatch(authActions.login([ storedToken, storedIsSuperUser == 1 ? true : false ]));
+    const remainingTime = calculateRemainingTime(exp);
+
+    if (storedToken && (remainingTime > 10)) {
+      dispatch(authActions.login([ storedToken, storedIsSuperUser == 1 ? true : false, exp]));
+    } else {
+      dispatch(authActions.logout())
     }
-  }, [storedToken, storedIsSuperUser, dispatch])
+  }, [storedToken, storedIsSuperUser, exp, dispatch])
+
+  useEffect(() => {
+    const remainingTime = calculateRemainingTime(exp) ;
+    const logoutTimer = setTimeout(() => {
+      dispatch(authActions.logout());
+    }, remainingTime * 1000)
+    return () => clearTimeout(logoutTimer);
+  }, [exp, dispatch])
+
+  const calculateRemainingTime = (expirationTime) => {
+    const currentTime = Date.now() / 1000;
+    const remainingDuration = expirationTime - currentTime;
+  
+    return remainingDuration;
+  };
+  
 
   return (
     <div className={isDarkMode ? 'app dark' : 'app'}>
@@ -79,10 +97,6 @@ function App() {
           {isLoggedIn && <Route path='/moumoa/new' element={<MouMoaAddNew />} />}
           {isLoggedIn && <Route path='/moumoa/:id' element={<MouMoaSingle />} />}
 
-          {isLoggedIn && <Route path='/InactiveMOUMOA' element={<InactiveMouMoa />} />}
-          {isLoggedIn && <Route path='/InactiveMOUMOA/new' element={<InactiveMouMoaAddNew />} />}
-          {isLoggedIn && <Route path='/InactiveMOUMOA/:id' element={<InactiveMouMoaSingle />} />}
-
           {isLoggedIn && <Route path='/KTPUSR' element={<KtpUsr />} />}
           {isLoggedIn && <Route path='/KTPUSR/new' element={<KtpUsrAddNew />} />}
           {isLoggedIn && <Route path='/KTPUSR/:id' element={<KtpUsrSingle />} />}
@@ -91,12 +105,13 @@ function App() {
           {isLoggedIn && <Route path='/mobility/new' element={<MobilityAddNew />} />}
           {isLoggedIn && <Route path='/mobility/:id' element={<MobilitySingle />} />}
 
-                    {isLoggedIn && <Route path='/backup' element={<Backup/>}/>}
-                    {isLoggedIn && <Route path='/pdf' element={<Pdf/>}/>}
-                    {isLoggedIn && <Route path='/import' element={<Import/>}/>}
-                    {isLoggedIn && <Route path='/settings' element={<Setting/>}/>}
-                    {isLoggedIn && <Route path='/profile' element={<Profile/>}/>}
-                    {!isLoggedIn && <Route path='/' element={<Login/>}/>}
+          {isLoggedIn && <Route path='/backup' element={<Backup/>}/>}
+          {isLoggedIn && <Route path='/pdf' element={<Pdf/>}/>}
+          {isLoggedIn && <Route path='/import' element={<Import/>}/>}
+          {isLoggedIn && <Route path='/settings' element={<Setting/>}/>}
+          {isLoggedIn && <Route path='/profile' element={<Profile/>}/>}
+          {!isLoggedIn && <Route path='/' element={<Login/>}/>}
+          {!isLoggedIn && <Route path='*' element={<Login/>}/>}
                 </Routes>
             </BrowserRouter>
         </div>

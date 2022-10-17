@@ -51,7 +51,7 @@ const InputPassword = (props) => {
     // <div className={isValid ? 'formInput' : 'formInput--invalid' }>
     <div className={(isEntered && !isValid)? 'formInput--invalid' : 'formInput' }>
       <label>{props.label}</label>
-      <input type="text" onChange={onInputChangeHandler}></input>
+      <input type="password" onChange={onInputChangeHandler} placeholder="1 uppercase, 1 lowercase, 1 symbol, 1 numeric character, min 8 digit"></input>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { tableActions } from '../../store/table-slice';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Transform, SettingsApplicationsOutlined, AccountCircleOutlined, ExitToAppOutlined, HomeWorkOutlined, BadgeOutlined, SupervisorAccountOutlined, WorkspacePremiumOutlined, LocationCityOutlined, FolderOutlined, OutputOutlined, BackupOutlined, EqualizerOutlined, AddBox, Badge, SupervisorAccount, HomeWork, WorkspacePremium, LocationCity, Equalizer, Folder, Backup, SettingsApplications, AccountCircle, InputOutlined } from '@mui/icons-material';
 import { uiActions } from '../../store/ui-slice';
 
@@ -45,8 +45,6 @@ const Sidebar = () => {
         return <WorkspacePremium className='icon' />;
       case 'MOU-MOA':
         return <LocationCity className='icon' />;
-      case 'Inactive-MOU-MOA':
-        return <LocationCity className='icon' />;
       case 'KTP-USR':
         return <Equalizer className='icon' />;
       case 'Mobility':
@@ -75,7 +73,7 @@ const Sidebar = () => {
       }
     });
     dispatch(authActions.logout());
-    navigate('/')
+    navigate('/');
   };
 
   const [open, setOpen] = useState(false);
@@ -142,13 +140,6 @@ const Sidebar = () => {
                 </li>
               </Link>
 
-              <Link to='/InactiveMOUMOA' className='link'>
-                <li>
-                  <LocationCity className='icon' />
-                  <span>MOU-MOA(Inactive)</span>
-                </li>
-              </Link>
-
               <Link to='/KTPUSR' className='link'>
                 <li>
                   <Equalizer className='icon' />
@@ -171,13 +162,17 @@ const Sidebar = () => {
           {!isSuperAdmin && (
             <>
               <p className='title'>FEATURES</p>
-              <CreateDialog open={open} handleClose={handleClose} onCreateHandler={onCreateHandler} />
               <Link to='/import' className='link'>
                 <li>
                   <InputOutlined className='icon' />
                   <span>Data Import</span>
                 </li>
               </Link>
+            </>
+          )}
+          {isSuperAdmin && (
+            <>
+              <p className='title'>FEATURES</p>
               <Link to='/backup' className='link'>
                 <li>
                   <Backup className='icon' />
