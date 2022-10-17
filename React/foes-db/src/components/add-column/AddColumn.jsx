@@ -6,6 +6,7 @@ import { tableActions } from '../../store/table-slice';
 import './addColumn.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import URL from '../../store/url';
 
 const AddColumn = (props) => {
   const dispatch = useDispatch();
@@ -21,24 +22,10 @@ const AddColumn = (props) => {
 
   const onConfirmHandler = () => {
 
-    //console.log("inputColumnName", inputColumnName.current.value);
 
     isOpen(false);
-    // fetch(`http://127.0.0.1:8000/api/${props.apiEndPoint}`, {
-    // fetch(`http://127.0.0.1:8000/api/addStaffColumn`, {
-    //   method: 'POST',
-    // headers: {
-    //   "Authorization": `Bearer ${token}`,
-    // "Content-Type": 'text/plain'
-    // },
-    //   body: "ee"
-    // })
-    //   .then(response => response.json())
-    //   .then(data => {
 
-    //   });
-
-    axios.post(`http://127.0.0.1:8000/api/${props.apiEndPoint}`, JSON.stringify(String(inputColumnName.current.value)), {
+    axios.post(`${URL}/api/${props.apiEndPoint}`, JSON.stringify(String(inputColumnName.current.value)), {
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": 'text/plain'

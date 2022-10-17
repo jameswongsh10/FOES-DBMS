@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import DownloadIcon from '@mui/icons-material/Download';
+import URL from '../../store/url';
 
 const FileViewSection = (props) => {
 
@@ -13,7 +14,7 @@ const FileViewSection = (props) => {
 
   const onDeleteHandler = () => {
     if (window.confirm("Are you sure you want to delete this element?") == true) {
-      fetch(`http://127.0.0.1:8000/api/deleteAttachment/staff/${props.obj.id}`, {
+      fetch(`${URL}/api/deleteAttachment/staff/${props.obj.id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`
@@ -36,8 +37,8 @@ const FileViewSection = (props) => {
         <div className="formInput">
           <label>file_name: {props.obj.file_name}</label>
         </div>
-        <a href={`http://127.0.0.1:8000/api/downloadAttachment/staff/${props.attachmentId}`} download='myFile'>
-          <Button variant="contained" color='success' endIcon={<DownloadIcon />} onClick={() => { (<a href={`http://127.0.0.1:8000/api/downloadAttachment/staff/${props.attachmentId}`} download='myFile'>Download</a>); }}>
+        <a href={`${URL}/api/downloadAttachment/staff/${props.attachmentId}`} download='myFile'>
+          <Button variant="contained" color='success' endIcon={<DownloadIcon />} onClick={() => { (<a href={`${URL}/api/downloadAttachment/staff/${props.attachmentId}`} download='myFile'>Download</a>); }}>
             Download
           </Button>
         </a>

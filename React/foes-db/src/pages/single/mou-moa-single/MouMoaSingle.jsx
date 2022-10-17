@@ -9,6 +9,7 @@ import KeyPersonSection from '../../../components/key-person-section/KeyPersonSe
 import {useSelector} from 'react-redux';
 import FileSection from '../../../components/file-section/FileSection';
 import DocSection from '../../../components/DocSection/DocSection';
+import URL from '../../../store/url';
 
 const MouMoaSingle = () => {
     const token = useSelector(state => state.auth.tokenId);
@@ -20,7 +21,7 @@ const MouMoaSingle = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/getMOUMOA/${id}`, {
+        fetch(`${URL}/api/getMOUMOA/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -33,7 +34,7 @@ const MouMoaSingle = () => {
     }, [id, token]);
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/getKeyContactPerson/moumoa/${id}`, {
+        fetch(`${URL}/api/getKeyContactPerson/moumoa/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -46,7 +47,7 @@ const MouMoaSingle = () => {
     }, [id, token]);
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/getAttachment/moumoa_id/${id}`, {
+        fetch(`${URL}/api/getAttachment/moumoa_id/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -59,7 +60,7 @@ const MouMoaSingle = () => {
     }, [id, token]);
 
     const updateAttachmentsHTTP = () => {
-        fetch(`http://127.0.0.1:8000/api/getAttachment/moumoa_id/${id}`, {
+        fetch(`${URL}/api/getAttachment/moumoa_id/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -151,7 +152,7 @@ const MouMoaSingle = () => {
 
     const onUpdateHandler = (event) => {
         event.preventDefault();
-        fetch(`http://127.0.0.1:8000/api/updateMOUMOA/${id}`, {
+        fetch(`${URL}/api/updateMOUMOA/${id}`, {
             method: 'PUT',
             body: JSON.stringify(entry),
             headers: {

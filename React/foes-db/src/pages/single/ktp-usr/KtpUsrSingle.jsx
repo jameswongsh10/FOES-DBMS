@@ -6,6 +6,7 @@ import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './ktpUsrSingle.scss';
 import { useSelector } from 'react-redux';
+import URL from '../../../store/url';
 
 const KtpUsrSingle = () => {
   const token = useSelector(state => state.auth.tokenId);
@@ -15,7 +16,7 @@ const KtpUsrSingle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getKTPUSR/${id}`, {
+    fetch(`${URL}/api/getKTPUSR/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -59,7 +60,7 @@ const KtpUsrSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    fetch(`http://127.0.0.1:8000/api/updateKTPUSR/${id}`, {
+    fetch(`${URL}/api/updateKTPUSR/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {

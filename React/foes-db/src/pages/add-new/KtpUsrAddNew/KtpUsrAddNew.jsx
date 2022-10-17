@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
+import URL from '../../../store/url';
 
 const KtpUsrAddNew = () => {
   const token = useSelector(state => state.auth.tokenId)
@@ -33,7 +34,7 @@ const KtpUsrAddNew = () => {
   const listRef = useRef([]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getKTPUSRColumns`, {
+    fetch(`${URL}/api/getKTPUSRColumns`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -50,7 +51,7 @@ const KtpUsrAddNew = () => {
   }, [token]);
 
   const onCustomColumnAddHandler = () => {
-    fetch(`http://127.0.0.1:8000/api/getKTPUSRColumns`, {
+    fetch(`${URL}/api/getKTPUSRColumns`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -93,7 +94,7 @@ const KtpUsrAddNew = () => {
       }
     })
 
-    fetch('http://127.0.0.1:8000/api/createKTPUSR', {
+    fetch(`${URL}/api/createKTPUSR`, {
       method: 'POST',
       body: JSON.stringify(jsonObject),
       headers: {

@@ -9,6 +9,7 @@ import './sidebar.scss';
 import { useState } from 'react';
 import CreateDialog from '../create-dialog/CreateDialog';
 import { authActions } from '../../store/auth-slice';
+import URL from '../../store/url';
 
 const Sidebar = () => {
   const token = useSelector(state => state.auth.tokenId);
@@ -66,7 +67,7 @@ const Sidebar = () => {
   });
 
   const logoutHandler = () => {
-    fetch(`http://127.0.0.1:8000/api/logout`, {
+    fetch(`${URL}/api/logout`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`

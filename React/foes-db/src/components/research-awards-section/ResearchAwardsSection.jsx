@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import URL from '../../store/url';
 import './researchAwardsSection.scss'
 
 const ResearchAwardsSection = (props) => {
@@ -8,7 +9,7 @@ const ResearchAwardsSection = (props) => {
   const [awardArr, setAwardArr] = useState([]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAwards/staff/${props.staffId}`, {
+    fetch(`${URL}/api/getAwards/staff/${props.staffId}`, {
       headers: {
         Authorization : `Bearer ${token}`
       }

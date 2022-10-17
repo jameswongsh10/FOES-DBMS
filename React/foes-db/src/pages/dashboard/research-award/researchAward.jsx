@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import TableContainer from '../../../layout/table-container/TableContainer';
+import URL from '../../../store/url';
 import './researchAward.scss';
 
 const ResearchAward = () => {
@@ -15,7 +16,7 @@ const ResearchAward = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/readAllAwards', { 
+        `${URL}/readAllAwards`, { 
           headers: {
             Authorization : `Bearer ${token}`
           }
@@ -32,7 +33,7 @@ const ResearchAward = () => {
       const { ["Awards"]: collectionObj } = data;
       
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getAwardsColumns', { 
+        `${URL}/getAwardsColumns`, { 
           headers: {
             Authorization : `Bearer ${token}`
           }

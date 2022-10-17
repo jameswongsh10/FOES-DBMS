@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import TableContainer from '../../../layout/table-container/TableContainer';
+import URL from '../../../store/url';
 import './admin.scss';
 
 const Admin = () => {
@@ -17,7 +18,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchData = async () => {
       const readAllResponse = await fetch(
-        'http://127.0.0.1:8000/readAllAdmin', {
+        `${URL}/readAllAdmin`, {
           headers: {
             Authorization : `Bearer ${token}`
           }
@@ -34,7 +35,7 @@ const Admin = () => {
       const { ["Admin"]: collectionObj } = data;
 
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getAdminColumns', {
+        `${URL}/getAdminColumns`, {
           headers: {
             Authorization : `Bearer ${token}`
           }

@@ -6,6 +6,7 @@ import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './researchAwardSingle.scss';
 import { useSelector } from 'react-redux';
+import URL from '../../../store/url';
 
 const ResearchAwardSingle = () => {
   const token = useSelector(state => state.auth.tokenId)
@@ -15,7 +16,7 @@ const ResearchAwardSingle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAwards/${id}`, { 
+    fetch(`${URL}/api/getAwards/${id}`, { 
       headers: {
         Authorization : `Bearer ${token}`
       }
@@ -50,7 +51,7 @@ const ResearchAwardSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    fetch(`http://127.0.0.1:8000/api/updateAwards/${id}`, {
+    fetch(`${URL}/api/updateAwards/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {

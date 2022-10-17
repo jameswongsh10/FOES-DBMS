@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
+import URL from '../../../store/url';
 
 const ResearchAwardAddNew = () => {
   const token = useSelector(state => state.auth.tokenId)
@@ -26,7 +27,7 @@ const ResearchAwardAddNew = () => {
   const listRef = useRef([]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAwardsColumns`, {
+    fetch(`${URL}/api/getAwardsColumns`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -43,7 +44,7 @@ const ResearchAwardAddNew = () => {
   }, [token]);
 
   const onCustomColumnAddHandler = () => {
-    fetch(`http://127.0.0.1:8000/api/getAwardsColumns`, {
+    fetch(`${URL}/api/getAwardsColumns`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -80,7 +81,7 @@ const ResearchAwardAddNew = () => {
       }
     })
 
-    fetch('http://127.0.0.1:8000/api/createAwards', {
+    fetch(`${URL}/api/createAwards`, {
       method: 'POST',
       body: JSON.stringify(jsonObject),
       headers: {

@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import URL from '../../store/url';
 import InputEmail from '../input-email/InputEmail';
 import './keyPersonInputSection.scss';
 
@@ -47,7 +48,7 @@ const KeyPersonInputSection = (props) => {
 
        // console.log(newArray);
 
-        fetch(`http://127.0.0.1:8000/api/updateKeyContactPerson/${props.obj.id}`, {
+        fetch(`${URL}/api/updateKeyContactPerson/${props.obj.id}`, {
             method: 'PUT',
             body: JSON.stringify(jsonObject),
             headers: {
@@ -76,7 +77,7 @@ const KeyPersonInputSection = (props) => {
 
         const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
 
-        fetch('http://127.0.0.1:8000/api/createKeyContactPerson', {
+        fetch(`${URL}/api/createKeyContactPerson`, {
             method: 'POST',
             body: JSON.stringify(jsonObject),
             headers: {

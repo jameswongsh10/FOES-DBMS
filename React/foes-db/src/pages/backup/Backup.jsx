@@ -18,6 +18,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import './backup.scss';
 import Alert from "@mui/material/Alert";
+import URL from '../../store/url';
 
 const Backup = () => {
     
@@ -45,7 +46,7 @@ const Backup = () => {
 
     const backup = (e) => {
         setIsBackupLoading(true);
-        axios.get('http://127.0.0.1:8000/api/database_backup', {
+        axios.get(`${URL}/api/database_backup`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
             }
@@ -66,7 +67,7 @@ const Backup = () => {
 
     const restore = (e) => {
         setIsRestoreLoading(true);
-        axios.get('http://127.0.0.1:8000/api/database_restore', {
+        axios.get(`${URL}/api/database_restore`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
             }

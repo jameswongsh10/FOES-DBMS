@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import './mobilitySingle.scss';
 import { useSelector } from 'react-redux';
 import DocSection from '../../../components/DocSection/DocSection';
+import URL from '../../../store/url';
 
 const MobilitySingle = () => {
   const token = useSelector(state => state.auth.tokenId);
@@ -17,7 +18,7 @@ const MobilitySingle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getMobility/${id}`, {
+    fetch(`${URL}/api/getMobility/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -30,7 +31,7 @@ const MobilitySingle = () => {
   }, [id, token]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/mobility_id/${id}`, {
+    fetch(`${URL}/api/getAttachment/mobility_id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -43,7 +44,7 @@ const MobilitySingle = () => {
   }, [id, token]);
 
   const updateAttachmentsHTTP = () => {
-    fetch(`http://127.0.0.1:8000/api/getAttachment/mobility_id/${id}`, {
+    fetch(`${URL}/api/getAttachment/mobility_id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -101,7 +102,7 @@ const MobilitySingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    fetch(`http://127.0.0.1:8000/api/updateMobility/${id}`, {
+    fetch(`${URL}/api/updateMobility/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {

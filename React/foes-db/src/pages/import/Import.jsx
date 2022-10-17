@@ -12,6 +12,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
 import Alert from "@mui/material/Alert";
 import { useSelector } from 'react-redux';
+import URL from '../../store/url';
 
 const Import = () => {
     const [error, setError] = useState();
@@ -44,7 +45,7 @@ const Import = () => {
         const table = document.querySelector('input[name="target_table"]:checked').value;
         const csvArray = [csvHeader, array, table];
 
-        axios.post('http://127.0.0.1:8000/api/csvImport', JSON.stringify(csvArray), {
+        axios.post(`${URL}/api/csvImport`, JSON.stringify(csvArray), {
             headers: {
                 "Authorization": `Bearer ${token}`,
             }

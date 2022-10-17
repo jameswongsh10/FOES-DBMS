@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import TableContainer from '../../../layout/table-container/TableContainer';
+import URL from '../../../store/url';
 import './staff.scss';
 
 const Staff = () => {
@@ -16,7 +17,7 @@ const Staff = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/readAllStaff', { 
+        `${URL}/readAllStaff`, { 
           headers: {
             Authorization : `Bearer ${token}`
           }
@@ -33,7 +34,7 @@ const Staff = () => {
       const { ["Staff"]: collectionObj } = data;
 
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getStaffColumns', { 
+        `${URL}/getStaffColumns`, { 
           headers: {
             Authorization : `Bearer ${token}`
           }

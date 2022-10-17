@@ -9,6 +9,7 @@ import FileInputSection from '../../../components/section/FileInputSection';
 import FileSection from '../../../components/file-section/FileSection';
 import ResearchAwardsSection from '../../../components/research-awards-section/ResearchAwardsSection';
 import {useSelector} from 'react-redux';
+import URL from '../../../store/url';
 
 const StaffSingle = () => {
 
@@ -39,7 +40,7 @@ const StaffSingle = () => {
     const [remark, setRemark] = useState();
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/getStaff/${id}`, {
+        fetch(`${URL}/api/getStaff/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -52,7 +53,7 @@ const StaffSingle = () => {
     }, [id, token]);
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/getAttachment/staff_id/${id}`, {
+        fetch(`${URL}/api/getAttachment/staff_id/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -65,7 +66,7 @@ const StaffSingle = () => {
     }, [id, token]);
 
     const updateAttachmentsHTTP = () => {
-        fetch(`http://127.0.0.1:8000/api/getAttachment/staff_id/${id}`, {
+        fetch(`${URL}/api/getAttachment/staff_id/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -136,7 +137,7 @@ const StaffSingle = () => {
 
     const onUpdateHandler = (event) => {
         event.preventDefault();
-        fetch(`http://127.0.0.1:8000/api/updateStaff/${id}`, {
+        fetch(`${URL}/api/updateStaff/${id}`, {
             method: 'PUT',
             body: JSON.stringify(entry),
             headers: {

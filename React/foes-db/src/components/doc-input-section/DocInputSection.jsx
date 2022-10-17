@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import './docInputSection.scss';
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
+import URL from '../../store/url';
 
 export const DocInputSection = (props) => {
 
@@ -53,7 +54,7 @@ export const DocInputSection = (props) => {
 
     console.log("newAttachments", newAttachments);
 
-    fetch(`http://127.0.0.1:8000/api/updateAttachment/${props.url}/${props.attachmentId}`, {
+    fetch(`${URL}/api/updateAttachment/${props.url}/${props.attachmentId}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`
@@ -86,7 +87,7 @@ export const DocInputSection = (props) => {
 
     console.log(newAttachments);
 
-    fetch(`http://127.0.0.1:8000/api/createAttachment/${props.url}`, {
+    fetch(`${URL}/api/createAttachment/${props.url}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`

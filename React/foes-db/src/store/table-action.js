@@ -1,12 +1,13 @@
 import { useSelector } from 'react-redux';
 import { tableActions } from './table-slice';
+import URL from './url';
 
 export const fetchDatabase = () => {
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await fetch(
         // 'https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database.json'
-        'http://127.0.0.1:8000/readAllAdmin'
+        `${URL}/readAllAdmin`
       );
 
       if (!response.ok) {

@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import URL from '../../store/url';
 import './keyPersonViewSection.scss'
 
 const KeyPersonViewSection = (props) => {
@@ -13,7 +14,7 @@ const KeyPersonViewSection = (props) => {
 
   const onDeleteHandler = () => {
     if (window.confirm("Are you sure you want to delete this element?") == true) {
-      fetch(`http://127.0.0.1:8000/api/deleteKeyContactPerson/${props.obj.id}`, {
+      fetch(`${URL}/api/deleteKeyContactPerson/${props.obj.id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`

@@ -6,6 +6,7 @@ import Sidebar from '../../../components/sidebar/Sidebar';
 import { Button } from '@mui/material';
 import './assetSingle.scss';
 import { useSelector } from 'react-redux';
+import URL from '../../../store/url';
 
 const AssetSingle = () => {
 
@@ -16,7 +17,7 @@ const AssetSingle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getAsset/${id}`, { 
+    fetch(`${URL}/api/getAsset/${id}`, { 
       headers: {
         Authorization : `Bearer ${token}`
       }
@@ -51,7 +52,7 @@ const AssetSingle = () => {
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
-    fetch(`http://127.0.0.1:8000/api/updateAsset/${id}`, {
+    fetch(`${URL}/api/updateAsset/${id}`, {
       method: 'PUT',
       body: JSON.stringify(entry),
       headers: {

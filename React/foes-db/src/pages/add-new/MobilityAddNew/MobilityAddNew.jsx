@@ -7,6 +7,7 @@ import { Button, duration } from '@mui/material';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
+import URL from '../../../store/url';
 
 const MobilityAddNew = () => {
   const token = useSelector(state => state.auth.tokenId)
@@ -30,7 +31,7 @@ const MobilityAddNew = () => {
   const listRef = useRef([]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getMobilityColumns/`, {
+    fetch(`${URL}/api/getMobilityColumns/`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -47,7 +48,7 @@ const MobilityAddNew = () => {
   }, [token]);
 
   const onCustomColumnAddHandler = () => {
-    fetch(`http://127.0.0.1:8000/api/getMobilityColumns/`, {
+    fetch(`${URL}/api/getMobilityColumns/`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -87,7 +88,7 @@ const MobilityAddNew = () => {
       }
     })
 
-    fetch('http://127.0.0.1:8000/api/createMobility', {
+    fetch(`${URL}/api/createMobility`, {
       method: 'POST',
       body: JSON.stringify(jsonObject),
       headers: {

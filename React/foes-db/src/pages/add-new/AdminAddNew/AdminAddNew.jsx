@@ -11,6 +11,7 @@ import InputPassword from '../../../components/input-password/InputPassword';
 import { useEffect } from 'react';
 import InputEmail from '../../../components/input-email/InputEmail';
 import InputNormal from '../../../components/input-normal/InputNormal';
+import URL from '../../../store/url';
 
 const AdminAddNew = () => {
     const token = useSelector(state => state.auth.tokenId);
@@ -58,7 +59,7 @@ const AdminAddNew = () => {
             "isSuperAdmin": false,
         };
 
-        fetch('http://127.0.0.1:8000/api/createAdmin', {
+        fetch(`${URL}/api/createAdmin`, {
             method: 'POST',
             body: JSON.stringify(jsonObject),
             headers: {

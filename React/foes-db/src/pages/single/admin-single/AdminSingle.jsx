@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import './adminSingle.scss';
 import { useSelector } from 'react-redux';
 import InputPassword from '../../../components/input-password/InputPassword';
+import URL from '../../../store/url';
 
 const AdminSingle = () => {
 
@@ -17,7 +18,7 @@ const AdminSingle = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/getAdmin/${id}`, {
+        fetch(`${URL}/api/getAdmin/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -72,7 +73,7 @@ const AdminSingle = () => {
     const onUpdateHandler = (event) => {
         event.preventDefault();
         //console.log(entry);
-        fetch(`http://127.0.0.1:8000/api/updateAdmin/${id}`, {
+        fetch(`${URL}/updateAdmin/${id}`, {
             method: 'PUT',
             body: JSON.stringify(entry),
             headers: {

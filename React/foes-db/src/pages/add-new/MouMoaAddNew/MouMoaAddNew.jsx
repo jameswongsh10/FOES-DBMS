@@ -7,6 +7,7 @@ import {Button} from '@mui/material';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import Navbar from '../../../components/navbar/Navbar';
 import AddColumn from '../../../components/add-column/AddColumn';
+import URL from '../../../store/url';
 
 const MouMoaAddNew = () => {
     const token = useSelector(state => state.auth.tokenId)
@@ -30,7 +31,7 @@ const MouMoaAddNew = () => {
     const listRef = useRef([]);
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/getMOUMOAColumns`, {
+        fetch(`${URL}/api/getMOUMOAColumns`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`
@@ -47,7 +48,7 @@ const MouMoaAddNew = () => {
     }, [token]);
 
     const onCustomColumnAddHandler = () => {
-        fetch(`http://127.0.0.1:8000/api/getMOUMOAColumns`, {
+        fetch(`${URL}/api/getMOUMOAColumns`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`
@@ -88,7 +89,7 @@ const MouMoaAddNew = () => {
             }
         })
 
-        fetch('http://127.0.0.1:8000/api/createMOUMOA', {
+        fetch(`${URL}/api/createMOUMOA`, {
             method: 'POST',
             body: JSON.stringify(jsonObject),
             headers: {

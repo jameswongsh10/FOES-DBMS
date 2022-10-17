@@ -10,6 +10,7 @@ import AddColumn from '../../../components/add-column/AddColumn';
 import InputEmail from '../../../components/input-email/InputEmail';
 import { useEffect } from 'react';
 import FileInputSection from '../../../components/section/FileInputSection';
+import URL from '../../../store/url';
 
 const StaffAddNew = () => {
   const token = useSelector(state => state.auth.tokenId);
@@ -49,7 +50,7 @@ const StaffAddNew = () => {
   }, [isEmailValid]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/getStaffColumns`, {
+    fetch(`${URL}/api/getStaffColumns`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -66,7 +67,7 @@ const StaffAddNew = () => {
   }, [token]);
 
   const onCustomColumnAddHandler = () => {
-    fetch(`http://127.0.0.1:8000/api/getStaffColumns`, {
+    fetch(`${URL}/api/getStaffColumns`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -113,7 +114,7 @@ const StaffAddNew = () => {
       }
     });
 
-    fetch('http://127.0.0.1:8000/api/createStaff', {
+    fetch(`${URL}/api/createStaff`, {
       method: 'POST',
       body: JSON.stringify(jsonObject),
       headers: {

@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth-slice';
 import './login.scss';
 import CampusImage from '../../assets/image/campus-image.jpeg';
+import URL from '../../store/url';
 
 function Copyright(props) {
   return (
@@ -37,7 +38,7 @@ export default function SignInSide() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    fetch('http://127.0.0.1:8000/api/login', {
+    fetch(`${URL}/api/login`, {
       method: 'POST',
       body: JSON.stringify({
         email: data.get('email'),

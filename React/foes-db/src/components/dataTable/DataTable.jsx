@@ -8,6 +8,7 @@ import { Link, useNavigate, useLocation} from 'react-router-dom';
 import { tableActions } from '../../store/table-slice';
 import './dataTable.scss';
 import { Button } from '@mui/material';
+import URL from '../../store/url';
 
 const useFakeMutation = () => {
   return React.useCallback(
@@ -42,7 +43,7 @@ const DataTable = (props) => {
       // Make the HTTP request to save in the backend
       const { id: elementID, ...newObj } = newRow;
       await fetch(
-        `http://127.0.0.1:8000/api/update${viewCollection}/${elementID}`,
+        `${URL}/api/update${viewCollection}/${elementID}`,
         {
           method: 'put',
           body: JSON.stringify(newObj),
@@ -69,7 +70,7 @@ const DataTable = (props) => {
 
   const onDeleteEntryHandler = (deleteUrl, id) => {
     if (window.confirm("Are you sure you want to delete this element?") == true) {
-      fetch(`http://127.0.0.1:8000/api/${deleteUrl}/${id}`, {
+      fetch(`${URL}/api/${deleteUrl}/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization : `Bearer ${token}`

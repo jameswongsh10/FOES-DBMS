@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import TableContainer from '../../../layout/table-container/TableContainer';
+import URL from '../../../store/url';
 import './mobility.scss';
 
 const Mobility = () => {
@@ -14,7 +15,7 @@ const Mobility = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/readAllMobility', { 
+        `${URL}/readAllMobility`, { 
           headers: {
             Authorization : `Bearer ${token}`
           }
@@ -31,7 +32,7 @@ const Mobility = () => {
       const { ["Mobility"]: collectionObj } = data;
 
       const getColumnResponse = await fetch(
-        'http://127.0.0.1:8000/getMobilityColumns', { 
+        `${URL}/getMobilityColumns`, { 
           headers: {
             Authorization : `Bearer ${token}`
           }
