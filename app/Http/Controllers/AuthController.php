@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -36,6 +37,7 @@ class AuthController extends Controller
             'isSuperAdmin' => $user['isSuperAdmin'],
             'token' => $token,
             'type' => 'bearer',
+            'exp' => time() + auth()->factory()->getTTL() * 60,
         ]);
     }
 
@@ -62,7 +64,7 @@ class AuthController extends Controller
                 'user' => Auth::user(),
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
-
+                'exp' => time() + auth()->factory()->getTTL() * 60
             ]);
         }
         return response()->json([
