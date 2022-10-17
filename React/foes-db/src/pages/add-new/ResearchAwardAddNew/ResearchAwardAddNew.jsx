@@ -59,7 +59,7 @@ const ResearchAwardAddNew = () => {
       });
   }
 
-  console.log(customColumn);
+ // console.log(customColumn);
 
   const submitHandler = (event) => {
     event.preventDefault();

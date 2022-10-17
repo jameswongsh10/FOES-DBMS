@@ -51,7 +51,7 @@ class KTPUSR_Controller extends Controller
                 $columnName = json_decode(file_get_contents('php://input'), true);
 
                 Schema::table('ktp_usr', function (Blueprint $table) use ($columnName) {
-                    $table->string($columnName)->after('external_funding')->default('');
+                    $table->string($columnName)->default('');
                 });
 
                 return response()->json([

@@ -120,11 +120,16 @@ class AdminController extends Controller
 
             $data = json_decode(file_get_contents('php://input'), true);
 
-            if(strcmp($data['password'], $admin->password) != 0){
-                $encryptedPassword = Hash::make($data['password']);
-                $data['password'] = $encryptedPassword;
+            if (array_key_exists('password', $data)) {
+                if (strcmp($data['password'], $admin->password) != 0) {
+                    $encryptedPassword = Hash::make($data['password']);
+                    $data['password'] = $encryptedPassword;
+                }
             }
 
+            if (array_key_exists('isSuperAdmin', $data)) {
+                $data['isSuperAdmin'] = $admin->isSuperAdmin;
+            }
 
             $admin->update($data);
 

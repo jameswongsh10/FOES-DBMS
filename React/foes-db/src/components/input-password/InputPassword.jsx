@@ -14,7 +14,7 @@ const InputPassword = (props) => {
   useEffect(() => {
     if (value != "") {
       setIsEntered(true);
-      console.log("IS ENTERED");
+      //console.log("IS ENTERED");
     } else {
       setIsEntered(false);
       // setIsValid(true);

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('mou_moa', function (Blueprint $table) {
             $table->id();
+            $table->string('isActive')->default('yes');
             $table->string('country');
             $table->string('institution');
             $table->date('signed_date');
@@ -22,7 +23,6 @@ return new class extends Migration
             $table->string('area_of_collab');
             $table->string('progress');
             $table->string('type_of_agreement');
-            $table->string('isActive')->default('active');
             $table->string('research')->nullable(true);
             $table->string('teaching')->nullable(true);
             $table->string('exchange')->nullable(true);

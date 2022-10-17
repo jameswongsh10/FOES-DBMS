@@ -45,7 +45,7 @@ const KeyPersonInputSection = (props) => {
 
         const newArray = (props.keyPersons).filter((element, i) => !(i === props.index));
 
-        console.log(newArray);
+       // console.log(newArray);
 
         fetch(`http://127.0.0.1:8000/api/updateKeyContactPerson/${props.obj.id}`, {
             method: 'PUT',
@@ -87,7 +87,7 @@ const KeyPersonInputSection = (props) => {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                //console.log(data);
                 props.setKeyPersons([data.KeyContactPerson, ...newArray]);
             });
         // .then(response => {

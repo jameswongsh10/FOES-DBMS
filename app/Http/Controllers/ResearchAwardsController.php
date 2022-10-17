@@ -51,7 +51,7 @@ class ResearchAwardsController extends Controller
                 $columnName = json_decode(file_get_contents('php://input'), true);
 
                 Schema::table('research_awards', function (Blueprint $table) use ($columnName) {
-                    $table->string($columnName)->after('evidence_link')->default('');
+                    $table->string($columnName)->default('');
                 });
 
                 return response()->json([

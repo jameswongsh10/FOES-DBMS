@@ -60,10 +60,10 @@ const MobilityAddNew = () => {
         const filters = ["id", "staff_or_student", "in_or_out_bound", "name", "attendee_id", "program", "name_of_university", "country", "duration", "from_date", "to_date", "remark", "created_at", "updated_at"];
 
         setCustomColumn((data.column).filter((column) => !filters.includes(column)));
-      }); 
+      });
   }
 
-  console.log(customColumn);
+//  console.log(customColumn);
 
   const submitHandler = (event) => {
     event.preventDefault();

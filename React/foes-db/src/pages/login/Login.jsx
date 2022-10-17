@@ -36,10 +36,6 @@ export default function SignInSide() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
 
     fetch('http://127.0.0.1:8000/api/login', {
       method: 'POST',
@@ -51,7 +47,7 @@ export default function SignInSide() {
       .then((res) => {
         if (res.ok) {
           return res.json();
-        } 
+        }
         return Promise.reject(res);
       })
       .then((data) => {

@@ -44,7 +44,7 @@ const SingleEntry = () => {
     let newEntry = {...entry};
     newEntry[name] = '';
     // let newEntry = { ...entry, key: '' };
-    console.log(newEntry);
+    //console.log(newEntry);
     setEntry(newEntry);
   };
 
@@ -54,7 +54,7 @@ const SingleEntry = () => {
       method: 'PUT',
       body: JSON.stringify(entry)
     });
-    
+
     response && navigate('/');
   }
 

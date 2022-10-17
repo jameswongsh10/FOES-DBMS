@@ -105,7 +105,7 @@ const StaffAddNew = () => {
       "remark": remarkInput.current.value,
     };
 
-    console.log(jsonObject);
+    //console.log(jsonObject);
 
     listRef.current.forEach(el => {
       if (el.value) {

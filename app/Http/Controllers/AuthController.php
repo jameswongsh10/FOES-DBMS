@@ -8,11 +8,6 @@ use PHPOpenSourceSaver\JWTAuth\JWTAuth;
 
 class AuthController extends Controller
 {
-//    public function __construct()
-//    {
-//        $this->middleware('auth:api', ['except' => ['login']]);
-//    }
-
     public function login()
     {
         $data = json_decode(file_get_contents('php://input'), true);

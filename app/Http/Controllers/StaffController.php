@@ -51,7 +51,7 @@ class StaffController extends Controller
                 $columnName = json_decode(file_get_contents('php://input'), true);
 
                 Schema::table('staffs', function (Blueprint $table) use ($columnName) {
-                    $table->string($columnName)->after('remark')->default('');
+                    $table->string($columnName)->default('');
                 });
 
                 return response()->json([

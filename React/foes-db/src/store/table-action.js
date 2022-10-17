@@ -10,7 +10,7 @@ export const fetchDatabase = () => {
       );
 
       if (!response.ok) {
-        console.log('fetching error from firebase');
+       // console.log('fetching error from firebase');
         throw new Error('Could not fetch cart data!');
       }
 
@@ -40,10 +40,10 @@ export const deleteEntry = (collection, id) => {
 
     if (!deleteResponse.ok) {
       console.log('error in deleting entry: ', id);
-      throw new Error('Could not delete an entry!'); 
+      throw new Error('Could not delete an entry!');
     }
 
-    
+
     const fetchData = async () => {
       const response = await fetch(
         'https://foes-3edf9-default-rtdb.asia-southeast1.firebasedatabase.app/database.json'
@@ -66,6 +66,6 @@ export const deleteEntry = (collection, id) => {
     } catch (error) {
       console.log('Fetching process failed');
     }
-    
+
   };
 };
