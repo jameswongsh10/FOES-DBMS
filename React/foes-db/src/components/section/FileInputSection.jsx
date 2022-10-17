@@ -47,12 +47,12 @@ const FileInputSection = (props) => {
 
         // const newAttachments = (props.attachments).filter((element, i) => !(element.id === props.attachmentId));
         const newAttachments = (props.attachments).filter((element, i) => {
-            console.log("element.id", element.id);
-            console.log("props.attachmentId", props.attachmentId);
+            //console.log("element.id", element.id);
+            //console.log("props.attachmentId", props.attachmentId);
             return !(element.id === props.attachmentId);
         });
 
-        console.log("newAttachments", newAttachments);
+        //console.log("newAttachments", newAttachments);
 
         fetch(`http://127.0.0.1:8000/api/updateAttachment/staff/${props.attachmentId}`, {
             method: 'POST',
@@ -65,7 +65,7 @@ const FileInputSection = (props) => {
                 return response.json();
             })
             .then(data => {
-                console.log(newAttachments, data.attachment);
+                //console.log(newAttachments, data.attachment);
                 props.setIsEditing(false);
                 props.setAttachments([data.attachment, ...newAttachments]);
             })
@@ -87,7 +87,7 @@ const FileInputSection = (props) => {
 
         const newAttachments = (props.attachments).filter((element, i) => !(i === props.index));
 
-        console.log(newAttachments);
+        //console.log(newAttachments);
 
         fetch(`http://127.0.0.1:8000/api/createAttachment/staff`, {
             method: 'POST',
@@ -100,7 +100,7 @@ const FileInputSection = (props) => {
                 return response.json();
             })
             .then(data => {
-                console.log(newAttachments, data.attachment);
+                //console.log(newAttachments, data.attachment);
                 props.setAttachments([data.attachment, ...newAttachments]);
             });
 

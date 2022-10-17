@@ -13,7 +13,7 @@ const AddSingleColumn = (props) => {
 
   const onConfirmHandler = () => {
     isOpen(false);
-    console.log('inputColumnName: ', inputColumnName.current.value);
+    //console.log('inputColumnName: ', inputColumnName.current.value);
     props.onAddColumnHandler(inputColumnName.current.value);
   }
 

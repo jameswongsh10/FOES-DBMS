@@ -51,7 +51,7 @@ class MOUMOA_Controller extends Controller
                 $columnName = json_decode(file_get_contents('php://input'), true);
 
                 Schema::table('mou_moa', function (Blueprint $table) use ($columnName) {
-                    $table->string($columnName)->after('mutual_extension')->default('');
+                    $table->string($columnName)->default('');
                 });
 
                 return response()->json([

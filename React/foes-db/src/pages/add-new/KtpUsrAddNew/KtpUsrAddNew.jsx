@@ -63,10 +63,10 @@ const KtpUsrAddNew = () => {
         const filters = ["id", "category", "date", "program_name", "community_industry_name", "location", "lead_by", "faculty", "cm_driven", "partner_name", "no_of_staff", "no_of_student", "internal_funding", "external_funding", "remark", "created_at", "updated_at"];
 
         setCustomColumn((data.column).filter((column) => !filters.includes(column)));
-      }); 
+      });
   }
 
-  console.log(customColumn);
+ // console.log(customColumn);
 
   const submitHandler = (event) => {
     event.preventDefault();

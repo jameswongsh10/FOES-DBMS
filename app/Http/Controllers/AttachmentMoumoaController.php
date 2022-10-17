@@ -232,27 +232,27 @@ class AttachmentMoumoaController extends Controller
     public function downloadAttachment($id)
     {
 //        if (Auth::check()) {
-            try {
-                $attachment = AttachmentMoumoa::find($id);
-                if (is_null($attachment)) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => "Attachment not found",
-                    ], 404);
-                }
-                $path = explode("/", $attachment['path']);
-                $fullPath = 'app/public/files/' . $path[2];
-                $filePath = storage_path($fullPath);
-                $testRealPath = realpath($filePath);
-
-                return response()->download($testRealPath, $attachment['file_name']);
-
-            } catch (QueryException $e) {
+        try {
+            $attachment = AttachmentMoumoa::find($id);
+            if (is_null($attachment)) {
                 return response()->json([
                     'status' => false,
-                    'message' => $e->errorInfo[2]
-                ], 400);
+                    'message' => "Attachment not found",
+                ], 404);
             }
+            $path = explode("/", $attachment['path']);
+            $fullPath = 'app/public/files/' . $path[2];
+            $filePath = storage_path($fullPath);
+            $testRealPath = realpath($filePath);
+
+            return response()->download($testRealPath, $attachment['file_name']);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->errorInfo[2]
+            ], 400);
+        }
 //        }
 //        return response()->json([
 //            'status' => false,

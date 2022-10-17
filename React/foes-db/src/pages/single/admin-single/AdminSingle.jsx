@@ -50,7 +50,7 @@ const AdminSingle = () => {
                 } else if (key == 'email') {
                     formHtml.push(
                         <Input name={key} hint=" (eg: name@email.com)" key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
-                      ); 
+                      );
                 } else {
                     formHtml.push(
                         <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
@@ -71,7 +71,7 @@ const AdminSingle = () => {
 
     const onUpdateHandler = (event) => {
         event.preventDefault();
-        console.log(entry);
+        //console.log(entry);
         fetch(`http://127.0.0.1:8000/api/updateAdmin/${id}`, {
             method: 'PUT',
             body: JSON.stringify(entry),

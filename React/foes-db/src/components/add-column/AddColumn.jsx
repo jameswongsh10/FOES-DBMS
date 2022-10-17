@@ -21,10 +21,10 @@ const AddColumn = (props) => {
 
   const onConfirmHandler = () => {
 
-    console.log("inputColumnName", inputColumnName.current.value);
+    //console.log("inputColumnName", inputColumnName.current.value);
 
     isOpen(false);
-    // fetch(`http://127.0.0.1:8000/api/${props.apiEndPoint}`, { 
+    // fetch(`http://127.0.0.1:8000/api/${props.apiEndPoint}`, {
     // fetch(`http://127.0.0.1:8000/api/addStaffColumn`, {
     //   method: 'POST',
     // headers: {

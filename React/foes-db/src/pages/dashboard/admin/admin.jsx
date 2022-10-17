@@ -56,7 +56,7 @@ const Admin = () => {
       //   }
       // }
 
-      const filters = ["id", "created_at", "updated_at", "isSuperAdmin", "password"];
+      const filters = ["id", "created_at", "updated_at", "password"];
 
       setColumns(columnArr.filter((column) => !filters.includes(column)));
       setRows(collectionObj);
