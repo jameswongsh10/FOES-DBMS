@@ -68,8 +68,8 @@ const MouMoaAddNew = () => {
         const jsonObject = {
             "country": countryInput.current.value,
             "institution": institutionInput.current.value,
-            "signed_date": signedDateInput.current.value,
-            "due_date": dueDateInput.current.value,
+            "signed_date": signedDateInput.current.value === "" ? null : signedDateInput.current.value,
+            "due_date": dueDateInput.current.value === "" ? null : dueDateInput.current.value,
             "area_of_collab": areaOfCollaborationInput.current.value,
             "progress": progressInput.current.value,
             // type_of_agreement: is to be changed to programCategory

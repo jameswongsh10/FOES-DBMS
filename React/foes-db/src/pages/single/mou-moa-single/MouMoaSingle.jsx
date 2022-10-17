@@ -7,11 +7,14 @@ import { Button } from '@mui/material';
 import './mouMoaSingle.scss';
 import KeyPersonSection from '../../../components/key-person-section/KeyPersonSection';
 import { useSelector } from 'react-redux';
+import FileSection from '../../../components/file-section/FileSection';
+import DocSection from '../../../components/DocSection/DocSection';
 
 const MouMoaSingle = () => {
   const token = useSelector(state => state.auth.tokenId);
   const [entry, setEntry] = useState({});
   const [keyPersons, setKeyPersons] = useState([]);
+  const [attachments, setAttachments] = useState([]);
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate();
@@ -42,14 +45,46 @@ const MouMoaSingle = () => {
       });
   }, [id, token]);
 
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/moumoa_id/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const attachment = data.attachment;
+        setAttachments(attachment);
+      });
+  }, [id, token]);
+
+  const updateAttachmentsHTTP = () => {
+    fetch(`http://127.0.0.1:8000/api/getAttachment/moumoa_id/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const attachment = data.attachment;
+        setAttachments(attachment);
+      });
+  };
+
+
   const generateForm = (obj) => {
     let formHtml = [];
     for (const key in obj) {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
-        formHtml.push(
-          <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
-        );
-
+        if (key == 'isActive') {
+          formHtml.push(
+            <Input name={key + " (Yes or No)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else {
+          formHtml.push(
+            <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        }
       }
     }
     return formHtml;
@@ -77,8 +112,25 @@ const MouMoaSingle = () => {
     return sectionHtml;
   };
 
+  const generateDocumentSection = (arr) => {
+    let sectionHtml = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (attachments[i] === null) {
+        sectionHtml.push(
+          <DocSection obj={null} index={i} attachments={attachments} setAttachments={setAttachments} staffID={id} key={`temp${i}`} attachmentId={null} updateAttachmentsHTTP={updateAttachmentsHTTP} url="moumoa" />
+        );
+      } else {
+        sectionHtml.push(
+          <DocSection obj={attachments[i]} index={i} attachments={attachments} setAttachments={setAttachments} key={attachments[i].id} staffID={id} attachmentId={attachments[i].id} updateAttachmentsHTTP={updateAttachmentsHTTP} url="moumoa" />
+        );
+      }
+    }
+    return sectionHtml;
+  };
+
   const generatedForm = generateForm(entry);
-  const generatedSection = generateSection(keyPersons);
+  const generatedKeyPersonSection = generateSection(keyPersons);
+  const generatedDocumentSection = generateDocumentSection(attachments);
 
   const onUpdateHandler = (event) => {
     event.preventDefault();
@@ -105,6 +157,10 @@ const MouMoaSingle = () => {
     setKeyPersons([...keyPersons, null]);
   };
 
+  const onAddNewDocument = () => {
+    setAttachments([...attachments, null]);
+  };
+
   console.log(keyPersons);
 
   return (
@@ -123,11 +179,18 @@ const MouMoaSingle = () => {
           </div>
           <div className="content">
             <div className="title">Key Contact Person</div>
-            {generatedSection}
+            {generatedKeyPersonSection}
             {/* <FileInputSection obj={null} /> */}
           </div>
           <div className="button-section">
             <button className="add-new-btn" onClick={onAddNewKeyPerson}>ADD NEW KEY CONTACT PERSON</button>
+          </div>
+          <div className="content">
+            {generatedDocumentSection}
+            {/* <FileInputSection obj={null} /> */}
+          </div>
+          <div className="button-section">
+            <button className='add-new-btn' onClick={onAddNewDocument}>Add New Document</button>
           </div>
         </div>
       </div>

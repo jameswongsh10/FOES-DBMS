@@ -84,11 +84,20 @@ const StaffSingle = () => {
 
     for (const key in obj) {
       if (!(key == 'id' || key == 'created_at' || key == 'updated_at')) {
-      // if (!filters.includes(key)) {
-        formHtml.push(
-          <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
-        );
-
+        // if (!filters.includes(key)) {
+        if (key == 'resigned_date' || key == 'report_duty_date') {
+          formHtml.push(
+            <Input name={key + " (yyyy-mm-dd)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else if (key == 'email') {
+          formHtml.push(
+            <Input name={key + " (eg: name@email.com)"} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        } else {
+          formHtml.push(
+            <Input name={key} key={key} initialValue={obj[key]} onFormChangeHandler={onFormChangeHandler} />
+          );
+        }
       }
     }
     return formHtml;

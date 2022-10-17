@@ -43,12 +43,33 @@ function App() {
 
   const storedToken = localStorage.getItem('token');
   const storedIsSuperUser = localStorage.getItem('isSuperAdmin');
+  const exp = localStorage.getItem('exp');
 
   useEffect(() => {
-    if (storedToken) {
-      dispatch(authActions.login([ storedToken, storedIsSuperUser == 1 ? true : false ]));
+    const remainingTime = calculateRemainingTime(exp);
+
+    if (storedToken && (remainingTime > 10)) {
+      dispatch(authActions.login([ storedToken, storedIsSuperUser == 1 ? true : false, exp]));
+    } else {
+      dispatch(authActions.logout())
     }
-  }, [storedToken, storedIsSuperUser, dispatch])
+  }, [storedToken, storedIsSuperUser, exp, dispatch])
+
+  useEffect(() => {
+    const remainingTime = calculateRemainingTime(exp) ;
+    const logoutTimer = setTimeout(() => {
+      dispatch(authActions.logout());
+    }, remainingTime * 1000)
+    return () => clearTimeout(logoutTimer);
+  }, [exp, dispatch])
+
+  const calculateRemainingTime = (expirationTime) => {
+    const currentTime = Date.now() / 1000;
+    const remainingDuration = expirationTime - currentTime;
+  
+    return remainingDuration;
+  };
+  
 
   return (
     <div className={isDarkMode ? 'app dark' : 'app'}>
@@ -84,12 +105,13 @@ function App() {
           {isLoggedIn && <Route path='/mobility/new' element={<MobilityAddNew />} />}
           {isLoggedIn && <Route path='/mobility/:id' element={<MobilitySingle />} />}
 
-                    {isLoggedIn && <Route path='/backup' element={<Backup/>}/>}
-                    {isLoggedIn && <Route path='/pdf' element={<Pdf/>}/>}
-                    {isLoggedIn && <Route path='/import' element={<Import/>}/>}
-                    {isLoggedIn && <Route path='/settings' element={<Setting/>}/>}
-                    {isLoggedIn && <Route path='/profile' element={<Profile/>}/>}
-                    {!isLoggedIn && <Route path='/' element={<Login/>}/>}
+          {isLoggedIn && <Route path='/backup' element={<Backup/>}/>}
+          {isLoggedIn && <Route path='/pdf' element={<Pdf/>}/>}
+          {isLoggedIn && <Route path='/import' element={<Import/>}/>}
+          {isLoggedIn && <Route path='/settings' element={<Setting/>}/>}
+          {isLoggedIn && <Route path='/profile' element={<Profile/>}/>}
+          {!isLoggedIn && <Route path='/' element={<Login/>}/>}
+          {!isLoggedIn && <Route path='*' element={<Login/>}/>}
                 </Routes>
             </BrowserRouter>
         </div>

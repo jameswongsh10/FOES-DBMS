@@ -49,19 +49,19 @@ export default function SignInSide() {
       })
     })
       .then((res) => {
-        console.log(res);
         if (res.ok) {
           return res.json();
-        } else {
-          throw new Error('Login Failed');
-        }
+        } 
+        return Promise.reject(res);
       })
       .then((data) => {
-        console.log(data);
-        const arr = [data.token, data.isSuperAdmin];
+        const arr = [data.token, data.isSuperAdmin, data.exp];
         dispatch(authActions.login(arr))
         // dispatch(authActions.login(data))
         // navigate '/'
+      })
+      .catch(response => {
+        response.json().then(json => alert(json.message));
       })
   };
 

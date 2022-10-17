@@ -101,9 +101,11 @@ const StaffAddNew = () => {
       "photocopy_id": photocopyIdInput.current.value,
       "appointment_level": appointmentLevelInput.current.value,
       "pigeonbox_no": pigeaonboxNoInput.current.value,
-      "resigned_date": resignedDateInput.current.value,
+      "resigned_date": resignedDateInput.current.value === "" ? null : resignedDateInput.current.value,
       "remark": remarkInput.current.value,
     };
+
+    console.log(jsonObject);
 
     listRef.current.forEach(el => {
       if (el.value) {

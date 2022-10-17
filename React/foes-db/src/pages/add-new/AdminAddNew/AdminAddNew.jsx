@@ -102,9 +102,9 @@ const AdminAddNew = () => {
 
                         <InputNormal value={perthId} setHandler={setPerthId} label="Perth ID" isValid={isPerthIdValid} setIsValid={setIsPerthIdValid} />
 
-                        <InputEmail value={email} setHandler={setEmail} label="Email Address (eg. example@email.com)" isValid={isEmailValid} setIsValid={setIsEmailValid} />
+                        <InputEmail value={email} setHandler={setEmail} label="Email Address" isValid={isEmailValid} setIsValid={setIsEmailValid} />
 
-                        <InputPassword value={password} setHandler={setPassword} label="Password (Must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 symbol and 1 numeric charcter)" isValid={isPasswordValid} setIsValid={setIsPasswordValid} />
+                        <InputPassword value={password} setHandler={setPassword} label="Password" isValid={isPasswordValid} setIsValid={setIsPasswordValid} />
 
                         {/* <Button type='submit'>Send</Button> */}
                         <Button disabled={!isFormValid} type='submit'>Send</Button>

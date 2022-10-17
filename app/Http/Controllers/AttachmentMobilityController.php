@@ -231,7 +231,7 @@ class AttachmentMobilityController extends Controller
 
     public function downloadAttachment($id)
     {
-        if (Auth::check()) {
+//        if (Auth::check()) {
             try {
                 $attachment = AttachmentMobility::find($id);
                 if (is_null($attachment)) {
@@ -253,10 +253,10 @@ class AttachmentMobilityController extends Controller
                     'message' => $e->errorInfo[2]
                 ], 400);
             }
-        }
-        return response()->json([
-            'status' => false,
-            'message' => 'Unauthorized user'
-        ], 401);
+//        }
+//        return response()->json([
+//            'status' => false,
+//            'message' => 'Unauthorized user'
+//        ], 401);
     }
 }
