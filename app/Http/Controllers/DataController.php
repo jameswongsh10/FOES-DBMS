@@ -105,16 +105,12 @@ class DataController extends Controller
 
                             if (preg_match('/(.*)([0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{2,4})(.*)/', $value, $matches)) {
                                 $value = date('Y-m-d', strtotime($value));
-                                echo $value;
                             } else if (preg_match('/(.*)([0-9]{1,2}\-[0-9]{1,2}\-[0-9]{2,4})(.*)/', $value, $matches)) {
                                 $value = date('Y-m-d', strtotime($value));
-                                echo $value;
                             } else if (preg_match('/(.*)([0-9]{1,2}\.[0-9]{1,2}\.[0-9]{2,4})(.*)/', $value, $matches)) {
                                 $value = date('Y-m-d', strtotime($value));
-                                echo $value;
                             } else if (preg_match('/(.*)([0-9]{2,4}\\/[0-9]{1,2}\\/[0-9]{1,2})(.*)/', $value, $matches)) {
                                 $value = date('Y-m-d', strtotime($value));
-                                echo $value;
                             }
 
                             $newData->$key = $value;
@@ -141,12 +137,13 @@ class DataController extends Controller
                     'message' => "Error in CSV file import.",
                 ], 400);
             }
-            return response()->json([
-                'status' => false,
-                'message' => "Unauthorized user"
-            ], 401);
         }
+        return response()->json([
+            'status' => false,
+            'message' => "Unauthorized user"
+        ], 401);
     }
+
 
     public
     function database_backup()
